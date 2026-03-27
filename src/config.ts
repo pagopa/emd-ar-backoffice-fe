@@ -1,11 +1,6 @@
-// Legge le variabili d'ambiente sia da window.__ENV__ (runtime, iniettate da entrypoint.sh)
-// che da import.meta.env (build-time, definite in .env)
-
-const env = (window as Window & { __ENV__?: Record<string, string> }).__ENV__ ?? {};
+// Variabili d'ambiente iniettate a build-time da Vite (VITE_* in .env o tramite pipeline)
 
 export const config = {
-  appInsightsConnectionString:
-    env.APPINSIGHTS_CONNECTION_STRING || import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING,
-  apiBaseUrl: env.API_BASE_URL || import.meta.env.VITE_API_BASE_URL,
+  appInsightsConnectionString: import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING,
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
 };
-
