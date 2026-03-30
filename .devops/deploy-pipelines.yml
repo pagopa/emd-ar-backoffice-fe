@@ -114,8 +114,7 @@ stages:
                         az storage blob sync \
                           --container '$(BLOB_CONTAINER_NAME)' \
                           --account-name $(PROD_STORAGE_ACCOUNT) \
-                          -s "$(Pipeline.Workspace)/Bundle" \
-                          --delete-destination true
+                          -s "$(Pipeline.Workspace)/Bundle"
                   - task: AzureCLI@2
                     displayName: 'Purge CDN (PROD)'
                     inputs:
@@ -141,8 +140,7 @@ stages:
                         az storage blob sync \
                           --container '$(BLOB_CONTAINER_NAME)' \
                           --account-name $(UAT_STORAGE_ACCOUNT) \
-                          -s "$(Pipeline.Workspace)/Bundle" \
-                          --delete-destination true
+                          -s "$(Pipeline.Workspace)/Bundle"
                   - task: AzureCLI@2
                     displayName: 'Purge CDN (UAT)'
                     inputs:
@@ -168,8 +166,7 @@ stages:
                         az storage blob sync \
                           --container '$(BLOB_CONTAINER_NAME)' \
                           --account-name $(DEV_STORAGE_ACCOUNT) \
-                          -s "$(Pipeline.Workspace)/Bundle" \
-                          --delete-destination true
+                          -s "$(Pipeline.Workspace)/Bundle"
                   - task: AzureCLI@2
                     displayName: 'Purge CDN (DEV)'
                     inputs:
