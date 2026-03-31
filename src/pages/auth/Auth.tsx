@@ -2,21 +2,21 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { acsHandshake, } from '../../api/auth';
 import ROUTES from '../../routes';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, Link } from '@mui/material';
 import { saveUserFromToken } from '../../utils/user';
+import { CONFIG } from '../../config';
 
 type AcsState = 'loading' | 'error';
 
 const Auth = () => {
     const { hash = '' } = window.location;
-    const urlToken = hash.replace('#token=', '').trim();
+    const urlToken =   hash.startsWith('#token=') ? hash.slice('#token='.length).trim() : '';
 
     const [state, setState] = useState<AcsState>(urlToken ? 'loading' : 'error');
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!urlToken) return;
-
         history.replaceState(null, '', window.location.pathname);
 
         acsHandshake(urlToken)
@@ -31,7 +31,7 @@ const Auth = () => {
                 console.error('[ACS] handshake failed:', err);
                 setState('error');
             });
-    }, []);
+    }, [urlToken, navigate]);
 
     if (state === 'error') {
         return (
@@ -47,7 +47,15 @@ const Auth = () => {
                     Accesso non riuscito
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Il link potrebbe essere scaduto. Torna all&apos;Area Riservata.
+                    Il link potrebbe essere scaduto.&nbsp;
+                    <Link
+                        href={CONFIG.AR_BASE_URL}
+                        underline="always"
+                        color="primary"
+                    >
+                        Torna all&apos;Area Riservata
+                    </Link>
+                    .
                 </Typography>
             </Box>
         );
