@@ -1,14 +1,14 @@
 import { ApplicationInsights } from '@microsoft/applicationinsights-web';
-import { config } from './config';
+import { CONFIG } from './config';
 
 export const appInsights = new ApplicationInsights({
   config: {
-    connectionString: config.appInsightsConnectionString,
+    connectionString: CONFIG.APPINSIGHTS_CONNECTION_STRING,
     enableAutoRouteTracking: true,
   },
 });
 
-if (config.appInsightsConnectionString) {
+if (CONFIG.APPINSIGHTS_CONNECTION_STRING) {
   appInsights.loadAppInsights();
 }
 

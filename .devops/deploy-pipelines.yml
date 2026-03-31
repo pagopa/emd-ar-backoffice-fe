@@ -63,16 +63,19 @@ stages:
             - bash: npm run build
               displayName: 'Build (PROD)'
               env:
+                VITE_MOCK_ACTIVE: false
                 VITE_API_BASE_URL: $(PROD_API_BASE_URL)
           - ${{ elseif eq(parameters.ENV, 'uat') }}:
             - bash: npm run build
               displayName: 'Build (UAT)'
               env:
+                VITE_MOCK_ACTIVE: false
                 VITE_API_BASE_URL: $(UAT_API_BASE_URL)
           - ${{ else }}:
             - bash: npm run build
               displayName: 'Build (DEV)'
               env:
+                VITE_MOCK_ACTIVE: true
                 VITE_API_BASE_URL: $(DEV_API_BASE_URL)
 
           # Scrive build.info nel dist — visibile su CDN per tracciare la versione deployata
