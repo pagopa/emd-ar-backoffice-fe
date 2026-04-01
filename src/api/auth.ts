@@ -14,15 +14,42 @@ const MOCK_INNER_TOKEN = [
     'mock-signature',
 ].join('.');
 
+const callMock = async () => {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    return { status: 'success', message: 'Mock OK', token: MOCK_INNER_TOKEN } as AcsResponse;
+}
+
 export const acsHandshake = async (urlToken: string): Promise<AcsResponse> => {
-    if (CONFIG.MOCK_ACTIVE === 'true') {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        return { status: 'success', message: 'Mock OK', token: MOCK_INNER_TOKEN };
+
+    if (CONFIG.ENV === 'DEV') {
+        try {
+            const { data } = await axios.post<AcsResponse>(
+                `${CONFIG.API_BASE_URL}/api/auth/pagopa`,
+                { token: urlToken },
+                {
+                    headers: {
+                        Authorization: `Bearer ${urlToken}`,
+                    }
+                }
+            );
+
+            console.log("Dati chiamata BFF: ", data);
+            return callMock()
+
+        } catch (e) {
+            console.warn("Chiamata BFF fallita, fallback su mock:", e);
+            return callMock()
+        }
     }
 
     const { data } = await axios.post<AcsResponse>(
-        `${CONFIG.API_BASE_URL}/auth/pagopa`,
-        { token: urlToken }
+        `${CONFIG.API_BASE_URL}/api/auth/pagopa`,
+        { token: urlToken },
+        {
+            headers: {
+                Authorization: `Bearer ${urlToken}`,
+            }
+        }
     );
 
     return data;

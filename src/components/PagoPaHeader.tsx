@@ -1,11 +1,10 @@
 import { HeaderAccount, HeaderProduct, type JwtUser } from '@pagopa/mui-italia';
 import { Box } from '@mui/material';
-import { getUserFromStorage } from '../utils/user';
-import { useEffect } from 'react';
+import { useAppSelector } from '../redux/hook';
 
 const Header = () => {
 
-    const user = getUserFromStorage();
+    const user = useAppSelector((state) => state.user.user);
 
     const loggedUser: JwtUser | false = user
         ? {
@@ -24,9 +23,6 @@ const Header = () => {
         },
     ] : [];
 
-    useEffect(() => {
-        console.log(user)
-    }, [])
 
     return (
         <Box component="header" sx={{

@@ -1,17 +1,32 @@
 import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { type StoredUser } from '../types/user';
 
+export const isTokenExpired = (token: string): boolean => {
+    try {
+        const { exp } = JSON.parse(atob(token.split('.')[1]));
+        return typeof exp === 'number' && exp * 1000 < Date.now();
+    } catch {
+        return true;
+    }
+};
+
 /**
  * Reads the user from sessionStorage of selfcare.
  */
 export const getUserFromStorage = (): StoredUser | null => {
-    // first try to read the already-decoded user object
+    const token = storageTokenOps.read();
+    if (!token || isTokenExpired(token)) {
+        // clean of token if is expired
+        if (token) {
+            storageTokenOps.delete();
+            storageUserOps.delete();
+        }
+        return null;
+    }
+
     const storedUser = storageUserOps.read();
     if (storedUser) return storedUser as StoredUser;
 
-    // fallback: decode user from JWT token payload
-    const token = storageTokenOps.read();
-    if (!token) return null;
     try {
         return JSON.parse(atob(token.split('.')[1])) as StoredUser;
     } catch {
