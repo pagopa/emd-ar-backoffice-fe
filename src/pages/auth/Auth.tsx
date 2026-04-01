@@ -10,7 +10,7 @@ type AcsState = 'loading' | 'error';
 
 const Auth = () => {
     const { hash = '' } = window.location;
-    const urlToken =   hash.startsWith('#token=') ? hash.slice('#token='.length).trim() : '';
+    const urlToken = hash.startsWith('#token=') ? hash.slice('#token='.length).trim() : '';
 
     const [state, setState] = useState<AcsState>(urlToken ? 'loading' : 'error');
     const navigate = useNavigate();
@@ -18,6 +18,8 @@ const Auth = () => {
     useEffect(() => {
         if (!urlToken) return;
         history.replaceState(null, '', window.location.pathname);
+
+        if (CONFIG.ENV === "DEV") console.log("urlToken : ", urlToken)
 
         acsHandshake(urlToken)
             .then((response) => {
