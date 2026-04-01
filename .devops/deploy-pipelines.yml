@@ -76,7 +76,7 @@ stages:
               env:
                 VITE_ENV: DEV
                 VITE_MOCK_ACTIVE: true
-                VITE_API_BASE_URL: https://mdc.itn.internal.dev.cstar.pagopa.it/emd-ar-backoffice-bff/backoffice
+                VITE_API_BASE_URL: https://api-emd.dev.cstar.pagopa.it/emd/backoffice
                 VITE_AR_BASE_URL: https://dev.selfcare.pagopa.it/auth
 
           # Scrive build.info nel dist — visibile su CDN per tracciare la versione deployata
@@ -171,6 +171,13 @@ stages:
                           --container '$(BLOB_CONTAINER_NAME)' \
                           --account-name $(DEV_STORAGE_ACCOUNT) \
                           -s "$(Pipeline.Workspace)/Bundle"
+
+                        az storage blob update \
+                          --container '$(BLOB_CONTAINER_NAME)' \
+                          --account-name $(DEV_STORAGE_ACCOUNT) \
+                          --name 'index.html' \
+                          --content-cache-control 'no-store, no-cache, must-revalidate' \
+                          --content-type 'text/html'
                   - task: AzureCLI@2
                     displayName: 'Purge CDN (DEV)'
                     inputs:
