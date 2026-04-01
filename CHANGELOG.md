@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.0...v1.1.1) (2026-04-01)
+
+
+### Bug Fixes
+
+* add header and footer ([89af4ac](https://github.com/pagopa/emd-ar-backoffice-fe/commit/89af4ac75acf2f8d21eed4df42d0651a6e695e10))
+* removed env uat and prod ([6a97144](https://github.com/pagopa/emd-ar-backoffice-fe/commit/6a971449cf6b8cf179e4d3e2cc2d670b206860ad))
+
 ## [1.1.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.0.1...v1.1.0) (2026-03-31)
 
 
