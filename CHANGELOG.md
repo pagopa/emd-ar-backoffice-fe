@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.3...v1.1.4) (2026-04-02)
+
+
+### Bug Fixes
+
+* change name app and redirect url ([b471af5](https://github.com/pagopa/emd-ar-backoffice-fe/commit/b471af53675b7fa1ca5299a896ec0d199d5feb34))
+
 ## [1.1.3](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.2...v1.1.3) (2026-04-01)
 
 
