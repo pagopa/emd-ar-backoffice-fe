@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { acsHandshake, } from '../../api/auth';
 import ROUTES from '../../routes';
@@ -12,10 +12,8 @@ type AcsState = 'loading' | 'error';
 
 const Auth = () => {
 
-    const urlToken = useMemo(() => {
-        const hash = window.location.hash ?? '';
-        return hash.startsWith('#token=') ? hash.slice('#token='.length).trim() : '';
-    }, []);
+    const hash = location.hash ?? '';
+    const urlToken = hash.startsWith('#token=') ? hash.slice('#token='.length).trim() : '';
 
     const [state, setState] = useState<AcsState>(urlToken ? 'loading' : 'error');
 
