@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.5...v1.1.6) (2026-04-07)
+
+
+### Bug Fixes
+
+* add different immage size ([759ff6b](https://github.com/pagopa/emd-ar-backoffice-fe/commit/759ff6b6bee7ccef61698600410cdbc9d16aa7fe))
+
 ## [1.1.5](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.4...v1.1.5) (2026-04-07)
 
 
