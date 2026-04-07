@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.4...v1.1.5) (2026-04-07)
+
+
+### Bug Fixes
+
+* add logo application ([2c0263a](https://github.com/pagopa/emd-ar-backoffice-fe/commit/2c0263af3a60efde3881811831d3623dbbf3d90e))
+
 ## [1.1.4](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.3...v1.1.4) (2026-04-02)
 
 
