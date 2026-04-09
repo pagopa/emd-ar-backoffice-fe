@@ -4,10 +4,12 @@ import Auth from './pages/auth/Auth';
 import Home from './pages/home/Home';
 import ROUTES from './routes';
 import withAuth from './decorator/withAuth';
+import Onboarding from './pages/Onboarding';
 
 const SecuredRoutes = withAuth(() => (
     <Routes>
         <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.ONBOARDING} element={<Onboarding />} />
         <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
     </Routes>
 ));

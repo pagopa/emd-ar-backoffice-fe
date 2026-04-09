@@ -21,9 +21,11 @@
     "@pagopa/selfcare-common-frontend": "^1.34.100",
     "axios": "^1.14.0",
     "eslint": "^8.57.1",
+    "formik": "^2.4.9",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-router-dom": "^7.13.1"
+    "react-router-dom": "^7.13.1",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@types/node": "^20.19.37",
