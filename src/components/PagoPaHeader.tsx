@@ -39,11 +39,11 @@ const Header = () => {
                 onDocumentationClick={() => undefined}
             />
             <HeaderProduct
-                productId="pagamenti-pagopa"
+                productId="mdc-pagopa"
                 productsList={[
                     {
-                        id: 'pagamenti-pagopa',
-                        title: 'Pagamenti pagoPA',
+                        id: 'mdc-pagopa',
+                        title: 'Messaggi di cortesia',
                         productUrl: '',
                         linkType: 'internal'
                     },

@@ -8,6 +8,7 @@ import withAuth from './decorator/withAuth';
 const SecuredRoutes = withAuth(() => (
     <Routes>
         <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.CREDENTIALS} element={<Home />} />
         <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
     </Routes>
 ));

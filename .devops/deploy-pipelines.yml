@@ -63,21 +63,29 @@ stages:
             - bash: npm run build
               displayName: 'Build (PROD)'
               env:
+                VITE_ENV: PROD
                 VITE_API_BASE_URL: $(PROD_API_BASE_URL)
+                VITE_AR_BASE_URL: $(PROD_AR_BASE_URL)
+                VITE_APPINSIGHTS_CONNECTION_STRING: $(PROD_APPINSIGHTS_CONNECTION_STRING)
+
           - ${{ elseif eq(parameters.ENV, 'uat') }}:
             - bash: npm run build
               displayName: 'Build (UAT)'
               env:
+                VITE_ENV: UAT
                 VITE_API_BASE_URL: $(UAT_API_BASE_URL)
+                VITE_AR_BASE_URL: $(UAT_AR_BASE_URL)
+                VITE_APPINSIGHTS_CONNECTION_STRING: $(UAT_APPINSIGHTS_CONNECTION_STRING)
+
           - ${{ else }}:
             - bash: npm run build
               displayName: 'Build (DEV)'
-              # TODO: spostare in Terraform le env quando disponibile
               env:
                 VITE_ENV: DEV
                 VITE_MOCK_ACTIVE: true
-                VITE_API_BASE_URL: https://api-emd.dev.cstar.pagopa.it/emd/backoffice
-                VITE_AR_BASE_URL: https://dev.selfcare.pagopa.it/auth
+                VITE_API_BASE_URL: $(DEV_API_BASE_URL)
+                VITE_AR_BASE_URL: $(DEV_AR_BASE_URL)
+                VITE_APPINSIGHTS_CONNECTION_STRING: $(DEV_APPINSIGHTS_CONNECTION_STRING)
 
           # Scrive build.info nel dist — visibile su CDN per tracciare la versione deployata
           - bash: |

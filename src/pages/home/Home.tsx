@@ -1,17 +1,12 @@
 import { Box, Typography } from '@mui/material';
-import Header from '../../components/PagoPaHeader';
-import Footer from '../../components/PagoPaFooter';
+import Layout from '../../components/Layout';
 
 const Home = () => (
-    <Box display="flex" flexDirection="column" minHeight="100vh">
-        <Header />
-
+    <Layout>
         <Box component="main" flex={1} display="flex" justifyContent="center" alignItems="center">
             <Typography variant="h4">Hello World</Typography>
         </Box>
-
-        <Footer />
-    </Box>
+    </Layout>
 );
 
 export default Home;
