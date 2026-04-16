@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.8](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.7...v1.1.8) (2026-04-16)
+
+
+### Bug Fixes
+
+* removed  env not existing ([4a71c86](https://github.com/pagopa/emd-ar-backoffice-fe/commit/4a71c86dbf495ff586ef21e35f55497b910e9de3))
+
 ## [1.1.7](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.6...v1.1.7) (2026-04-15)
 
 
