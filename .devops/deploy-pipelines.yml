@@ -66,7 +66,6 @@ stages:
                 VITE_ENV: PROD
                 VITE_API_BASE_URL: https://api-emd.cstar.pagopa.it
                 VITE_AR_BASE_URL: https://selfcare.pagopa.it
-                VITE_APPINSIGHTS_CONNECTION_STRING: $(PROD_APPINSIGHTS_CONNECTION_STRING)
 
           - ${{ elseif eq(parameters.ENV, 'uat') }}:
             - bash: npm run build
@@ -75,7 +74,6 @@ stages:
                 VITE_ENV: UAT
                 VITE_API_BASE_URL: https://api-emd.uat.cstar.pagopa.it
                 VITE_AR_BASE_URL: https://uat.selfcare.pagopa.it
-                VITE_APPINSIGHTS_CONNECTION_STRING: $(UAT_APPINSIGHTS_CONNECTION_STRING)
 
           - ${{ else }}:
             - bash: npm run build
@@ -84,7 +82,6 @@ stages:
                 VITE_ENV: DEV
                 VITE_API_BASE_URL: https://api-emd.dev.cstar.pagopa.it
                 VITE_AR_BASE_URL: https://dev.selfcare.pagopa.it
-                VITE_APPINSIGHTS_CONNECTION_STRING: $(DEV_APPINSIGHTS_CONNECTION_STRING)
 
           # Scrive build.info nel dist — visibile su CDN per tracciare la versione deployata
           - bash: |
