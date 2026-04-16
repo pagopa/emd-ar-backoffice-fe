@@ -64,7 +64,7 @@ stages:
               displayName: 'Build (PROD)'
               env:
                 VITE_ENV: PROD
-                VITE_API_BASE_URL: https://api-emd.cstar.pagopa.it
+                VITE_API_BASE_URL: https://api-emd.cstar.pagopa.it/emd/backoffice
                 VITE_AR_BASE_URL: https://selfcare.pagopa.it
 
           - ${{ elseif eq(parameters.ENV, 'uat') }}:
@@ -72,7 +72,7 @@ stages:
               displayName: 'Build (UAT)'
               env:
                 VITE_ENV: UAT
-                VITE_API_BASE_URL: https://api-emd.uat.cstar.pagopa.it
+                VITE_API_BASE_URL: https://api-emd.uat.cstar.pagopa.it/emd/backoffice
                 VITE_AR_BASE_URL: https://uat.selfcare.pagopa.it
 
           - ${{ else }}:
@@ -80,7 +80,7 @@ stages:
               displayName: 'Build (DEV)'
               env:
                 VITE_ENV: DEV
-                VITE_API_BASE_URL: https://api-emd.dev.cstar.pagopa.it
+                VITE_API_BASE_URL: https://api-emd.dev.cstar.pagopa.it/emd/backoffice
                 VITE_AR_BASE_URL: https://dev.selfcare.pagopa.it
 
           # Scrive build.info nel dist — visibile su CDN per tracciare la versione deployata
