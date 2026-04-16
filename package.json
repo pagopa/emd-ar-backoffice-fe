@@ -1,7 +1,7 @@
 {
   "name": "emd-ar-backoffice-fe",
   "private": true,
-  "version": "1.1.6",
+  "version": "1.1.8",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,7 +19,7 @@
     "@mui/material": "^5.18.0",
     "@pagopa/mui-italia": "^2.3.0",
     "@pagopa/selfcare-common-frontend": "^1.34.100",
-    "axios": "^1.14.0",
+    "axios": "^1.15.0",
     "eslint": "^8.57.1",
     "formik": "^2.4.9",
     "react": "^18.0.0",
@@ -41,6 +41,6 @@
     "prettier": "^3.8.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.57.0",
-    "vite": "^8.0.1"
+    "vite": "^8.0.5"
   }
 }

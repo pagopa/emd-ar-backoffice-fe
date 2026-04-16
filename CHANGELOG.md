@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.8](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.7...v1.1.8) (2026-04-16)
+
+
+### Bug Fixes
+
+* removed  env not existing ([4a71c86](https://github.com/pagopa/emd-ar-backoffice-fe/commit/4a71c86dbf495ff586ef21e35f55497b910e9de3))
+
+## [1.1.7](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.6...v1.1.7) (2026-04-15)
+
+
+### Bug Fixes
+
+* deploy env and add Sidebar app ([655f43c](https://github.com/pagopa/emd-ar-backoffice-fe/commit/655f43cc97dc3334ab66b1f5dd666270b584775a))
+
 ## [1.1.6](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.5...v1.1.6) (2026-04-07)
 
 

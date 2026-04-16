@@ -1,12 +1,12 @@
 import { Box, Typography } from '@mui/material';
-import PageLayout from '../../components/PageLayout';
+import Layout from '../../components/Layout';
 
 const Home = () => (
-    <PageLayout>
+    <Layout>
         <Box component="main" flex={1} display="flex" justifyContent="center" alignItems="center">
             <Typography variant="h4">Hello World</Typography>
         </Box>
-    </PageLayout>
+    </Layout>
 );
 
 export default Home;

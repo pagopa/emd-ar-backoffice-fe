@@ -4,6 +4,6 @@ export const CONFIG = {
   ENV: import.meta.env.VITE_ENV,
   APPINSIGHTS_CONNECTION_STRING: import.meta.env.VITE_APPINSIGHTS_CONNECTION_STRING,
   API_BASE_URL: import.meta.env.VITE_API_BASE_URL,
-  MOCK_ACTIVE: import.meta.env.VITE_MOCK_ACTIVE,
+  MOCK_ACTIVE: import.meta.env.VITE_MOCK_ACTIVE ?? false,
   AR_BASE_URL: import.meta.env.VITE_AR_BASE_URL
 };

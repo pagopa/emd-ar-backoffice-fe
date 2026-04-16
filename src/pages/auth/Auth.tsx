@@ -57,7 +57,7 @@ const Auth = () => {
                 <Typography variant="body2" color="text.secondary">
                     Il link potrebbe essere scaduto.&nbsp;
                     <Link
-                        href={CONFIG.AR_BASE_URL}
+                        href={CONFIG.AR_BASE_URL+"/auth"}
                         underline="always"
                         color="primary"
                     >
