@@ -1,6 +1,6 @@
 import { HeaderAccount, HeaderProduct, type JwtUser } from '@pagopa/mui-italia';
 import { Box } from '@mui/material';
-import { useAppSelector } from '../redux/hook';
+import { useAppSelector } from '../../redux/hook';
 
 const Header = () => {
 

@@ -9,6 +9,8 @@ const MOCK_INNER_TOKEN = [
         sub: 'mock-123',
         role: 'user',
         name: 'TPP name',
+        CF: 'AAABBB41D16F205I',
+        sede: 'Milano',
         exp: Math.floor(Date.now() / 1000) + 3600,
     })),
     'mock-signature',

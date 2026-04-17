@@ -6,10 +6,11 @@ import PagoPaFooter from './PagoPaFooter';
 
 type Props = {
     children?: React.ReactNode;
+    isSidebarEnabled?: boolean;
 };
 
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, isSidebarEnabled }: Props) => {
 
 
     return (
@@ -25,18 +26,17 @@ const Layout = ({ children }: Props) => {
             <Box gridArea="header">
                 <PagoPaHeader />
             </Box>
-            <Box gridArea="body" display="grid" gridTemplateColumns="minmax(300px, 2fr) 10fr">
-                <Box gridColumn="auto" sx={{ backgroundColor: 'background.paper' }}>
-                    <SideMenu />
-                </Box>
+            <Box gridArea="body" display="grid" gridTemplateColumns={isSidebarEnabled ? "minmax(300px, 2fr) 10fr" : ""}>
+                {isSidebarEnabled &&
+                    <Box gridColumn="auto" sx={{ backgroundColor: 'background.paper' }}>
+                        <SideMenu />
+                    </Box>
+                }
                 <Box
                     gridColumn="auto"
                     sx={{ backgroundColor: '#F5F5F5' }}
                     display="grid"
                     justifyContent="center"
-                    pb={16}
-                    pt={2}
-                    px={2}
                     gridTemplateColumns="1fr"
                 >
                     {children}

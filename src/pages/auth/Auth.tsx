@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { acsHandshake, } from '../../api/auth';
 import ROUTES from '../../routes';
 import { Box, CircularProgress, Typography, Link } from '@mui/material';
@@ -12,7 +12,7 @@ type AcsState = 'loading' | 'error';
 
 const Auth = () => {
 
-    const hash = location.hash ?? '';
+    const { hash } = useLocation();
     const urlToken = hash.startsWith('#token=') ? hash.slice('#token='.length).trim() : '';
 
     const [state, setState] = useState<AcsState>(urlToken ? 'loading' : 'error');

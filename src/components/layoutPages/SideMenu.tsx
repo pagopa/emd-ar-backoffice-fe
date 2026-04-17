@@ -3,14 +3,12 @@ import { List, Box } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUnloadEventOnExit } from '@pagopa/selfcare-common-frontend/lib/hooks/useUnloadEventInterceptor';
 import {
-    PersonOutlined as UserIcon,
     VpnKeyOutlined as CredentialIcon,
     ImageOutlined as DasboardIcon,
-    GroupOutlined as GroupsIcon
 } from '@mui/icons-material';
 import SidenavItem from './SidenavItem';
-import ROUTES from '../routes';
-import { CONFIG } from '../config';
+import ROUTES from '../../routes';
+import { CONFIG } from '../../config';
 
 /** The side menu of the application */
 export default function SideMenu() {
@@ -41,14 +39,14 @@ export default function SideMenu() {
                     <Box border={1} borderColor={"#F5F5F5"} boxShadow={10}></Box>
                     <SidenavItem
                         title="Utenti"
-                        icon={UserIcon}
+                        icon="/icons/users.svg"
                         level={0}
                         href={`${CONFIG.AR_BASE_URL}/dashboard`}
                         target="_blank"
                     />
                     <SidenavItem
                         title="Gruppi"
-                        icon={GroupsIcon}
+                        icon="/icons/groups.svg"
                         level={0}
                         href={`${CONFIG.AR_BASE_URL}/dashboard`}
                         target="_blank"

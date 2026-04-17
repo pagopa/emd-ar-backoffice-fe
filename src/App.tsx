@@ -2,15 +2,16 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ErrorBoundary } from '@pagopa/selfcare-common-frontend/lib';
 import Auth from './pages/auth/Auth';
 import Home from './pages/home/Home';
+import Onboarding from './pages/Onboarding';
+import Credentials from './pages/credentials/Credentials';
 import ROUTES from './routes';
 import withAuth from './decorator/withAuth';
-import Onboarding from './pages/Onboarding';
 
 const SecuredRoutes = withAuth(() => (
     <Routes>
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.ONBOARDING} element={<Onboarding />} />
-        <Route path={ROUTES.CREDENTIALS} element={<Home />} />
+        <Route path={ROUTES.CREDENTIALS} element={<Credentials />} />
         <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
     </Routes>
 ));

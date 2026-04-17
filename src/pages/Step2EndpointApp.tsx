@@ -11,7 +11,7 @@ import {
 import * as Yup from 'yup';
 import { URL_REGEX } from '../utils/constant';
 import type { Step2Values } from '../types/stepsOnboarding';
-import { SectionHeader } from '../components/SectionHeader';
+import { SectionHeader } from '../components/layoutPages/SectionHeader';
 
 export const step2Schema = Yup.object({
     endpointProduzione: Yup.string()

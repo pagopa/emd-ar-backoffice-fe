@@ -1,46 +1,43 @@
 import { useState } from 'react';
 import type { FormikProps } from 'formik';
 import {
-    Alert,
-    Box,
-    Button,
-    Grid,
-    InputAdornment,
-    TextField,
+    Box, Grid, IconButton, InputAdornment,
+    MenuItem, TextField, Typography,
 } from '@mui/material';
+import {
+    VisibilityOutlined as EyeOn,
+    VisibilityOffOutlined as EyeOff,
+} from '@mui/icons-material';
 import * as Yup from 'yup';
-import type { Step3Values } from '../types/stepsOnboarding';
-import { SectionHeader } from '../components/layoutPages/SectionHeader';
+import type { Step2Values } from '../../types/stepsOnboarding';
 
-
-export const step3Schema = Yup.object({
+export const credenzialiSchema = Yup.object({
     clientId: Yup.string().required('Campo obbligatorio'),
     clientSecret: Yup.string().min(8, 'Minimo 8 caratteri').required('Campo obbligatorio'),
+    grantType: Yup.string().required('Campo obbligatorio'),
 });
 
 interface Props {
-    formik: FormikProps<Step3Values>;
+    formik: FormikProps<Step2Values>;
 }
 
-
-const Step3Credenziali = ({ formik }: Props) => {
+export default function CredenzialiForm({ formik }: Props) {
     const { values, errors, touched, handleChange, handleBlur } = formik;
     const [showSecret, setShowSecret] = useState(false);
 
     return (
         <Box>
-            <Alert severity="info" sx={{ mb: 3 }}>
-                Le credenziali sono crittografate e conservate in modo sicuro. Non
-                condividere mai questi dati con terze parti.
-            </Alert>
+            <Box display="flex" alignItems="center" gap={1} mb={0.5}>
+                <img src="/icons/credentials.svg" alt="" aria-hidden width={20} height={20} />
+                <Typography variant="subtitle1" fontWeight={600}>
+                    Credenziali di accesso
+                </Typography>
+            </Box>
+            <Typography variant="body2" color="text.secondary" mb={3}>
+                Credenziali necessarie per comunicare coi vostri sistemi in modo sicuro.
+            </Typography>
 
-            {/* ── OAuth ── */}
-            <SectionHeader
-                title="Credenziali OAuth"
-                subtitle="Client ID e Secret per l'autenticazione verso i servizi PagoPA."
-            />
-
-            <Grid container spacing={2} mt={1} mb={4}>
+            <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
                         fullWidth
@@ -71,19 +68,34 @@ const Step3Credenziali = ({ formik }: Props) => {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <Button
-                                        aria-label="Mostra/nascondi client secret"
+                                    <IconButton
+                                        aria-label={showSecret ? 'Nascondi secret' : 'Mostra secret'}
                                         onClick={() => setShowSecret((p) => !p)}
+                                        edge="end"
                                     >
-                                    </Button>
+                                        {showSecret ? <EyeOff /> : <EyeOn />}
+                                    </IconButton>
                                 </InputAdornment>
                             ),
                         }}
                     />
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        fullWidth
+                        select
+                        id="grantType"
+                        name="grantType"
+                        label="Grant type"
+                        value={values.grantType}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        disabled={true}
+                    >
+                        <MenuItem value="client_credentials">client_credentials</MenuItem>
+                    </TextField>
+                </Grid>
             </Grid>
         </Box>
     );
-};
-
-export default Step3Credenziali;
+}

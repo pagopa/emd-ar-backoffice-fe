@@ -3,7 +3,7 @@ import { Box, Grid, TextField } from '@mui/material';
 import type { Step1Values } from '../types/stepsOnboarding';
 import * as Yup from 'yup';
 import { PARTITA_IVA_REGEX, PHONE_REGEX } from '../utils/constant';
-import { SectionHeader } from '../components/SectionHeader';
+import { SectionHeader } from '../components/layoutPages/SectionHeader';
 
 interface Props {
     formik: FormikProps<Step1Values>;

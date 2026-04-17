@@ -12,47 +12,34 @@ import {
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { useFormik } from 'formik';
 
-import Step1DatiContatti, { step1Schema } from './Step1daticontatti';
-import Step2EndpointApp, { step2Schema } from './Step2EndpointApp';
-import Step3Credenziali, { step3Schema } from './Step3Credenziali';
-import type { Step1Values, Step2Values, Step3Values } from '../types/stepsOnboarding';
-import PageLayout from '../components/PageLayout';
+import EndpointDeepLinkForm, { endpointDeepLinkSchema } from '../components/serviceConfig/EndpointDeepLinkForm';
+import CredenzialiForm, { credenzialiSchema } from '../components/serviceConfig/CredenzialiForm';
+import type { Step1Values, Step2Values } from '../types/stepsOnboarding';
+import Layout from '../components/layoutPages/Layout';
 
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type AllValues = Step1Values & Step2Values & Step3Values;
-
-// ─── Validation schemas ───────────────────────────────────────────────────────
-
-const validationSchemas = [step1Schema, step2Schema, step3Schema];
-
-// ─── Config ───────────────────────────────────────────────────────────────────
-
-const STEPS = ['Dati e contatti', 'Endpoint e app', 'Credenziali'];
-
-const initialValues: AllValues = {
-    ragioneSociale: '',
-    partitaIva: '',
-    sedeLegale: '',
-    codiceIdentificativoPSP: '',
-    nomeReferente: '',
-    emailReferente: '',
-    telefonoReferente: '',
-    endpointProduzione: '',
-    endpointCollaudo: '',
-    timeoutConnessione: '5000',
-    abilitaNotifiche: false,
-    urlCallback: '',
-    clientId: '',
-    clientSecret: '',
-    apiKey: '',
-    certificato: '',
-};
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 const Onboarding = () => {
+
+    type AllValues = Step1Values & Step2Values;
+    const validationSchemas = [endpointDeepLinkSchema, credenzialiSchema]; // ← stessi indici degli step
+    const STEPS = ['Endpoint e deep link', 'Credenziali'];
+
+    // aggiorna initialValues
+const initialValues: AllValues = {
+    // Step 1 - Endpoint
+    webhookUrl: '',
+    authUrl: '',
+    authType: 'OAuth2',
+    deepLinkEnabled: false,
+    deepLinkType: 'universale',
+    deepLinkVersions: [{ so: 'ANDROID', urlRedirect: '', version: '' }],
+    // Step 2 - Credenziali
+    clientId: '',
+    clientSecret: '',
+    grantType: 'client_credentials',
+};
+
+
     const [activeStep, setActiveStep] = useState(0);
     const isLastStep = activeStep === STEPS.length - 1;
 
@@ -79,17 +66,17 @@ const Onboarding = () => {
         void formik.setTouched({});
     };
 
+    // aggiorna renderStep
     const renderStep = () => {
         switch (activeStep) {
-            case 0: return <Step1DatiContatti formik={formik as any} />;
-            case 1: return <Step2EndpointApp formik={formik as any} />;
-            case 2: return <Step3Credenziali formik={formik as any} />;
+            case 0: return <EndpointDeepLinkForm formik={formik as any} />;
+            case 1: return <CredenzialiForm formik={formik as any} />;
             default: return null;
         }
     };
 
     return (
-        <PageLayout>
+        <Layout>
 
             <Box component="main" flex={1} display="flex" justifyContent="center" px={2} py={4}>
                 <Box width="100%" maxWidth={760}>
@@ -156,7 +143,7 @@ const Onboarding = () => {
                 </Box>
             </Box>
 
-        </PageLayout>
+        </Layout>
     );
 };
 
