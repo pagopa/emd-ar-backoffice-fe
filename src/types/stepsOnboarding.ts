@@ -5,12 +5,15 @@ export interface Step1Values {
     authType: 'OAuth2';
     deepLinkEnabled: boolean;
     deepLinkType: 'universale' | 'specifico';
-    deepLinkVersions: Array<{
+    deepLinkVersions: Array<DeepLinkVersion>;
+}
+
+
+export interface DeepLinkVersion {
         so: 'ANDROID' | 'IOS';
         version?: string;
         urlRedirect: string;
-    }>;
-}
+    }
 
 export interface Step2Values {
     clientId: string;

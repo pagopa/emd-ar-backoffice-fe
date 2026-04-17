@@ -112,7 +112,7 @@ const initialValues: AllValues = {
                     </Stepper>
 
                     {/* Card */}
-                    <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2, sm: 4 } }}>
+                    <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2, sm: 3 } }}>
                         <Typography variant="h6" fontWeight={700} mb={3}>
                             {STEPS[activeStep]}
                         </Typography>

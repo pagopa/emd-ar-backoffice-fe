@@ -6,6 +6,7 @@ import Onboarding from './pages/Onboarding';
 import Credentials from './pages/credentials/Credentials';
 import ROUTES from './routes';
 import withAuth from './decorator/withAuth';
+import './index.css'
 
 const SecuredRoutes = withAuth(() => (
     <Routes>

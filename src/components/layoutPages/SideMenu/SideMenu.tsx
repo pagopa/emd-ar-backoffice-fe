@@ -7,8 +7,8 @@ import {
     ImageOutlined as DasboardIcon,
 } from '@mui/icons-material';
 import SidenavItem from './SidenavItem';
-import ROUTES from '../../routes';
-import { CONFIG } from '../../config';
+import ROUTES from '../../../routes';
+import { CONFIG } from '../../../config';
 
 /** The side menu of the application */
 export default function SideMenu() {

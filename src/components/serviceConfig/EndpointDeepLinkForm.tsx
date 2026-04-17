@@ -1,15 +1,21 @@
 import type { FormikProps } from 'formik';
 import {
-    Box, Checkbox, Divider, FormControlLabel, Grid,
+    Box, Card, FormControlLabel, Grid,
     IconButton, MenuItem, Radio, RadioGroup,
     TextField, Typography,
 } from '@mui/material';
-import { Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import {
+    Add as AddIcon,
+    Delete as DeleteIcon,
+    MailOutlined as Mail,
+    PhoneAndroidOutlined as Phone
+} from '@mui/icons-material';
+
 import { ButtonNaked } from '@pagopa/mui-italia';
 import * as Yup from 'yup';
 import type { Step1Values } from '../../types/stepsOnboarding';
+import { URL_REGEX } from '../../utils/constant';
 
-const URL_REGEX = /^https?:\/\/.+/;
 
 export const endpointDeepLinkSchema = Yup.object({
     webhookUrl: Yup.string()
@@ -62,89 +68,82 @@ export default function EndpointDeepLinkForm({ formik }: Props) {
 
     return (
         <Box>
+
             {/* ── Configurazione endpoint ── */}
-            <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                {/* icona decorativa dal figma — stessa tecnica del SideMenu */}
-                <img src="/icons/endpoint.svg" alt="" aria-hidden width={20} height={20} />
-                <Typography variant="subtitle1" fontWeight={600}>
-                    Configurazione endpoint
+            <Box className="cardsForm" marginBottom={3}>
+                <Box display="flex" alignItems="center" gap={1} mb={0.5}>
+                    {/* icona decorativa dal figma — stessa tecnica del SideMenu */}
+                    <Mail />
+                    <Typography variant="subtitle1" fontWeight={600}>
+                        Configurazione endpoint
+                    </Typography>
+                </Box>
+                <Typography variant="body2" color="text.secondary" mb={2}>
+                    PagoPA utilizzerà questi endpoint per inviarti i messaggi di cortesia destinati agli utenti.
                 </Typography>
+
+                <Grid container spacing={2} mb={3}>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="webhookUrl"
+                            name="webhookUrl"
+                            label="URL per ricezione messaggi di cortesia (webhook)"
+                            required
+                            placeholder="https://api.tuoservizio.it/messages"
+                            value={values.webhookUrl}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={touched.webhookUrl && Boolean(errors.webhookUrl)}
+                            helperText={touched.webhookUrl && errors.webhookUrl}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            id="authUrl"
+                            name="authUrl"
+                            label="URL di autenticazione"
+                            required
+                            placeholder="https://api.tuoservizio.it/auth"
+                            value={values.authUrl}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={touched.authUrl && Boolean(errors.authUrl)}
+                            helperText={touched.authUrl && errors.authUrl}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            fullWidth
+                            select
+                            id="authType"
+                            name="authType"
+                            label="Tipo di autenticazione"
+                            value={values.authType}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            disabled={true}
+                        >
+                            <MenuItem value="OAuth2">OAuth2</MenuItem>
+                        </TextField>
+                    </Grid>
+                </Grid>
             </Box>
-            <Typography variant="body2" color="text.secondary" mb={2}>
-                PagoPA utilizzerà questi endpoint per inviarti i messaggi di cortesia destinati agli utenti.
-            </Typography>
-
-            <Grid container spacing={2} mb={3}>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="webhookUrl"
-                        name="webhookUrl"
-                        label="URL per ricezione messaggi di cortesia (webhook)"
-                        required
-                        placeholder="https://api.tuoservizio.it/messages"
-                        value={values.webhookUrl}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.webhookUrl && Boolean(errors.webhookUrl)}
-                        helperText={touched.webhookUrl && errors.webhookUrl}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        fullWidth
-                        id="authUrl"
-                        name="authUrl"
-                        label="URL di autenticazione"
-                        required
-                        placeholder="https://api.tuoservizio.it/auth"
-                        value={values.authUrl}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.authUrl && Boolean(errors.authUrl)}
-                        helperText={touched.authUrl && errors.authUrl}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        fullWidth
-                        select
-                        id="authType"
-                        name="authType"
-                        label="Tipo di autenticazione"
-                        value={values.authType}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled={true}
-                    >
-                        <MenuItem value="OAuth2">OAuth2</MenuItem>
-                    </TextField>
-                </Grid>
-            </Grid>
-
-            <Divider sx={{ mb: 3 }} />
-
-            {/* ── Configurazione deep link app ── */}
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        id="deepLinkEnabled"
-                        name="deepLinkEnabled"
-                        checked={values.deepLinkEnabled}
-                        onChange={(e) => void setFieldValue('deepLinkEnabled', e.target.checked)}
-                    />
-                }
-                label={
+            <Box className="cardsForm">
+                {/* ── Configurazione deep link app ── */}
+                <Box display="flex" alignItems="center" gap={1} mb={0.5}>
+                    {/* icona decorativa dal figma — stessa tecnica del SideMenu */}
+                    <Phone />
                     <Typography variant="subtitle1" fontWeight={600}>
                         Configurazione deep link app
                     </Typography>
-                }
-            />
-            <Typography variant="body2" color="text.secondary" mb={2}>
-                Deep link necessari per reindirizzare l&apos;utente nell&apos;app per il pagamento.
-            </Typography>
+                </Box>
+                <Typography variant="body2" color="text.secondary" mb={2}>
+                    Deep link necessari per reindirizzare l&apos;utente nell&apos;app per il pagamento.
+                </Typography>
 
-            {values.deepLinkEnabled && (
+
                 <Box>
                     <RadioGroup
                         row
@@ -232,7 +231,8 @@ export default function EndpointDeepLinkForm({ formik }: Props) {
                         Aggiungi versione
                     </ButtonNaked>
                 </Box>
-            )}
+            </Box>
         </Box>
+
     );
 }

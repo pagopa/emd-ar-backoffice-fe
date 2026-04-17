@@ -13,7 +13,7 @@ export const isTokenExpired = (token: string): boolean => {
 /**
  * Reads the user from sessionStorage of selfcare.
  */
-export const getUserFromStorage = (): StoredUser => {
+export const getUserFromStorage = (): StoredUser | null => {
     const token = storageTokenOps.read();
     if (!token || isTokenExpired(token)) {
         // clean of token if is expired
@@ -21,7 +21,7 @@ export const getUserFromStorage = (): StoredUser => {
             storageTokenOps.delete();
             storageUserOps.delete();
         }
-        return {} as StoredUser;
+        return null;
     }
 
     const storedUser = storageUserOps.read();
@@ -30,7 +30,7 @@ export const getUserFromStorage = (): StoredUser => {
     try {
         return JSON.parse(atob(token.split('.')[1])) as StoredUser;
     } catch {
-        return {} as StoredUser;
+        return null;
     }
 };
 
