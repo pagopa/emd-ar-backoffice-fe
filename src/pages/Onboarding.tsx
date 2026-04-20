@@ -68,9 +68,9 @@ const Onboarding = () => {
                     tokenSection: {
                         contentType: 'application/x-www-form-urlencoded',
                         bodyAdditionalProperties: {
-                            clientId: values.clientId,
-                            clientSecret: values.clientSecret,
-                            grantType: values.grantType,
+                            client_id: values.clientId,
+                            client_secret: values.clientSecret,
+                            grant_type: values.grantType,
                         },
                         //TODO pathAdditionalProperties come inserirlo
                     },
@@ -78,7 +78,7 @@ const Onboarding = () => {
                     agentLinks: buildAgentLinks(values),
                 };
                 await saveTpp(payload);
-                
+
                 if (CONFIG.ENV === "DEV") {
                     console.log('[Onboarding] Form values:', JSON.parse(JSON.stringify(values)));
                     console.log('[Onboarding] Payload BE:', JSON.parse(JSON.stringify(payload)));
