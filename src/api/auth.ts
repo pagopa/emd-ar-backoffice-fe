@@ -1,6 +1,6 @@
+import { axiosInstance } from './axiosInstance';
 import { CONFIG } from '../config';
-import { type AcsResponse } from '../types/auth';
-import axios from 'axios';
+import type { AcsResponse } from '../types/auth';
 
 const MOCK_INNER_TOKEN = [
     btoa(JSON.stringify({ alg: 'none' })),
@@ -16,43 +16,33 @@ const MOCK_INNER_TOKEN = [
     'mock-signature',
 ].join('.');
 
-const callMock = async () => {
+const callMock = async (): Promise<AcsResponse> => {
     await new Promise(resolve => setTimeout(resolve, 1500));
-    return { status: 'success', message: 'Mock OK', token: MOCK_INNER_TOKEN } as AcsResponse;
-}
+    return { status: 'success', message: 'Mock OK', token: MOCK_INNER_TOKEN };
+};
 
 export const acsHandshake = async (urlToken: string): Promise<AcsResponse> => {
 
     if (CONFIG.ENV === 'DEV') {
         try {
-            const { data } = await axios.post<AcsResponse>(
-                `${CONFIG.API_BASE_URL}/api/auth/pagopa`,
+            const { data } = await axiosInstance.post<AcsResponse>(
+                '/api/auth/pagopa',
                 { token: urlToken },
-                {
-                    headers: {
-                        Authorization: `Bearer ${urlToken}`,
-                    }
-                }
+                { headers: { Authorization: `Bearer ${urlToken}` } }
             );
-
-            console.log("Dati chiamata BFF: ", data);
-            return callMock()
-
+            console.log('[ACS] Risposta BFF:', data);
+            return callMock();
         } catch (e) {
-            console.warn("Chiamata BFF fallita, fallback su mock:", e);
-            return callMock()
+            console.warn('[ACS] Fallback su mock:', e);
+            return callMock();
         }
     }
 
-    const { data } = await axios.post<AcsResponse>(
-        `${CONFIG.API_BASE_URL}/api/auth/pagopa`,
+    const { data } = await axiosInstance.post<AcsResponse>(
+        '/api/auth/pagopa',
         { token: urlToken },
-        {
-            headers: {
-                Authorization: `Bearer ${urlToken}`,
-            }
-        }
+        { headers: { Authorization: `Bearer ${urlToken}` } }
     );
-
+    
     return data;
 };

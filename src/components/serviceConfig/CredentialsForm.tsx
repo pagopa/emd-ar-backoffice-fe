@@ -5,6 +5,7 @@ import {
     MenuItem, TextField, Typography,
 } from '@mui/material';
 import {
+    VpnKeyOutlined as CredentialIcon,
     VisibilityOutlined as EyeOn,
     VisibilityOffOutlined as EyeOff,
 } from '@mui/icons-material';
@@ -21,14 +22,14 @@ interface Props {
     formik: FormikProps<Step2Values>;
 }
 
-export default function CredenzialiForm({ formik }: Props) {
+export default function CredentialsForm({ formik }: Props) {
     const { values, errors, touched, handleChange, handleBlur } = formik;
     const [showSecret, setShowSecret] = useState(false);
 
     return (
         <Box>
             <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                <img src="/icons/credentials.svg" alt="" aria-hidden width={20} height={20} />
+                <CredentialIcon />
                 <Typography variant="subtitle1" fontWeight={600}>
                     Credenziali di accesso
                 </Typography>
@@ -80,7 +81,7 @@ export default function CredenzialiForm({ formik }: Props) {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} >
                     <TextField
                         fullWidth
                         select

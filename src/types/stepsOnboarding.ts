@@ -1,20 +1,25 @@
-// types/stepsOnboarding.ts
+export interface VersionEntry {
+    versionKey: string;
+    link: string;
+}
+
+export interface DeviceLink {
+    so: 'iOS' | 'Android' | 'Web';
+    fallBackLink: string;
+    versions: VersionEntry[];
+}
+
 export interface Step1Values {
     webhookUrl: string;
     authUrl: string;
-    authType: 'OAuth2';
-    deepLinkEnabled: boolean;
+    authType: string;
     deepLinkType: 'universale' | 'specifico';
-    deepLinkVersions: Array<DeepLinkVersion>;
+    deepLinkUniversale: {
+        fallBackLink: string;
+        versions: VersionEntry[];
+    };
+    deepLinkDevices: DeviceLink[];
 }
-
-
-export interface DeepLinkVersion {
-        so: 'ANDROID' | 'IOS';
-        version?: string;
-        urlRedirect: string;
-    }
-
 export interface Step2Values {
     clientId: string;
     clientSecret: string;

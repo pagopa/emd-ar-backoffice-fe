@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { acsHandshake, } from '../../api/auth';
 import ROUTES from '../../routes';
 import { Box, CircularProgress, Typography, Link } from '@mui/material';
-import { saveUserFromToken } from '../../utils/user';
+import { saveToken, saveUserFromToken } from '../../utils/user';
 import { CONFIG } from '../../config';
 import { setUser } from '../../redux/slices/userSlice';
 import { useAppDispatch } from '../../redux/hook';
@@ -29,11 +29,12 @@ const Auth = () => {
         acsHandshake(urlToken)
             .then((response) => {
                 if (response.token) {
+                    saveToken(response.token)
                     const user = saveUserFromToken(response.token);
                     if (!user) throw new Error('Could not decode user from inner token');
                     dispatch(setUser(user));
                 }
-                void navigate(ROUTES.HOME, { replace: true });
+                void navigate(ROUTES.ONBOARDING, { replace: true });
             })
             .catch((err) => {
                 console.error('[ACS] handshake failed:', err);
@@ -57,7 +58,7 @@ const Auth = () => {
                 <Typography variant="body2" color="text.secondary">
                     Il link potrebbe essere scaduto.&nbsp;
                     <Link
-                        href={CONFIG.AR_BASE_URL+"/auth"}
+                        href={CONFIG.AR_BASE_URL + "/auth"}
                         underline="always"
                         color="primary"
                     >

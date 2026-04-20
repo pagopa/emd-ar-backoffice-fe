@@ -48,3 +48,7 @@ export const saveUserFromToken = (token: string): StoredUser | null => {
         return null;
     }
 };
+
+export const saveToken = (token: string) => {
+    sessionStorage.setItem('inner_token', token);
+};
