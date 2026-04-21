@@ -3,9 +3,7 @@ const ROUTES = {
     HOME: `/`,
     AUTH: `/auth`,
     ONBOARDING: '/onboarding',
-    CREDENTIALS: '/credentials',
-    USERS: '/users',
-    GROUPS: '/groups',
+    CREDENTIALS: '/credentials'
 };
 
 export default ROUTES;

@@ -14,7 +14,7 @@ axiosInstance.interceptors.request.use((config) => {
     return config;
 });
 
-// Gestione globale degli errori (es. 401 → redirect al login)
+
 axiosInstance.interceptors.response.use(
     (response) => response,
     (error) => {

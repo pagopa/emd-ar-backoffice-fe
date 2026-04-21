@@ -8,55 +8,9 @@ import {
     MailOutlined as Mail,
     PhoneAndroid as Phone,
 } from '@mui/icons-material';
-import * as Yup from 'yup';
 import type { Step1Values } from '../../types/stepsOnboarding';
-import { URL_REGEX } from '../../utils/constant';
-import { DeepLinkSpecifico } from './deepLink/DeepLinkSpecifico';
-import { DeepLinkUniversale } from './deepLink/DeepLinkUniversal';
-
-
-export const endpointDeepLinkSchema = Yup.object({
-    webhookUrl: Yup.string()
-        .matches(URL_REGEX, 'Inserisci un URL valido')
-        .required('Campo obbligatorio'),
-    authUrl: Yup.string()
-        .matches(URL_REGEX, 'Inserisci un URL valido')
-        .required('Campo obbligatorio'),
-    authType: Yup.string().required(),
-    deepLinkType: Yup.string().required(),
-    deepLinkUniversale: Yup.object().when('deepLinkType', {
-        is: 'universale',
-        then: (s) =>
-            s.shape({
-                fallBackLink: Yup.string()
-                    .matches(URL_REGEX, 'URL non valido')
-                    .required('Campo obbligatorio'),
-                versions: Yup.array().of(
-                    Yup.object({
-                        versionKey: Yup.string().required('Campo obbligatorio'),
-                        link: Yup.string().matches(URL_REGEX, 'URL non valido').required('Campo obbligatorio'),
-                    })
-                ),
-            }),
-    }),
-    deepLinkDevices: Yup.array().when('deepLinkType', {
-        is: 'specifico',
-        then: (s) =>
-            s.of(
-                Yup.object({
-                    fallBackLink: Yup.string()
-                        .matches(URL_REGEX, 'URL non valido')
-                        .required('Campo obbligatorio'),
-                    versions: Yup.array().of(
-                        Yup.object({
-                            versionKey: Yup.string().required('Campo obbligatorio'),
-                            link: Yup.string().matches(URL_REGEX, 'URL non valido').required('Campo obbligatorio'),
-                        })
-                    ),
-                })
-            ),
-    }),
-});
+import { DeepLinkPerDevice } from './deepLink/DeepLinkPerDevice';
+import { DeepLinkUniversal } from './deepLink/DeepLinkUniversal';
 
 
 export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<Step1Values> }) {
@@ -162,7 +116,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
                 </RadioGroup>
 
                 {values.deepLinkType === 'universale' && (
-                    <DeepLinkUniversale
+                    <DeepLinkUniversal
                         fallBackLink={values.deepLinkUniversale.fallBackLink}
                         versions={values.deepLinkUniversale.versions}
                         errors={errors.deepLinkUniversale as any}
@@ -175,7 +129,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
                 )}
 
                 {values.deepLinkType === 'specifico' && (
-                    <DeepLinkSpecifico
+                    <DeepLinkPerDevice
                         devices={values.deepLinkDevices}
                         errors={errors.deepLinkDevices as any}
                         onFallBackChange={handleDeviceFallBackChange}

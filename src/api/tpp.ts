@@ -8,13 +8,15 @@ const callMock = async (): Promise<void> => {
 };
 
 export const saveTpp = async (form: TppDTO): Promise<void> => {
+
     if (CONFIG.ENV === 'DEV') {
-        try {
-            await axiosInstance.post('/api/tpp/save', form);
-        } catch (e) {
-            console.warn('[TPP] Fallback su mock:', e);
-        }
         return callMock();
+    }
+
+    try {
+        await axiosInstance.post('/api/tpp/save', form);
+    } catch (e) {
+        console.warn('[TPP] Fallback su mock:', e);
     }
 
     await axiosInstance.post('/api/tpp/save', form);

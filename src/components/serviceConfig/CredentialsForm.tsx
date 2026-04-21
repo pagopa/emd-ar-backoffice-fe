@@ -9,14 +9,7 @@ import {
     VisibilityOutlined as EyeOn,
     VisibilityOffOutlined as EyeOff,
 } from '@mui/icons-material';
-import * as Yup from 'yup';
 import type { Step2Values } from '../../types/stepsOnboarding';
-
-export const credenzialiSchema = Yup.object({
-    clientId: Yup.string().required('Campo obbligatorio'),
-    clientSecret: Yup.string().min(8, 'Minimo 8 caratteri').required('Campo obbligatorio'),
-    grantType: Yup.string().required('Campo obbligatorio'),
-});
 
 interface Props {
     formik: FormikProps<Step2Values>;
@@ -24,7 +17,7 @@ interface Props {
 
 export default function CredentialsForm({ formik }: Props) {
     const { values, errors, touched, handleChange, handleBlur } = formik;
-    const [showSecret, setShowSecret] = useState(false);
+    const [isSecretVisible, setIsSecretVisible] = useState(false);
 
     return (
         <Box>
@@ -60,7 +53,7 @@ export default function CredentialsForm({ formik }: Props) {
                         name="clientSecret"
                         label="Client Secret"
                         required
-                        type={showSecret ? 'text' : 'password'}
+                        type={isSecretVisible ? 'text' : 'password'}
                         value={values.clientSecret}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -70,18 +63,18 @@ export default function CredentialsForm({ formik }: Props) {
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
-                                        aria-label={showSecret ? 'Nascondi secret' : 'Mostra secret'}
-                                        onClick={() => setShowSecret((p) => !p)}
+                                        aria-label={isSecretVisible ? 'Nascondi secret' : 'Mostra secret'}
+                                        onClick={() => setIsSecretVisible((prev) => !prev)}
                                         edge="end"
                                     >
-                                        {showSecret ? <EyeOff /> : <EyeOn />}
+                                        {isSecretVisible ? <EyeOff /> : <EyeOn />}
                                     </IconButton>
                                 </InputAdornment>
                             ),
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} >
+                <Grid item xs={12}>
                     <TextField
                         fullWidth
                         select
@@ -91,7 +84,7 @@ export default function CredentialsForm({ formik }: Props) {
                         value={values.grantType}
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        disabled={true}
+                        disabled
                     >
                         <MenuItem value="client_credentials">client_credentials</MenuItem>
                     </TextField>

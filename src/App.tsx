@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ErrorBoundary } from '@pagopa/selfcare-common-frontend/lib';
 import Auth from './pages/auth/Auth';
 import Home from './pages/home/Home';
-import Onboarding from './pages/Onboarding';
+import Onboarding from './pages/onboarding/Onboarding';
 import Credentials from './pages/credentials/Credentials';
 import ROUTES from './routes';
 import withAuth from './decorator/withAuth';

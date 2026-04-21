@@ -15,23 +15,24 @@ import {
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { useFormik } from 'formik';
 
-import EndpointDeepLinkForm, { endpointDeepLinkSchema } from '../components/serviceConfig/EndpointDeepLinkForm';
-import CredentialsForm, { credenzialiSchema } from '../components/serviceConfig/CredentialsForm';
-import type { Step1Values, Step2Values } from '../types/stepsOnboarding';
-import Layout from '../components/layoutPages/Layout';
-import { saveTpp } from '../api/tpp';
-import { buildAgentLinks } from '../utils/utils';
-import type { AuthenticationType, TppDTO } from '../types/tpp';
-import ROUTES from '../routes';
+import EndpointDeepLinkForm from '../../components/serviceConfig/EndpointDeepLinkForm';
+import CredentialsForm from '../../components/serviceConfig/CredentialsForm';
+import type { Step1Values, Step2Values } from '../../types/stepsOnboarding';
+import Layout from '../../components/layoutPages/Layout';
+import { saveTpp } from '../../api/tpp';
+import { buildAgentLinks } from '../../utils/deepLink';
+import type { AuthenticationType, TppDTO } from '../../types/tpp';
+import ROUTES from '../../routes';
 import { useNavigate } from 'react-router-dom';
-import { CONFIG } from '../config';
+import { CONFIG } from '../../config';
+import { credentialsSchema, endpointDeepLinkSchema } from '../../utils/validations';
 
 
 const Onboarding = () => {
     const navigate = useNavigate()
 
     type AllValues = Step1Values & Step2Values;
-    const validationSchemas = [endpointDeepLinkSchema, credenzialiSchema];
+    const validationSchemas = [endpointDeepLinkSchema, credentialsSchema];
     const STEPS = ['Endpoint e deep link', 'Credenziali'];
 
     // aggiorna initialValues

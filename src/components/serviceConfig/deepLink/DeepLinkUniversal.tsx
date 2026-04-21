@@ -1,5 +1,5 @@
 import { Box, Grid, IconButton, TextField } from '@mui/material';
-import { Add as AddIcon} from '@mui/icons-material';
+import { Add as AddIcon } from '@mui/icons-material';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import { VersioneField } from './VersionField';
 import type { VersionEntry } from '../../../types/stepsOnboarding';
@@ -10,12 +10,12 @@ interface Props {
     errors: any;
     touched: any;
     onFallBackChange: (val: string) => void;
-    onVersionChange: (i: number, field: keyof VersionEntry, val: string) => void;
+    onVersionChange: (index: number, field: keyof VersionEntry, val: string) => void;
     onAddVersion: () => void;
-    onRemoveVersion: (i: number) => void;
+    onRemoveVersion: (index: number) => void;
 }
 
-export function DeepLinkUniversale({
+export function DeepLinkUniversal({
     fallBackLink, versions, errors, touched,
     onFallBackChange, onVersionChange, onAddVersion, onRemoveVersion,
 }: Readonly<Props>) {
@@ -34,15 +34,15 @@ export function DeepLinkUniversale({
                 sx={{ mb: 2 }}
             />
 
-            {versions.map((v, i) => (
-                <Grid container spacing={2} alignItems="center" key={i} mb={1}>
+            {versions.map((version, index) => (
+                <Grid container spacing={2} alignItems="center" key={index} mb={1}>
                     <Grid item xs={12} sm={4}>
                         <VersioneField
-                            showTooltip={i === 0}
-                            value={v.versionKey}
-                            onChange={(val) => onVersionChange(i, 'versionKey', val)}
-                            error={Boolean(errors?.versions?.[i]?.versionKey)}
-                            helperText={errors?.versions?.[i]?.versionKey}
+                            showTooltip={index === 0}
+                            value={version.versionKey}
+                            onChange={(val) => onVersionChange(index, 'versionKey', val)}
+                            error={Boolean(errors?.versions?.[index]?.versionKey)}
+                            helperText={errors?.versions?.[index]?.versionKey}
                         />
                     </Grid>
                     <Grid item xs>
@@ -51,21 +51,19 @@ export function DeepLinkUniversale({
                             required
                             InputLabelProps={{ required: false }}
                             label="URL Redirect *"
-                            value={v.link}
-                            onChange={(e) => onVersionChange(i, 'link', e.target.value)}
-                            error={Boolean(errors?.versions?.[i]?.link)}
-                            helperText={errors?.versions?.[i]?.link}
+                            value={version.link}
+                            onChange={(e) => onVersionChange(index, 'link', e.target.value)}
+                            error={Boolean(errors?.versions?.[index]?.link)}
+                            helperText={errors?.versions?.[index]?.link}
                         />
                     </Grid>
                     <Grid item xs="auto">
-                        <IconButton onClick={() => onRemoveVersion(i)} aria-label="Rimuovi versione"
-                            style={errors?.versions?.[i]?.link ? { marginBottom: 12 } : {}}>
-                            <img
-                                src={"/icons/delete.svg"}
-                                alt=""
-                                aria-hidden="true"
-                                style={{ width: 24, height: 24 }}
-                            />
+                        <IconButton
+                            onClick={() => onRemoveVersion(index)}
+                            aria-label="Rimuovi versione"
+                            style={errors?.versions?.[index]?.link ? { marginBottom: 12 } : {}}
+                        >
+                            <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
                         </IconButton>
                     </Grid>
                 </Grid>
