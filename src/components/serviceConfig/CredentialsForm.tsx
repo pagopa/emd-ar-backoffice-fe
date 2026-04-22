@@ -126,7 +126,7 @@ export default function CredentialsForm({ formik }: Props) {
                                 <Typography variant="caption" fontWeight={700} letterSpacing={0.5} textTransform="uppercase">
                                     Parametri aggiuntivi (Body)
                                 </Typography>
-                                <Tooltip title="Parametri personalizzati richiesti dal tuo sistema per il rilascio del token (es. scope)">
+                                <Tooltip title="Parametri personalizzati richiesti dal tuo sistema per il rilascio del token (es. scope)" arrow placement='top'>
                                     <InfoIcon sx={{ cursor: 'pointer', mr: 1, width: 24, height: 24, color: "primary.main" }} />
                                 </Tooltip>
                             </Box>

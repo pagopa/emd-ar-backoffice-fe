@@ -3,7 +3,7 @@ import { URL_REGEX } from './constant';
 
 export const credentialsSchema = Yup.object({
     clientId: Yup.string().required('Campo obbligatorio'),
-    clientSecret: Yup.string().min(8, 'Minimo 8 caratteri').required('Campo obbligatorio'),
+    clientSecret: Yup.string().required('Campo obbligatorio'),
     grantType: Yup.string().required('Campo obbligatorio'),
     bodyParams: Yup.array().of(
         Yup.object({

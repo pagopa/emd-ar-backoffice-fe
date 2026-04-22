@@ -2,7 +2,7 @@ import { HeaderAccount, HeaderProduct } from '@pagopa/mui-italia';
 import { Box } from '@mui/material';
 import { useAppSelector } from '../../redux/hook';
 import { CONFIG } from '../../config';
-import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { userSelectors } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 
 
@@ -28,7 +28,9 @@ const Header = () => {
 
     const handleLogout = () => {
         storageTokenOps.delete();
+        storageUserOps.delete();
         localStorage.removeItem('acs_organization');
+        localStorage.removeItem('acs_tpp_id');
         window.location.href = CONFIG.AR_BASE_URL + '/auth';
     };
 
