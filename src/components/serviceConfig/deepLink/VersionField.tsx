@@ -1,4 +1,4 @@
-import {  InputAdornment, TextField, Tooltip } from "@mui/material";
+import { InputAdornment, TextField, Tooltip } from "@mui/material";
 import { InfoOutlined as InfoIcon } from '@mui/icons-material';
 
 const TOOLTIP_VERSIONE =
@@ -31,10 +31,10 @@ export function VersioneField({
             helperText={helperText}
             InputProps={showTooltip ? {
                 endAdornment: (
-                    <InputAdornment  position="end">
+                    <InputAdornment position="end">
                         <Tooltip title={TOOLTIP_VERSIONE} arrow placement="top">
                             <span style={{ display: 'flex', cursor: 'pointer' }}>
-                                <InfoIcon sx={{ fontSize: 20, color: 'text.primary' }} />
+                                <InfoIcon sx={{ fontSize: 20, color: "primary.main" }} />
                             </span>
                         </Tooltip>
                     </InputAdornment>

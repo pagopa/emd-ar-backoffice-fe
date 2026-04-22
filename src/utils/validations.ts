@@ -5,6 +5,18 @@ export const credentialsSchema = Yup.object({
     clientId: Yup.string().required('Campo obbligatorio'),
     clientSecret: Yup.string().min(8, 'Minimo 8 caratteri').required('Campo obbligatorio'),
     grantType: Yup.string().required('Campo obbligatorio'),
+    bodyParams: Yup.array().of(
+        Yup.object({
+            name: Yup.string().required('Campo obbligatorio'),
+            value: Yup.string().required('Campo obbligatorio'),
+        })
+    ),
+    urlParams: Yup.array().of(
+        Yup.object({
+            name: Yup.string().required('Campo obbligatorio'),
+            value: Yup.string().required('Campo obbligatorio'),
+        })
+    ),
 });
 
 export const endpointDeepLinkSchema = Yup.object({

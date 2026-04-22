@@ -29,7 +29,7 @@ export function DeepLinkPerDevice({
                     </Typography>
 
                     {/* Fallback URL — fixed row, always present */}
-                    <Grid container spacing={2} alignItems="center" mb={1}>
+                    <Grid container spacing={2} alignItems="flex-center" mb={1}>
                         <Grid item xs={12} sm={4}>
                             <TextField fullWidth disabled label="Versione" value="fallBackLink" />
                         </Grid>
@@ -42,21 +42,21 @@ export function DeepLinkPerDevice({
                                 value={device.fallBackLink}
                                 onChange={(e) => onFallBackChange(deviceIndex, e.target.value)}
                                 error={Boolean(errors?.[deviceIndex]?.fallBackLink)}
-                                helperText={errors?.[deviceIndex]?.fallBackLink}
+                                helperText={errors?.[deviceIndex]?.fallBackLink || ' '}
                             />
                         </Grid>
                     </Grid>
 
                     {/* Additional version rows */}
                     {device.versions.map((version, versionIndex) => (
-                        <Grid container spacing={2} alignItems="center" key={versionIndex} mb={1}>
+                        <Grid container spacing={2} alignItems="flex-start" key={versionIndex} mb={1}>
                             <Grid item xs={12} sm={4}>
                                 <VersioneField
                                     showTooltip={versionIndex === 0} // tooltip only on first row per device
                                     value={version.versionKey}
                                     onChange={(val) => onVersionChange(deviceIndex, versionIndex, 'versionKey', val)}
                                     error={Boolean(errors?.[deviceIndex]?.versions?.[versionIndex]?.versionKey)}
-                                    helperText={errors?.[deviceIndex]?.versions?.[versionIndex]?.versionKey}
+                                    helperText={errors?.[deviceIndex]?.versions?.[versionIndex]?.versionKey || ''}
                                 />
                             </Grid>
                             <Grid item xs>
@@ -68,14 +68,14 @@ export function DeepLinkPerDevice({
                                     value={version.link}
                                     onChange={(e) => onVersionChange(deviceIndex, versionIndex, 'link', e.target.value)}
                                     error={Boolean(errors?.[deviceIndex]?.versions?.[versionIndex]?.link)}
-                                    helperText={errors?.[deviceIndex]?.versions?.[versionIndex]?.link}
+                                    helperText={errors?.[deviceIndex]?.versions?.[versionIndex]?.link || ''}
                                 />
                             </Grid>
                             <Grid item xs="auto">
                                 <IconButton
                                     onClick={() => onRemoveVersion(deviceIndex, versionIndex)}
                                     aria-label="Rimuovi versione"
-                                    style={errors?.[deviceIndex]?.versions?.[versionIndex]?.link ? { marginBottom: 10 } : {}}
+                                    sx={{ mt: '8px' }}
                                 >
                                     <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 20, height: 24 }} />
                                 </IconButton>

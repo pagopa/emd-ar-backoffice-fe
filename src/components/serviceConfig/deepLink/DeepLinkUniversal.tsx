@@ -30,19 +30,19 @@ export function DeepLinkUniversal({
                 value={fallBackLink}
                 onChange={(e) => onFallBackChange(e.target.value)}
                 error={Boolean(touched?.fallBackLink && errors?.fallBackLink)}
-                helperText={touched?.fallBackLink && errors?.fallBackLink}
+                helperText={touched?.fallBackLink && errors?.fallBackLink || ' '}
                 sx={{ mb: 2 }}
             />
 
             {versions.map((version, index) => (
-                <Grid container spacing={2} alignItems="center" key={index} mb={1}>
+                <Grid container spacing={2} alignItems="flex-start" key={index} mb={1}>
                     <Grid item xs={12} sm={4}>
                         <VersioneField
                             showTooltip={index === 0}
                             value={version.versionKey}
                             onChange={(val) => onVersionChange(index, 'versionKey', val)}
                             error={Boolean(errors?.versions?.[index]?.versionKey)}
-                            helperText={errors?.versions?.[index]?.versionKey}
+                            helperText={errors?.versions?.[index]?.versionKey || ' '}
                         />
                     </Grid>
                     <Grid item xs>
@@ -54,14 +54,14 @@ export function DeepLinkUniversal({
                             value={version.link}
                             onChange={(e) => onVersionChange(index, 'link', e.target.value)}
                             error={Boolean(errors?.versions?.[index]?.link)}
-                            helperText={errors?.versions?.[index]?.link}
+                            helperText={errors?.versions?.[index]?.link || ' '}
                         />
                     </Grid>
                     <Grid item xs="auto">
                         <IconButton
                             onClick={() => onRemoveVersion(index)}
                             aria-label="Rimuovi versione"
-                            style={errors?.versions?.[index]?.link ? { marginBottom: 12 } : {}}
+                            sx={{ mt: '8px' }}
                         >
                             <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
                         </IconButton>

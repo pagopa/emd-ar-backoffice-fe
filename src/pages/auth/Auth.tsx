@@ -3,10 +3,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { acsHandshake, } from '../../api/auth';
 import ROUTES from '../../routes';
 import { Box, CircularProgress, Typography, Link } from '@mui/material';
-import { saveToken, saveUserFromToken } from '../../utils/user';
+import { saveOrganization } from '../../utils/organization';
 import { CONFIG } from '../../config';
-import { setUser } from '../../redux/slices/userSlice';
+import { setOrganization } from '../../redux/slices/organizationSlice';
 import { useAppDispatch } from '../../redux/hook';
+import { saveUser } from '../../utils/user';
+import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 
 type AcsState = 'loading' | 'error';
 
@@ -28,12 +30,13 @@ const Auth = () => {
 
         acsHandshake(urlToken)
             .then((response) => {
-                if (response.token) {
-                    saveToken(response.token)
-                    const user = saveUserFromToken(response.token);
-                    if (!user) throw new Error('Could not decode user from inner token');
-                    dispatch(setUser(user));
+                if (!response.token || !response.organizationInfo) {
+                    throw new Error('Risposta BFF incompleta');
                 }
+                const organization = saveOrganization(response.token, response.organizationInfo);
+                const user = saveUser(response.userInfo)
+                dispatch(userActions.setLoggedUser(user));
+                dispatch(setOrganization(organization));
                 void navigate(ROUTES.ONBOARDING, { replace: true });
             })
             .catch((err) => {

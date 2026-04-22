@@ -7,6 +7,33 @@ import Credentials from './pages/credentials/Credentials';
 import ROUTES from './routes';
 import withAuth from './decorator/withAuth';
 import './index.css'
+import { useAppDispatch } from './redux/hook';
+import { useEffect } from 'react';
+import { getOrganizationFromStorage } from './utils/organization';
+import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import { setOrganization, setTppId } from './redux/slices/organizationSlice';
+import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
+
+export const useInitSession = () => {
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const organization = getOrganizationFromStorage();
+        const tppId = localStorage.getItem('acs_tpp_id');
+        const user = storageUserOps.read();
+
+        if (organization) {
+            dispatch(setOrganization(organization));
+        }
+
+        if (user) {
+            dispatch(userActions.setLoggedUser(user));
+        }
+        if (tppId) {
+            dispatch(setTppId(tppId))
+        };
+    }, [dispatch]);
+};
 
 const SecuredRoutes = withAuth(() => (
     <Routes>
@@ -20,6 +47,7 @@ const SecuredRoutes = withAuth(() => (
 
 export default function App() {
 
+    useInitSession();
 
 
     return (

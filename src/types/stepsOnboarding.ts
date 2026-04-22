@@ -20,8 +20,16 @@ export interface Step1Values {
     };
     deepLinkDevices: DeviceLink[];
 }
+
+export interface ParamEntry {
+    name: string;
+    value: string;
+}
+
 export interface Step2Values {
     clientId: string;
     clientSecret: string;
     grantType: 'client_credentials';
+    bodyParams: ParamEntry[];
+    urlParams: ParamEntry[];
 }

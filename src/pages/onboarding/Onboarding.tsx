@@ -12,7 +12,6 @@ import {
 import {
     ArrowBack as Back
 } from '@mui/icons-material';
-import { ButtonNaked } from '@pagopa/mui-italia';
 import { useFormik } from 'formik';
 
 import EndpointDeepLinkForm from '../../components/serviceConfig/EndpointDeepLinkForm';
@@ -26,10 +25,13 @@ import ROUTES from '../../routes';
 import { useNavigate } from 'react-router-dom';
 import { CONFIG } from '../../config';
 import { credentialsSchema, endpointDeepLinkSchema } from '../../utils/validations';
+import { setTppId } from '../../redux/slices/organizationSlice';
+import { useAppDispatch } from '../../redux/hook';
 
 
 const Onboarding = () => {
     const navigate = useNavigate()
+    const dispatch = useAppDispatch();
 
     type AllValues = Step1Values & Step2Values;
     const validationSchemas = [endpointDeepLinkSchema, credentialsSchema];
@@ -50,8 +52,9 @@ const Onboarding = () => {
         clientId: '',
         clientSecret: '',
         grantType: 'client_credentials',
+        bodyParams: [],
+        urlParams: []
     };
-
 
     const [activeStep, setActiveStep] = useState(0);
     const isLastStep = activeStep === STEPS.length - 1;
@@ -63,6 +66,9 @@ const Onboarding = () => {
         validateOnBlur: true,
         onSubmit: async (values, { setSubmitting }) => {
             if (isLastStep) {
+                const bodyExtra = Object.fromEntries(values.bodyParams.map(p => [p.name, p.value]));
+                const urlExtra = Object.fromEntries(values.urlParams.map(p => [p.name, p.value]));
+
                 const payload: TppDTO = {
                     messageUrl: values.webhookUrl,
                     authenticationUrl: values.authUrl,
@@ -72,13 +78,15 @@ const Onboarding = () => {
                             client_id: values.clientId,
                             client_secret: values.clientSecret,
                             grant_type: values.grantType,
+                            ...bodyExtra,
                         },
-                        //TODO pathAdditionalProperties come inserirlo
+                        pathAdditionalProperties: urlExtra,
                     },
                     authenticationType: values.authType as AuthenticationType,
                     agentLinks: buildAgentLinks(values),
                 };
-                await saveTpp(payload);
+                const { tppId } = await saveTpp(payload);
+                dispatch(setTppId(tppId));
 
                 if (CONFIG.ENV === "DEV") {
                     console.log('[Onboarding] Form values:', JSON.parse(JSON.stringify(values)));
@@ -101,7 +109,7 @@ const Onboarding = () => {
         void formik.setTouched({});
     };
 
-    // aggiorna renderStep
+    // update renderStep
     const renderStep = () => {
         switch (activeStep) {
             case 0: return <EndpointDeepLinkForm formik={formik as any} />;
@@ -115,18 +123,6 @@ const Onboarding = () => {
 
             <Box component="main" flex={1} display="flex" justifyContent="center" px={2} py={4}>
                 <Box width="100%" maxWidth={760}>
-
-                    <ButtonNaked
-                        onClick={() => window.history.back()}
-                        sx={{ mb: 2, gap: '4px' }}
-                        size="small"
-                    >
-                        <Back style={{ width: 24, height: 24 }} />
-
-                        <Typography variant="body2" fontWeight={500} >
-                            Esci
-                        </Typography>
-                    </ButtonNaked>
 
                     <Typography variant="h4" fontWeight={700} mb={0.5}>
                         Configurazione del servizio
@@ -148,36 +144,40 @@ const Onboarding = () => {
                         ))}
                     </Stepper>
 
-                    {/* Card */}
-                    <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2, sm: 3 } }}>
-                        <Typography variant="h6" fontWeight={700} mb={3}>
-                            {STEPS[activeStep]}
-                        </Typography>
+                    <form onSubmit={formik.handleSubmit} noValidate>
+                        {/* Card */}
+                        <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2, sm: 3 } }}>
+                            <Typography variant="h6" fontWeight={700} mb={3}>
+                                {STEPS[activeStep]}
+                            </Typography>
 
-                        <form onSubmit={formik.handleSubmit} noValidate>
                             {renderStep()}
+                        </Paper>
 
-                            {/* Navigazione */}
-                            <Box display="flex" justifyContent="space-between" mt={4}>
-                                <Button
-                                    variant="outlined"
-                                    onClick={handleBack}
-                                    disabled={activeStep === 0}
-                                    sx={{ gap: '8px' }}
-                                >
-                                    <Back style={{ width: 24, height: 24 }} />
-                                    Indietro
-                                </Button>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    disabled={formik.isSubmitting}
-                                >
-                                    {isLastStep ? 'Completa configurazione' : 'Continua'}
-                                </Button>
-                            </Box>
-                        </form>
-                    </Paper>
+                        {/* Navigazione */}
+                        <Box display="flex" justifyContent="space-between" mt={4}>
+                            {
+                                activeStep === 1 ?
+                                    <Button
+                                        variant="outlined"
+                                        onClick={handleBack}
+                                        sx={{ gap: '8px' }}
+                                    >
+                                        <Back style={{ width: 24, height: 24 }} />
+                                        Indietro
+                                    </Button>
+                                    :
+                                    <Box />
+                            }
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                disabled={formik.isSubmitting}
+                            >
+                                {isLastStep ? 'Completa configurazione' : 'Continua'}
+                            </Button>
+                        </Box>
+                    </form>
 
                 </Box>
             </Box>
