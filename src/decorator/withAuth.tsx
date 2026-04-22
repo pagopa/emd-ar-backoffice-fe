@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
-import { setUser } from '../redux/slices/userSlice';
-import { getUserFromStorage } from '../utils/user';
+import { setOrganization } from '../redux/slices/organizationSlice';
+import { getOrganizationFromStorage } from '../utils/organization';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes';
 
@@ -11,22 +11,22 @@ export default function withAuth<T extends object>(
     const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
     const ComponentWithAuth = (props: T) => {
-        const user = useAppSelector((state) => state.user.user);
+        const organization = useAppSelector((state) => state.organization.organization);
         const dispatch = useAppDispatch();
         const navigate = useNavigate();
 
         useEffect(() => {
-            if (!user) {
-                const storedUser = getUserFromStorage();
-                if (storedUser) {
-                    dispatch(setUser(storedUser));
+            if (!organization) {
+                const storedOrganization = getOrganizationFromStorage();
+                if (storedOrganization) {
+                    dispatch(setOrganization(storedOrganization));
                 } else {
                     void navigate(ROUTES.AUTH, { replace: true });
                 }
             }
-        }, [dispatch, navigate, user]);
+        }, [dispatch, navigate, organization]);
 
-        return user ? <WrappedComponent {...props} /> : <></>;
+        return organization ? <WrappedComponent {...props} /> : <></>;
     };
 
     ComponentWithAuth.displayName = `withAuth(${displayName})`;

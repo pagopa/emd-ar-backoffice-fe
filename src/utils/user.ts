@@ -1,50 +1,14 @@
-import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
-import { type StoredUser } from '../types/user';
+import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import type { User } from '@pagopa/selfcare-common-frontend/lib/model/User';
+import type { UserInfo } from '../types/auth';
 
-export const isTokenExpired = (token: string): boolean => {
-    try {
-        const { exp } = JSON.parse(atob(token.split('.')[1]));
-        return typeof exp === 'number' && exp * 1000 < Date.now();
-    } catch {
-        return true;
-    }
-};
-
-/**
- * Reads the user from sessionStorage of selfcare.
- */
-export const getUserFromStorage = (): StoredUser | null => {
-    const token = storageTokenOps.read();
-    if (!token || isTokenExpired(token)) {
-        // clean of token if is expired
-        if (token) {
-            storageTokenOps.delete();
-            storageUserOps.delete();
-        }
-        return null;
-    }
-
-    const storedUser = storageUserOps.read();
-    if (storedUser) return storedUser as StoredUser;
-
-    try {
-        return JSON.parse(atob(token.split('.')[1])) as StoredUser;
-    } catch {
-        return null;
-    }
-};
-
-/**
- * Decodes the JWT payload, then persists both the token
- * and the decoded user object to sessionStorage.
- */
-export const saveUserFromToken = (token: string): StoredUser | null => {
-    try {
-        const payload = JSON.parse(atob(token.split('.')[1])) as StoredUser;
-        storageTokenOps.write(token);
-        storageUserOps.write(payload);
-        return payload;
-    } catch {
-        return null;
-    }
+export const saveUser = (userInfo: UserInfo): User => {
+    const user: User = {
+        uid: userInfo.uid,
+        name: userInfo.name,
+        surname: userInfo.family_name,
+        email: userInfo.email
+    };
+    storageUserOps.write(user);
+    return user;
 };

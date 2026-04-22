@@ -2,9 +2,8 @@
 const ROUTES = {
     HOME: `/`,
     AUTH: `/auth`,
-    CREDENTIALS: '/credentials',
-    USERS: '/users',
-    GROUPS: '/groups',
+    ONBOARDING: '/onboarding',
+    CREDENTIALS: '/credentials'
 };
 
 export default ROUTES;

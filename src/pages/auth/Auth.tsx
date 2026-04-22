@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { acsHandshake, } from '../../api/auth';
 import ROUTES from '../../routes';
 import { Box, CircularProgress, Typography, Link } from '@mui/material';
-import { saveUserFromToken } from '../../utils/user';
+import { saveOrganization } from '../../utils/organization';
 import { CONFIG } from '../../config';
-import { setUser } from '../../redux/slices/userSlice';
+import { setOrganization } from '../../redux/slices/organizationSlice';
 import { useAppDispatch } from '../../redux/hook';
+import { saveUser } from '../../utils/user';
+import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 
 type AcsState = 'loading' | 'error';
 
 const Auth = () => {
 
-    const hash = location.hash ?? '';
+    const { hash } = useLocation();
     const urlToken = hash.startsWith('#token=') ? hash.slice('#token='.length).trim() : '';
 
     const [state, setState] = useState<AcsState>(urlToken ? 'loading' : 'error');
@@ -28,12 +30,14 @@ const Auth = () => {
 
         acsHandshake(urlToken)
             .then((response) => {
-                if (response.token) {
-                    const user = saveUserFromToken(response.token);
-                    if (!user) throw new Error('Could not decode user from inner token');
-                    dispatch(setUser(user));
+                if (!response.token || !response.organizationInfo) {
+                    throw new Error('Risposta BFF incompleta');
                 }
-                void navigate(ROUTES.HOME, { replace: true });
+                const organization = saveOrganization(response.token, response.organizationInfo);
+                const user = saveUser(response.userInfo)
+                dispatch(userActions.setLoggedUser(user));
+                dispatch(setOrganization(organization));
+                void navigate(ROUTES.ONBOARDING, { replace: true });
             })
             .catch((err) => {
                 console.error('[ACS] handshake failed:', err);
@@ -57,7 +61,7 @@ const Auth = () => {
                 <Typography variant="body2" color="text.secondary">
                     Il link potrebbe essere scaduto.&nbsp;
                     <Link
-                        href={CONFIG.AR_BASE_URL+"/auth"}
+                        href={CONFIG.AR_BASE_URL + "/auth"}
                         underline="always"
                         color="primary"
                     >

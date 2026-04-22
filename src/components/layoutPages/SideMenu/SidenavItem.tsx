@@ -5,7 +5,7 @@ type Props = {
     handleClick?: () => void;
     title: string;
     isSelected?: boolean;
-    icon: SvgIconComponent;
+    icon: SvgIconComponent | string;
     level: number;
     disabled?: boolean;
     href?: string;
@@ -35,7 +35,16 @@ export default function SidenavItem({
             rel={target === '_blank' ? 'noopener noreferrer' : undefined}
         >
             <ListItemIcon sx={{ ml: level }}>
-                <Icon component={icon} />
+                {typeof icon === 'string' ? (
+                    <img
+                        src={icon}
+                        alt=""
+                        aria-hidden="true"
+                        style={{ width: 24, height: 24 }}
+                    />
+                ) : (
+                    <Icon style={{ width: 24, height: 24 }} component={icon} />
+                )}
             </ListItemIcon>
             <ListItemText
                 primary={title}
