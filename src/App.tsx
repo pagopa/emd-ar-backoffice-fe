@@ -7,7 +7,7 @@ import Credentials from './pages/credentials/Credentials';
 import ROUTES from './routes';
 import withAuth from './decorator/withAuth';
 import './index.css'
-import { useAppDispatch } from './redux/hook';
+import { useAppDispatch, useAppSelector } from './redux/hook';
 import { useEffect } from 'react';
 import { getOrganizationFromStorage } from './utils/organization';
 import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
@@ -35,10 +35,20 @@ export const useInitSession = () => {
     }, [dispatch]);
 };
 
+const ProtectedOnboarding = () => {
+    const tppId = useAppSelector((state) => state.organization.tppId)
+        ?? localStorage.getItem('acs_tpp_id');
+
+    return tppId
+        ? <Navigate to={ROUTES.HOME} replace />
+        : <Onboarding />;
+};
+
+
 const SecuredRoutes = withAuth(() => (
     <Routes>
         <Route path={ROUTES.HOME} element={<Home />} />
-        <Route path={ROUTES.ONBOARDING} element={<Onboarding />} />
+        <Route path={ROUTES.ONBOARDING} element={<ProtectedOnboarding />} />
         <Route path={ROUTES.CREDENTIALS} element={<Credentials />} />
         <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
     </Routes>

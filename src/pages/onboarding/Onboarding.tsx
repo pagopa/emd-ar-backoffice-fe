@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -98,7 +98,7 @@ const Onboarding = () => {
             authenticationType: values.authType as AuthenticationType,
             agentLinks: buildAgentLinks(values),
         };
-        
+
         const { tppId } = await saveTpp(payload);
         dispatch(setTppId(tppId));
 
