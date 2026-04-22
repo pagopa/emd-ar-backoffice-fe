@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.1...v1.2.2) (2026-04-22)
+
+
+### Bug Fixes
+
+* save of password at submit form ([46ed3ed](https://github.com/pagopa/emd-ar-backoffice-fe/commit/46ed3ed0eb1188aa66a006e60b2c1cd123d6c061))
+
 ## [1.2.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.0...v1.2.1) (2026-04-22)
 
 
