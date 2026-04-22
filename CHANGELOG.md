@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.9](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.8...v1.1.9) (2026-04-16)
+
+
+### Bug Fixes
+
+* add path bff ([3f9846f](https://github.com/pagopa/emd-ar-backoffice-fe/commit/3f9846f26e31161b1a6bcbd17269465f6ba30964))
+
 ## [1.1.8](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.7...v1.1.8) (2026-04-16)
 
 
