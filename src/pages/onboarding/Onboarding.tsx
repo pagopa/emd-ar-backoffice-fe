@@ -26,18 +26,18 @@ import { useNavigate } from 'react-router-dom';
 import { CONFIG } from '../../config';
 import { credentialsSchema, endpointDeepLinkSchema } from '../../utils/validations';
 import { setTppId } from '../../redux/slices/organizationSlice';
-import { useAppDispatch } from '../../redux/hook';
+import { useAppDispatch, useAppSelector } from '../../redux/hook';
 
 
 const Onboarding = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch();
+    const organization = useAppSelector((state) => state.organization.organization);
 
     type AllValues = Step1Values & Step2Values;
     const validationSchemas = [endpointDeepLinkSchema, credentialsSchema];
     const STEPS = ['Endpoint e deep link', 'Credenziali'];
 
-    // aggiorna initialValues
     const initialValues: AllValues = {
         webhookUrl: '',
         authUrl: '',
@@ -66,42 +66,49 @@ const Onboarding = () => {
         validateOnBlur: true,
         onSubmit: async (values, { setSubmitting }) => {
             if (isLastStep) {
-                const bodyExtra = Object.fromEntries(values.bodyParams.map(p => [p.name, p.value]));
-                const urlExtra = Object.fromEntries(values.urlParams.map(p => [p.name, p.value]));
-
-                const payload: TppDTO = {
-                    messageUrl: values.webhookUrl,
-                    authenticationUrl: values.authUrl,
-                    tokenSection: {
-                        contentType: 'application/x-www-form-urlencoded',
-                        bodyAdditionalProperties: {
-                            client_id: values.clientId,
-                            client_secret: values.clientSecret,
-                            grant_type: values.grantType,
-                            ...bodyExtra,
-                        },
-                        pathAdditionalProperties: urlExtra,
-                    },
-                    authenticationType: values.authType as AuthenticationType,
-                    agentLinks: buildAgentLinks(values),
-                };
-                const { tppId } = await saveTpp(payload);
-                dispatch(setTppId(tppId));
-
-                if (CONFIG.ENV === "DEV") {
-                    console.log('[Onboarding] Form values:', JSON.parse(JSON.stringify(values)));
-                    console.log('[Onboarding] Payload BE:', JSON.parse(JSON.stringify(payload)));
-                }
-
-                void navigate(ROUTES.HOME);
+                await saveTPP(values)
             } else {
                 setActiveStep((prev) => prev + 1);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
             setSubmitting(false);
         },
-
     });
+
+
+    const saveTPP = async (values: AllValues) => {
+        const bodyExtra = Object.fromEntries(values.bodyParams.map(p => [p.name, p.value]));
+        const urlExtra = Object.fromEntries(values.urlParams.map(p => [p.name, p.value]));
+
+        const payload: TppDTO = {
+            entityId: organization?.fiscal_code ?? '',
+            businessName: organization?.name ?? '',
+            messageUrl: values.webhookUrl,
+            authenticationUrl: values.authUrl,
+            tokenSection: {
+                contentType: 'application/x-www-form-urlencoded',
+                bodyAdditionalProperties: {
+                    client_id: values.clientId,
+                    client_secret: values.clientSecret,
+                    grant_type: values.grantType,
+                    ...bodyExtra,
+                },
+                pathAdditionalProperties: urlExtra,
+            },
+            authenticationType: values.authType as AuthenticationType,
+            agentLinks: buildAgentLinks(values),
+        };
+        
+        const { tppId } = await saveTpp(payload);
+        dispatch(setTppId(tppId));
+
+        if (CONFIG.ENV === "DEV") {
+            console.log('[Onboarding] Form values:', JSON.parse(JSON.stringify(values)));
+            console.log('[Onboarding] Payload BE:', JSON.parse(JSON.stringify(payload)));
+        }
+
+        void navigate(ROUTES.HOME);
+    }
 
     const handleBack = () => {
         setActiveStep((prev) => prev - 1);

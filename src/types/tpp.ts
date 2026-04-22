@@ -16,6 +16,8 @@ export interface TokenSection {
 export type AuthenticationType = 'OAuth2';
 
 export interface TppDTO {
+    entityId:string;
+    businessName:string;
     messageUrl: string;
     authenticationUrl: string;
     authenticationType: AuthenticationType;
