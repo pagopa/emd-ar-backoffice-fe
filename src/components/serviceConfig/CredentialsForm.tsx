@@ -63,6 +63,7 @@ export default function CredentialsForm({ formik }: Props) {
                             name="clientId"
                             label="Client ID"
                             required
+                            inputProps={{ autoComplete: 'new-password' }}
                             value={values.clientId}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -79,6 +80,7 @@ export default function CredentialsForm({ formik }: Props) {
                             label="Client Secret"
                             required
                             type={isSecretVisible ? 'text' : 'password'}
+                            inputProps={{ autoComplete: 'new-password' }}
                             value={values.clientSecret}
                             onChange={handleChange}
                             onBlur={handleBlur}
