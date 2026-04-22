@@ -2,14 +2,13 @@ import { useState } from 'react';
 import type { FormikProps } from 'formik';
 import {
     Box, Grid, IconButton, InputAdornment,
-    MenuItem, TextField, Typography, Button, Tooltip,
+    MenuItem, TextField, Typography, Button,
 } from '@mui/material';
 import {
     VpnKeyOutlined as CredentialIcon,
     VisibilityOutlined as EyeOn,
     VisibilityOffOutlined as EyeOff,
     Add as AddIcon,
-    InfoOutlined as InfoIcon,
     CodeOutlined as UrlIcon,
 } from '@mui/icons-material';
 import type { Step2Values } from '../../types/stepsOnboarding';
@@ -47,7 +46,7 @@ export default function CredentialsForm({ formik }: Props) {
             {/* ── Credenziali di accesso ─────────────────────────────────── */}
             <Box className="cardsForm" mb={3}>
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                    <CredentialIcon />
+                    <CredentialIcon fontSize="small" style={{ color: "#BBC2D6" }} />
                     <Typography variant="subtitle1" fontWeight={600}>
                         Credenziali di accesso
                     </Typography>
@@ -117,147 +116,133 @@ export default function CredentialsForm({ formik }: Props) {
                         </TextField>
                     </Grid>
                 </Grid>
-
-                {/* ── Parametri aggiuntivi (BODY) ────────────────────────────── */}
-                <Box >
-                    {values.bodyParams.length > 0 && (
-                        <Box mb={2} mt={2}>
-                            <Box display="flex" justifyContent="space-between" alignItems="center" gap={1} mb={2}>
-                                <Typography variant="caption" fontWeight={700} letterSpacing={0.5} textTransform="uppercase">
-                                    Parametri aggiuntivi (Body)
-                                </Typography>
-                                <Tooltip title="Parametri personalizzati richiesti dal tuo sistema per il rilascio del token (es. scope)" arrow placement='top'>
-                                    <InfoIcon sx={{ cursor: 'pointer', mr: 1, width: 24, height: 24, color: "primary.main" }} />
-                                </Tooltip>
-                            </Box>
-
-                            <Grid container spacing={2}>
-                                {values.bodyParams.map((param, index) => (
-                                    <Grid item xs={12} key={index}>
-                                        <Box display="flex" gap={2} alignItems="flex-start">
-                                            <TextField
-                                                size="small"
-                                                label="Nome"
-                                                name={`bodyParams[${index}].name`}
-                                                value={param.name}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                error={bodyTouched[index]?.name && Boolean(bodyErrors[index]?.name)}
-                                                helperText={bodyTouched[index]?.name && bodyErrors[index]?.name}
-                                                sx={{ flex: 1 }}
-                                            />
-                                            <TextField
-                                                size="small"
-                                                label="Valore"
-                                                name={`bodyParams[${index}].value`}
-                                                value={param.value}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                error={bodyTouched[index]?.value && Boolean(bodyErrors[index]?.value)}
-                                                helperText={bodyTouched[index]?.value && bodyErrors[index]?.value }
-                                                sx={{ flex: 2 }}
-                                            />
-                                            <IconButton
-                                                aria-label="Rimuovi parametro body"
-                                                onClick={() => removeBodyParam(index)}
-                                                sx={{ mt: 0.5 }}
-                                            >
-                                                <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
-                                            </IconButton>
-                                        </Box>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </Box>
-                    )}
-
-                    <Button
-                        startIcon={<AddIcon />}
-                        onClick={addBodyParam}
-                        size="small"
-                        sx={{ textTransform: 'none', padding: 0 }}
-                    >
-                        Aggiungi parametro body
-                    </Button>
-                </Box>
             </Box>
 
 
+            {/* ── Parametri aggiuntivi (BODY) ────────────────────────────── */}
+            <Box className="cardsForm" mb={3}>
+                <Box mb={2}>
+                    <Box display="flex" alignItems="center" gap={1} mb={0.5}>
+                        <img src="/icons/integration_instructions.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
+                        <Typography variant="subtitle1" fontWeight={600}>
+                            Parametri aggiuntivi (Body)
+                        </Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary" mb={2}>
+                        Parametri personalizzati richiesti dal tuo sistema per il rilascio del token (es. scope)
+                    </Typography>
+
+
+                    <Grid container spacing={2}>
+                        {values.bodyParams.map((param, index) => (
+                            <Grid item xs={12} key={index}>
+                                <Box display="flex" gap={2} alignItems="flex-start">
+                                    <TextField
+                                        size="small"
+                                        label="Nome"
+                                        name={`bodyParams[${index}].name`}
+                                        value={param.name}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={bodyTouched[index]?.name && Boolean(bodyErrors[index]?.name)}
+                                        helperText={bodyTouched[index]?.name && bodyErrors[index]?.name}
+                                        sx={{ flex: 1 }}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        label="Valore"
+                                        name={`bodyParams[${index}].value`}
+                                        value={param.value}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={bodyTouched[index]?.value && Boolean(bodyErrors[index]?.value)}
+                                        helperText={bodyTouched[index]?.value && bodyErrors[index]?.value}
+                                        sx={{ flex: 2 }}
+                                    />
+                                    <IconButton
+                                        aria-label="Rimuovi parametro body"
+                                        onClick={() => removeBodyParam(index)}
+                                        sx={{ mt: 0.5 }}
+                                    >
+                                        <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
+                                    </IconButton>
+                                </Box>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+
+                <Button
+                    startIcon={<AddIcon />}
+                    onClick={addBodyParam}
+                    size="small"
+                    sx={{ textTransform: 'none', padding: 0 }}
+                >
+                    Aggiungi parametro body
+                </Button>
+            </Box>
 
             {/* ── Parametri aggiuntivi (URL) ─────────────────────────────── */}
-            <Box>
-                {values.urlParams.length > 0 && (
-                    <Box className="cardsForm" mb={3}>
-                        <Box mb={2}>
-                            <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                                <UrlIcon fontSize="small" />
-                                <Typography variant="subtitle2" fontWeight={600}>
-                                    Parametri aggiuntivi (URL)
-                                </Typography>
-                            </Box>
-                            <Typography variant="body2" color="text.secondary" mb={2}>
-                                Parametri extra da accodare all&apos;indirizzo web dell&apos;autenticazione (es. tenant_id).
-                            </Typography>
-
-                            <Grid container spacing={2}>
-                                {values.urlParams.map((param, index) => (
-                                    <Grid item xs={12} key={index}>
-                                        <Box display="flex" gap={2} alignItems="flex-start">
-                                            <TextField
-                                                size="small"
-                                                label="Nome"
-                                                name={`urlParams[${index}].name`}
-                                                value={param.name}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                error={urlTouched[index]?.name && Boolean(urlErrors[index]?.name)}
-                                                helperText={urlTouched[index]?.name && urlErrors[index]?.name}
-                                                sx={{ flex: 1 }}
-                                            />
-                                            <TextField
-                                                size="small"
-                                                label="Valore"
-                                                name={`urlParams[${index}].value`}
-                                                value={param.value}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                error={urlTouched[index]?.value && Boolean(urlErrors[index]?.value)}
-                                                helperText={urlTouched[index]?.value && urlErrors[index]?.value}
-                                                sx={{ flex: 2 }}
-                                            />
-                                            <IconButton
-                                                onClick={() => removeUrlParam(index)}
-                                                aria-label="Rimuovi versione"
-                                                sx={{ mt: 0.5 }}
-                                            >
-                                                <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
-                                            </IconButton>
-                                        </Box>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </Box>
-                        <Button
-                            startIcon={<AddIcon />}
-                            onClick={addUrlParam}
-                            size="small"
-                            sx={{ padding: 0 }}
-                        >
-                            Aggiungi parametro URL
-                        </Button>
+            <Box className="cardsForm" mb={3}>
+                <Box mb={2}>
+                    <Box display="flex" alignItems="center" gap={1} mb={0.5}>
+                        <UrlIcon fontSize="small" style={{ color: "#BBC2D6" }} />
+                        <Typography variant="subtitle1" fontWeight={600}>
+                            Parametri aggiuntivi (URL)
+                        </Typography>
                     </Box>
-                )}
+                    <Typography variant="body2" color="text.secondary" mb={2}>
+                        Parametri extra da accodare all&apos;indirizzo web dell&apos;autenticazione (es. tenant_id).
+                    </Typography>
 
-                {values.urlParams.length === 0 && (<Button
+                    <Grid container spacing={2}>
+                        {values.urlParams.map((param, index) => (
+                            <Grid item xs={12} key={index}>
+                                <Box display="flex" gap={2} alignItems="flex-start">
+                                    <TextField
+                                        size="small"
+                                        label="Nome"
+                                        name={`urlParams[${index}].name`}
+                                        value={param.name}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={urlTouched[index]?.name && Boolean(urlErrors[index]?.name)}
+                                        helperText={urlTouched[index]?.name && urlErrors[index]?.name}
+                                        sx={{ flex: 1 }}
+                                    />
+                                    <TextField
+                                        size="small"
+                                        label="Valore"
+                                        name={`urlParams[${index}].value`}
+                                        value={param.value}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={urlTouched[index]?.value && Boolean(urlErrors[index]?.value)}
+                                        helperText={urlTouched[index]?.value && urlErrors[index]?.value}
+                                        sx={{ flex: 2 }}
+                                    />
+                                    <IconButton
+                                        onClick={() => removeUrlParam(index)}
+                                        aria-label="Rimuovi versione"
+                                        sx={{ mt: 0.5 }}
+                                    >
+                                        <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
+                                    </IconButton>
+                                </Box>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+                <Button
                     startIcon={<AddIcon />}
                     onClick={addUrlParam}
                     size="small"
                     sx={{ padding: 0 }}
                 >
                     Aggiungi parametro URL
-                </Button>)
-                }
+                </Button>
             </Box>
+
         </Box>
     );
 }

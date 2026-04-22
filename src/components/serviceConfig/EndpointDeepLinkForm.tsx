@@ -63,15 +63,16 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
             {/* ── Endpoint ── */}
             <Box className="cardsForm" mb={3}>
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                    <Mail />
+                    <Mail fontSize="small" style={{ color: "#BBC2D6" }} />
                     <Typography variant="subtitle1" fontWeight={600}>Configurazione endpoint</Typography>
                 </Box>
                 <Typography variant="body2" color="text.secondary" mb={2}>
                     PagoPA utilizzerà questi endpoint per inviarti i messaggi di cortesia destinati agli utenti.
                 </Typography>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} >
                         <TextField fullWidth id="webhookUrl" name="webhookUrl" required
+                            sx={{ borderRadius: '8px' }}
                             InputLabelProps={{ required: false }}
                             label="URL per ricezione messaggi di cortesia (webhook) *"
                             placeholder="https://api.tuoservizio.it/messages"
@@ -82,6 +83,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
                     <Grid item xs={12}>
                         <TextField fullWidth id="authUrl" name="authUrl" required
                             InputLabelProps={{ required: false }}
+                            style={{ borderRadius: '8px' }}
                             label="URL di autenticazione *"
                             placeholder="https://api.tuoservizio.it/auth"
                             value={values.authUrl} onChange={handleChange} onBlur={handleBlur}
@@ -101,7 +103,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
             {/* ── Deep link ── */}
             <Box className="cardsForm">
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                    <Phone />
+                    <Phone fontSize="small" style={{ color: "#BBC2D6" }} />
                     <Typography variant="subtitle1" fontWeight={600}>Configurazione deep link app</Typography>
                 </Box>
                 <Typography variant="body2" color="text.secondary" mb={2}>

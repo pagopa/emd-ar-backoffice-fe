@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import {
     Box,
@@ -27,6 +26,7 @@ import { CONFIG } from '../../config';
 import { credentialsSchema, endpointDeepLinkSchema } from '../../utils/validations';
 import { setTppId } from '../../redux/slices/organizationSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { ColoredConnector } from '../../theme/stepper';
 
 
 const Onboarding = () => {
@@ -131,29 +131,42 @@ const Onboarding = () => {
             <Box component="main" flex={1} display="flex" justifyContent="center" px={2} py={4}>
                 <Box width="100%" maxWidth={760}>
 
-                    <Typography variant="h4" fontWeight={700} mb={0.5}>
+                    <Typography variant="h4" fontWeight={700} mb={1.5}>
                         Configurazione del servizio
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" mb={1}>
-                        Inserisci i dati del tuo ente e i parametri tecnici per abilitare
-                        l&apos;integrazione con PagoPA.
                     </Typography>
                     <Typography variant="caption" color="error" display="block" mb={3}>
                         * Campo obbligatorio
                     </Typography>
 
                     {/* Stepper MUI standard */}
-                    <Stepper activeStep={activeStep} sx={{ mb: 3 }}>
-                        {STEPS.map((label) => (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
+                    <Stepper
+                        activeStep={activeStep}
+                        connector={<ColoredConnector />}
+                        sx={{ mb: 3, width: '100%', alignItems: 'center' }}
+                    >
+                        {STEPS.map((label, index) => (
+                            <Step key={label} sx={{ p: 0, flex: 0, paddingInline:1 }}>
+                                <StepLabel
+                                    sx={{
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        gap: 0.5,
+                                        '& .MuiStepLabel-label': {
+                                            textAlign: index === 0 ? 'left' : 'right',
+                                            mt: 0,
+                                            whiteSpace: 'nowrap',  // ← aggiunto
+                                        },
+                                    }}
+                                >
+                                    {label}
+                                </StepLabel>
                             </Step>
                         ))}
                     </Stepper>
 
                     <form onSubmit={formik.handleSubmit} noValidate>
                         {/* Card */}
-                        <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2, sm: 3 } }}>
+                        <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2 } }}>
                             <Typography variant="h6" fontWeight={700} mb={3}>
                                 {STEPS[activeStep]}
                             </Typography>

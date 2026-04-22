@@ -40,7 +40,7 @@ export default function SidenavItem({
                         src={icon}
                         alt=""
                         aria-hidden="true"
-                        style={{ width: 24, height: 24 }}
+                        style={{ width: 20, marginInline:2, height: 24 }}
                     />
                 ) : (
                     <Icon style={{ width: 24, height: 24 }} component={icon} />
@@ -58,7 +58,7 @@ export default function SidenavItem({
             />
             {isExternal && (
                 <ListItemIcon sx={{ minWidth: 'auto' }}>
-                    <RedirectExternal fontSize="small" color="action" />
+                    <RedirectExternal fontSize="small" style={{color:'#BBC2D6'}} />
                 </ListItemIcon>
             )}
         </ListItemButton>
