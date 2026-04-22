@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.9...v1.2.0) (2026-04-22)
+
+
+### Features
+
+* add handling credential token exchange and onboarding pages ([#17](https://github.com/pagopa/emd-ar-backoffice-fe/issues/17)) ([a1ca68e](https://github.com/pagopa/emd-ar-backoffice-fe/commit/a1ca68e5b110ab6e6eef26bdf9e3e50cedaf5b6d))
+
 ## [1.1.9](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.8...v1.1.9) (2026-04-16)
 
 
