@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.0...v1.2.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* style of stepper and color of icons ([b574a2f](https://github.com/pagopa/emd-ar-backoffice-fe/commit/b574a2f9f04c53272a376521d15de7531fec000c))
+
 ## [1.2.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.1.9...v1.2.0) (2026-04-22)
 
 
