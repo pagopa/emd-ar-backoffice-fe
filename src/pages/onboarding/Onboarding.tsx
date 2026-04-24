@@ -81,7 +81,7 @@ const Onboarding = () => {
         const urlExtra = Object.fromEntries(values.urlParams.map(p => [p.name, p.value]));
 
         const payload: TppDTO = {
-            entityId: organization?.fiscal_code ?? '',
+            entityId: organization?.fiscalCode ?? '',
             businessName: organization?.name ?? '',
             messageUrl: values.webhookUrl,
             authenticationUrl: values.authUrl,
