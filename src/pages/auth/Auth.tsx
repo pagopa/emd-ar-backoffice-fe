@@ -30,10 +30,10 @@ const Auth = () => {
 
         acsHandshake(urlToken)
             .then((response) => {
-                if (!response.token || !response.organizationInfo) {
+                if (!response.token || !response.userInfo?.organization) {
                     throw new Error('Risposta BFF incompleta');
                 }
-                const organization = saveOrganization(response.token, response.organizationInfo);
+                const organization = saveOrganization(response.token, response.userInfo.organization);
                 const user = saveUser(response.userInfo)
                 dispatch(userActions.setLoggedUser(user));
                 dispatch(setOrganization(organization));

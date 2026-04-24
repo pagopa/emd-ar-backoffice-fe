@@ -17,9 +17,6 @@ export default function SideMenu() {
     const location = useLocation();
     const organization = useAppSelector((state) => state.organization.organization);
 
-
-    //TODO aggiungere presa di selfacareId per reinderizzare in pagina utenti e pagina groups
-
     return (
         <Box display="grid" mt={1}>
             <Box gridColumn="auto">

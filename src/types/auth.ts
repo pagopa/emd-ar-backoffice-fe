@@ -4,23 +4,30 @@ export interface OrganizationRole {
 }
 
 export interface OrganizationInfo {
-    fiscal_code: string;
     id: string;
+    ipaCode: string;
     name: string;
+    fiscalCode: string;
     roles: OrganizationRole[];
 }
 
 export interface UserInfo {
     uid: string;
     name: string;
-    family_name: string;
+    familyName: string;
     email: string;
 }
 
+
+export interface UserInfoResponse {
+    uid: string;
+    name: string;
+    familyName: string;
+    email: string;
+    organization: OrganizationInfo;
+}
+
 export interface AcsResponse {
-    status: string;
-    message: string;
     token: string;
-    userInfo: UserInfo;
-    organizationInfo: OrganizationInfo;
+    userInfo: UserInfoResponse;
 }

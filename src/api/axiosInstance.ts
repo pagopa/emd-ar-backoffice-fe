@@ -2,10 +2,10 @@ import axios from 'axios';
 import { CONFIG } from '../config';
 
 export const axiosInstance = axios.create({
-    baseURL: CONFIG.API_BASE_URL,
+    baseURL: `${CONFIG.API_BASE_URL}/api/`,
 });
 
-// Aggiunge il token ad ogni richiesta in automatico
+// Add token on all the call with this interceptor
 axiosInstance.interceptors.request.use((config) => {
     const token = sessionStorage.getItem('inner_token');
     if (token) {

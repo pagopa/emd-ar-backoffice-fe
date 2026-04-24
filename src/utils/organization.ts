@@ -33,7 +33,7 @@ export const getOrganizationFromStorage = (): StoredOrganization | null => {
 export const saveOrganization = (token: string, organizationInfo: OrganizationInfo): StoredOrganization => {
     const organization: StoredOrganization = {
         id: organizationInfo.id,
-        fiscal_code: organizationInfo.fiscal_code,
+        fiscalCode: organizationInfo.fiscalCode,
         name: organizationInfo.name,
         roles: organizationInfo.roles,
     };

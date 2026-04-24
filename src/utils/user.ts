@@ -6,7 +6,7 @@ export const saveUser = (userInfo: UserInfo): User => {
     const user: User = {
         uid: userInfo.uid,
         name: userInfo.name,
-        surname: userInfo.family_name,
+        surname: userInfo.familyName,
         email: userInfo.email
     };
     storageUserOps.write(user);
