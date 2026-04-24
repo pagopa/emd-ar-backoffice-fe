@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.3...v1.2.4) (2026-04-24)
+
+
+### Bug Fixes
+
+* errors build of change names types auth ([3e0410c](https://github.com/pagopa/emd-ar-backoffice-fe/commit/3e0410c391ae5085aecd2be3dd3d9137bd870328))
+
 ## [1.2.3](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.2...v1.2.3) (2026-04-24)
 
 
