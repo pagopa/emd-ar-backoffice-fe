@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.2...v1.2.3) (2026-04-24)
+
+
+### Bug Fixes
+
+* adapt auth call for token exchange ([1182c1f](https://github.com/pagopa/emd-ar-backoffice-fe/commit/1182c1fe1858eb2d1e98b626a3e61e57adf42f8a))
+
 ## [1.2.2](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.1...v1.2.2) (2026-04-22)
 
 
