@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.5](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.4...v1.2.5) (2026-04-24)
+
+
+### Bug Fixes
+
+* add handling errors and test endpoint ([0ac32a3](https://github.com/pagopa/emd-ar-backoffice-fe/commit/0ac32a3839c4e01a326daebbee312827be82f73f))
+
 ## [1.2.4](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.3...v1.2.4) (2026-04-24)
 
 
