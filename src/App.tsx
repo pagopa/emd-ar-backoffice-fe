@@ -13,6 +13,7 @@ import { getOrganizationFromStorage } from './utils/organization';
 import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { setOrganization, setTppId } from './redux/slices/organizationSlice';
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
+import SessionErrorHandler from './components/SessionErrorHandler';
 
 export const useInitSession = () => {
     const dispatch = useAppDispatch();
@@ -62,6 +63,7 @@ export default function App() {
 
     return (
         <ErrorBoundary>
+            <SessionErrorHandler />
             <Routes>
                 <Route path={ROUTES.AUTH} element={<Auth />} />
                 <Route path="*" element={<SecuredRoutes />} />

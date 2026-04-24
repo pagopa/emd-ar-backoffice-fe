@@ -104,7 +104,6 @@ const Onboarding = () => {
 
         if (CONFIG.ENV === "DEV") {
             console.log('[Onboarding] Form values:', JSON.parse(JSON.stringify(values)));
-            console.log('[Onboarding] Payload BE:', JSON.parse(JSON.stringify(payload)));
         }
 
         void navigate(ROUTES.HOME);

@@ -1,28 +1,47 @@
 import axios from 'axios';
 import { CONFIG } from '../config';
+import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import { store } from '../redux/store';
+import { setSessionError } from '../redux/slices/sessionSlice';
 
-export const axiosInstance = axios.create({
-    baseURL: `${CONFIG.API_BASE_URL}/api/`,
+const BASE_URL = `${CONFIG.API_BASE_URL}/api/`;
+
+export const axiosPublicInstance = axios.create({
+    baseURL: BASE_URL,
+    timeout: 10_000,
 });
 
-// Add token on all the call with this interceptor
+export const axiosInstance = axios.create({
+    baseURL: BASE_URL,
+    timeout: 10_000,
+});
+
 axiosInstance.interceptors.request.use((config) => {
-    const token = sessionStorage.getItem('inner_token');
+    const token = storageTokenOps.read();
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
 });
 
-
 axiosInstance.interceptors.response.use(
     (response) => response,
-    (error) => {
-        if (error.response?.status === 401) {
-            sessionStorage.removeItem('inner_token');
-            window.location.href = CONFIG.AR_BASE_URL + '/auth';
+    (error: unknown) => {
+        if (axios.isAxiosError(error)) {
+            switch (error.response?.status) {
+                case 401:
+                    storageTokenOps.delete();
+                    storageUserOps.delete();
+                    store.dispatch(setSessionError('UNAUTHORIZED'));
+                    break;
+                case 403:
+                    store.dispatch(setSessionError('FORBIDDEN'));
+                    break;
+                case 500:
+                    store.dispatch(setSessionError('SERVER_ERROR'));
+                    break;
+            }
         }
-        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-        return Promise.reject(error);
+        return Promise.reject(error instanceof Error ? error : new Error(String(error)));
     }
 );

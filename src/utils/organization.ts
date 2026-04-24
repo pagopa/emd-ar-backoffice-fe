@@ -30,14 +30,13 @@ export const getOrganizationFromStorage = (): StoredOrganization | null => {
     }
 };
 
-export const saveOrganization = (token: string, organizationInfo: OrganizationInfo): StoredOrganization => {
+export const saveOrganization = ( organizationInfo: OrganizationInfo): StoredOrganization => {
     const organization: StoredOrganization = {
         id: organizationInfo.id,
         fiscalCode: organizationInfo.fiscalCode,
         name: organizationInfo.name,
         roles: organizationInfo.roles,
     };
-    storageTokenOps.write(token);
     localStorage.setItem(ORGANIZATION_STORAGE_KEY, JSON.stringify(organization));
     return organization;
 };

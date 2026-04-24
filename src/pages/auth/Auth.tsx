@@ -9,6 +9,7 @@ import { setOrganization } from '../../redux/slices/organizationSlice';
 import { useAppDispatch } from '../../redux/hook';
 import { saveUser } from '../../utils/user';
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
+import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 
 type AcsState = 'loading' | 'error';
 
@@ -33,7 +34,8 @@ const Auth = () => {
                 if (!response.token || !response.userInfo?.organization) {
                     throw new Error('Risposta BFF incompleta');
                 }
-                const organization = saveOrganization(response.token, response.userInfo.organization);
+                storageTokenOps.write(response.token);
+                const organization = saveOrganization(response.userInfo.organization);
                 const user = saveUser(response.userInfo)
                 dispatch(userActions.setLoggedUser(user));
                 dispatch(setOrganization(organization));
