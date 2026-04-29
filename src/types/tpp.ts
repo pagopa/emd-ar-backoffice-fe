@@ -24,3 +24,21 @@ export interface TppDTO {
     tokenSection: TokenSection;
     agentLinks: Record<string, AgentLink>;
 }
+
+export interface Credentials {
+    clientId: string;
+    clientSecret: string;
+    grantType: string;
+}
+
+export interface AdditionalParams {
+    bodyParams: Record<string, string>;
+    pathParams?: Record<string, string>;
+}
+
+export interface CredentialsPageDTO {
+    tppId: string;
+    pagoPaCredentials: Credentials;
+    tppCredentials: Credentials;
+    additionalParams: AdditionalParams;
+}

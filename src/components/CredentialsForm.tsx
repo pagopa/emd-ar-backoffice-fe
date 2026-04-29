@@ -1,17 +1,20 @@
 import { useState } from 'react';
-import type { FormikProps } from 'formik';
+
 import {
-    Box, Grid, IconButton, InputAdornment,
-    MenuItem, TextField, Typography, Button,
-} from '@mui/material';
-import {
-    VpnKeyOutlined as CredentialIcon,
-    VisibilityOutlined as EyeOn,
-    VisibilityOffOutlined as EyeOff,
     Add as AddIcon,
     CodeOutlined as UrlIcon,
+    VisibilityOffOutlined as EyeOff,
+    VisibilityOutlined as EyeOn,
+    VpnKeyOutlined as CredentialIcon,
 } from '@mui/icons-material';
-import type { Step2Values } from '../../types/stepsOnboarding';
+import {
+    Box, Button,
+    Grid, IconButton, InputAdornment,
+    MenuItem, TextField, Typography,
+} from '@mui/material';
+import type { FormikProps } from 'formik';
+import type { Step2Values } from '../types/stepsOnboarding';
+
 
 interface Props {
     formik: FormikProps<Step2Values>;

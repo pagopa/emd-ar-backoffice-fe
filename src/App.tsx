@@ -8,6 +8,7 @@ import SessionErrorHandler from './components/SessionErrorHandler';
 import withAuth from './decorator/withAuth';
 import Auth from './pages/auth/Auth';
 import Credentials from './pages/credentials/Credentials';
+import CredentialsModify from './pages/credentials/modify/CredentialsModify';
 import Home from './pages/home/Home';
 import Onboarding from './pages/onboarding/Onboarding';
 import { useAppDispatch, useAppSelector } from './redux/hook';
@@ -76,6 +77,7 @@ export const router = createBrowserRouter([
                     { index: true, element: <Home /> },
                     { path: 'onboarding', element: <ProtectedOnboarding /> },
                     { path: 'credentials', element: <Credentials /> },
+                    { path: 'credentials/modify', element: <CredentialsModify /> },
                     { path: '*', element: <Navigate to="/" replace /> },
                 ],
             },

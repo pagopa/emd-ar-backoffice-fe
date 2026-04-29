@@ -1,30 +1,31 @@
-import type { FormikProps } from 'formik';
+import {
+    MailOutlined as Mail,
+    PhoneAndroid as Phone,
+} from '@mui/icons-material';
 import {
     Box, FormControlLabel, Grid,
     Radio, RadioGroup, TextField,
     Typography,
 } from '@mui/material';
-import {
-    MailOutlined as Mail,
-    PhoneAndroid as Phone,
-} from '@mui/icons-material';
-import type { Step1Values } from '../../types/stepsOnboarding';
+import type { FormikProps } from 'formik';
+
 import { DeepLinkPerDevice } from './deepLink/DeepLinkPerDevice';
 import { DeepLinkUniversal } from './deepLink/DeepLinkUniversal';
+import type { Step1Values } from '../types/stepsOnboarding';
 
 
 export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<Step1Values> }) {
     const { values, errors, touched, handleChange, handleBlur, setFieldValue, setTouched, setErrors } = formik;
 
-    // ── reset errori al cambio tipo ─────────────────────────────
+    // ── Reset errors on type change ─────────────────────────────
     const handleDeepLinkTypeChange = (newType: string) => {
         void setFieldValue('deepLinkType', newType);
-        // Resetta touched e errors dei campi dell'altro tipo
+        // Reset touched and errors for fields of the other type
         void setTouched({ ...touched, deepLinkUniversale: undefined, deepLinkDevices: undefined });
         setErrors({ ...errors, deepLinkUniversale: undefined, deepLinkDevices: undefined });
     };
 
-    // ── helpers universale ──────────────────────────────────────
+    // ── Universal deep link helpers ─────────────────────────────
     const addUniversaleVersion = () =>
         void setFieldValue('deepLinkUniversale.versions', [
             ...values.deepLinkUniversale.versions, { versionKey: '', link: '' }
@@ -37,7 +38,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
     const handleUniversaleVersionChange = (i: number, field: 'versionKey' | 'link', val: string) =>
         void setFieldValue(`deepLinkUniversale.versions[${i}].${field}`, val);
 
-    // ── helpers specifico ───────────────────────────────────────
+    // ── Per-device deep link helpers ────────────────────────────
     const handleDeviceFallBackChange = (devIdx: number, val: string) =>
         void setFieldValue(`deepLinkDevices[${devIdx}].fallBackLink`, val);
 
@@ -60,7 +61,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
 
     return (
         <Box>
-            {/* ── Endpoint ── */}
+            {/* ── Endpoint configuration ── */}
             <Box className="cardsForm" mb={3}>
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
                     <Mail fontSize="small" style={{ color: "#BBC2D6" }} />
@@ -100,7 +101,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
                 </Grid>
             </Box>
 
-            {/* ── Deep link ── */}
+            {/* ── Deep link configuration ── */}
             <Box className="cardsForm">
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
                     <Phone fontSize="small" style={{ color: "#BBC2D6" }} />
@@ -117,6 +118,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
                     <FormControlLabel value="specifico" control={<Radio />} label="Deep link specifico per SO" />
                 </RadioGroup>
 
+                {/* Universal deep link */}
                 {values.deepLinkType === 'universale' && (
                     <DeepLinkUniversal
                         fallBackLink={values.deepLinkUniversale.fallBackLink}
@@ -130,6 +132,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
                     />
                 )}
 
+                {/* Per-device deep link */}
                 {values.deepLinkType === 'specifico' && (
                     <DeepLinkPerDevice
                         devices={values.deepLinkDevices}
