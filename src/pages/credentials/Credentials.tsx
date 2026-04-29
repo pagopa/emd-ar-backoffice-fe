@@ -80,7 +80,7 @@ const Credentials = () => {
                         clientId={tppData.tppCredentials.clientId}
                         clientSecret={tppData.tppCredentials.clientSecret}
                         grantType={tppData.tppCredentials.grantType}
-                        modify
+                        showEditButton
                         onModify={() => onModify()}
                     />
                 )}

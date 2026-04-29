@@ -15,9 +15,9 @@ import type { Step2Values } from '../../../types/stepsOnboarding';
 import { credentialsSchema } from '../../../utils/validations';
 import type { TokenSection } from '../../../types/tpp';
 import { paramsToRecord, recordToParams } from '../../../utils/params';
-import { SectionSkeleton } from '../../../components/SectionSkeleton';
 import { UnsavedChangesDialog } from '../../../components/UnsavedChangesDialog';
 import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker';
+import CredentialsFormSkeleton from '../components/CredentialsFormSkeleton';
 
 
 const CredentialsModify = () => {
@@ -115,21 +115,11 @@ const CredentialsModify = () => {
                                 Credenziali
                             </Typography>
 
-                            {isLoading ? (
-                                <Box display="flex" flexDirection="column" gap={3}>
-                                    <Box className="cardsFormSkeleton" >
-                                        <SectionSkeleton fields={3} /> {/* clientId, clientSecret, grantType */}
-                                    </Box>
-                                    <Box className="cardsFormSkeleton" >
-                                        <SectionSkeleton fields={1} /> {/* body params header */}
-                                    </Box>
-                                    <Box className="cardsFormSkeleton" >
-                                        <SectionSkeleton fields={1} /> {/* url params header */}
-                                    </Box>
-                                </Box>
-                            ) : (
+                            {isLoading ?
+                                <CredentialsFormSkeleton />
+                                :
                                 <CredentialsForm formik={formik} />
-                            )}
+                            }
 
                         </Paper>
 

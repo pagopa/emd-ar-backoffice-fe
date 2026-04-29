@@ -10,13 +10,13 @@ interface CredentialsSectionProps {
     clientId: string;
     clientSecret: string;
     grantType: string;
-    modify?: boolean;
+    showEditButton?: boolean;
     onModify?: () => void;
 }
 
-export const CredentialsSection = ({ title, clientId, clientSecret, grantType, modify, onModify }: CredentialsSectionProps) => (
+export const CredentialsSection = ({ title, clientId, clientSecret, grantType, showEditButton, onModify }: CredentialsSectionProps) => (
     <Paper elevation={0} sx={{ borderRadius: 2, p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {modify ?
+        {showEditButton ?
             <Box
                 display="flex"
                 alignItems="center"

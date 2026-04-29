@@ -14,10 +14,10 @@ import { DeepLinkUniversal } from './deepLink/DeepLinkUniversal';
 import type { Step1Values } from '../types/stepsOnboarding';
 
 
-export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<Step1Values> }) {
+export default function EndpointDeepLinkForm({ formik }: Readonly<{ formik: FormikProps<Step1Values> }>) {
     const { values, errors, touched, handleChange, handleBlur, setFieldValue, setTouched, setErrors } = formik;
 
-    // ── Reset errors on type change ─────────────────────────────
+    // Reset errors on type change
     const handleDeepLinkTypeChange = (newType: string) => {
         void setFieldValue('deepLinkType', newType);
         // Reset touched and errors for fields of the other type
@@ -25,7 +25,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
         setErrors({ ...errors, deepLinkUniversale: undefined, deepLinkDevices: undefined });
     };
 
-    // ── Universal deep link helpers ─────────────────────────────
+    // Universal deep link helpers
     const addUniversaleVersion = () =>
         void setFieldValue('deepLinkUniversale.versions', [
             ...values.deepLinkUniversale.versions, { versionKey: '', link: '' }
@@ -38,7 +38,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
     const handleUniversaleVersionChange = (i: number, field: 'versionKey' | 'link', val: string) =>
         void setFieldValue(`deepLinkUniversale.versions[${i}].${field}`, val);
 
-    // ── Per-device deep link helpers ────────────────────────────
+    // Per-device deep link helpers
     const handleDeviceFallBackChange = (devIdx: number, val: string) =>
         void setFieldValue(`deepLinkDevices[${devIdx}].fallBackLink`, val);
 
@@ -61,7 +61,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
 
     return (
         <Box>
-            {/* ── Endpoint configuration ── */}
+            {/* Endpoint configuration */}
             <Box className="cardsForm" mb={3}>
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
                     <Mail fontSize="small" style={{ color: "#BBC2D6" }} />
@@ -101,7 +101,7 @@ export default function EndpointDeepLinkForm({ formik }: { formik: FormikProps<S
                 </Grid>
             </Box>
 
-            {/* ── Deep link configuration ── */}
+            {/* Deep link configuration */}
             <Box className="cardsForm">
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
                     <Phone fontSize="small" style={{ color: "#BBC2D6" }} />

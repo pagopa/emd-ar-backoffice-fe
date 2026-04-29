@@ -16,22 +16,18 @@ import type { FormikProps } from 'formik';
 import type { Step2Values } from '../types/stepsOnboarding';
 
 
-interface Props {
-    formik: FormikProps<Step2Values>;
-}
-
-export default function CredentialsForm({ formik }: Props) {
+export default function CredentialsForm({ formik }: Readonly<{ formik: FormikProps<Step2Values> }>) {
     const { values, errors, touched, handleChange, handleBlur, setFieldValue } = formik;
     const [isSecretVisible, setIsSecretVisible] = useState(false);
 
-    // ── Body params helpers ──────────────────────────────────────────────────
+    // Body params helpers 
     const addBodyParam = () =>
         void setFieldValue('bodyParams', [...values.bodyParams, { name: '', value: '' }]);
 
     const removeBodyParam = (index: number) =>
         void setFieldValue('bodyParams', values.bodyParams.filter((_, i) => i !== index));
 
-    // ── URL params helpers ───────────────────────────────────────────────────
+    // URL params helpers
     const addUrlParam = () =>
         void setFieldValue('urlParams', [...values.urlParams, { name: '', value: '' }]);
 
@@ -46,7 +42,7 @@ export default function CredentialsForm({ formik }: Props) {
 
     return (
         <Box>
-            {/* ── Credenziali di accesso ─────────────────────────────────── */}
+            {/* Access Credentials TPP */}
             <Box className="cardsForm" mb={3}>
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
                     <CredentialIcon fontSize="small" style={{ color: "#BBC2D6" }} />
@@ -124,7 +120,7 @@ export default function CredentialsForm({ formik }: Props) {
             </Box>
 
 
-            {/* ── Parametri aggiuntivi (BODY) ────────────────────────────── */}
+            {/* Additional Parameter (BODY)*/}
             <Box className="cardsForm" mb={3}>
                 <Box mb={2}>
                     <Box display="flex" alignItems="center" gap={1} mb={0.5}>
@@ -187,7 +183,7 @@ export default function CredentialsForm({ formik }: Props) {
                 </Button>
             </Box>
 
-            {/* ── Parametri aggiuntivi (URL) ─────────────────────────────── */}
+            {/* Additional Parameter (URL)*/}
             <Box className="cardsForm" mb={3}>
                 <Box mb={2}>
                     <Box display="flex" alignItems="center" gap={1} mb={0.5}>
