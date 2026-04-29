@@ -1,32 +1,23 @@
 import { useState } from 'react';
-import {
-    Box,
-    Button,
-    Paper,
-    Step,
-    StepLabel,
-    Stepper,
-    Typography,
-} from '@mui/material';
-import {
-    ArrowBack as Back
-} from '@mui/icons-material';
-import { useFormik } from 'formik';
 
-import EndpointDeepLinkForm from '../../components/serviceConfig/EndpointDeepLinkForm';
-import CredentialsForm from '../../components/serviceConfig/CredentialsForm';
-import type { Step1Values, Step2Values } from '../../types/stepsOnboarding';
-import Layout from '../../components/layoutPages/Layout';
-import { saveTpp } from '../../api/tpp';
-import { buildAgentLinks } from '../../utils/deepLink';
-import type { AuthenticationType, TppDTO } from '../../types/tpp';
-import ROUTES from '../../routes';
+import { ArrowBack as Back } from '@mui/icons-material';
+import { Box, Button, Paper, Step, StepLabel, Stepper, Typography } from '@mui/material';
+import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
+
+import { saveTpp } from '../../api/tpp';
+import CredentialsForm from '../../components/CredentialsForm';
+import EndpointDeepLinkForm from '../../components/EndpointDeepLinkForm';
+import Layout from '../../components/layoutPages/Layout';
 import { CONFIG } from '../../config';
-import { credentialsSchema, endpointDeepLinkSchema } from '../../utils/validations';
-import { setTppId } from '../../redux/slices/organizationSlice';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
+import { setTppId } from '../../redux/slices/organizationSlice';
+import ROUTES from '../../routes';
 import { ColoredConnector } from '../../theme/stepper';
+import type { Step1Values, Step2Values } from '../../types/stepsOnboarding';
+import type { AuthenticationType, TppDTO } from '../../types/tpp';
+import { buildAgentLinks } from '../../utils/deepLink';
+import { credentialsSchema, endpointDeepLinkSchema } from '../../utils/validations';
 
 
 const Onboarding = () => {
@@ -144,7 +135,7 @@ const Onboarding = () => {
                         sx={{ mb: 3, width: '100%', alignItems: 'center' }}
                     >
                         {STEPS.map((label, index) => (
-                            <Step key={label} sx={{ p: 0, flex: 0, paddingInline:1 }}>
+                            <Step key={label} sx={{ p: 0, flex: 0, paddingInline: 1 }}>
                                 <StepLabel
                                     sx={{
                                         flexDirection: 'column',

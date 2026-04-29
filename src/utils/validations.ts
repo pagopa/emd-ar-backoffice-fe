@@ -1,5 +1,6 @@
-import * as Yup from 'yup';
 import { URL_REGEX } from './constant';
+
+import * as Yup from 'yup';
 
 export const credentialsSchema = Yup.object({
     clientId: Yup.string().required('Campo obbligatorio'),

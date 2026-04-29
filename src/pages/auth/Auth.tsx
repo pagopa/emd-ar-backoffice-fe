@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
+
+import { Box, CircularProgress, Link,Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import { acsHandshake, } from '../../api/auth';
-import ROUTES from '../../routes';
-import { Box, CircularProgress, Typography, Link } from '@mui/material';
-import { saveOrganization } from '../../utils/organization';
 import { CONFIG } from '../../config';
-import { setOrganization } from '../../redux/slices/organizationSlice';
 import { useAppDispatch } from '../../redux/hook';
+import { setOrganization } from '../../redux/slices/organizationSlice';
+import ROUTES from '../../routes';
+import { saveOrganization } from '../../utils/organization';
 import { saveUser } from '../../utils/user';
+
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 

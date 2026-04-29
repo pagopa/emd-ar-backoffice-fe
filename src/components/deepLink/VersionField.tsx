@@ -1,5 +1,5 @@
-import { InputAdornment, TextField, Tooltip } from "@mui/material";
 import { InfoOutlined as InfoIcon } from '@mui/icons-material';
+import { InputAdornment, TextField, Tooltip } from "@mui/material";
 
 const TOOLTIP_VERSIONE =
     'Ti consigliamo di nominare le versioni con il prefisso "v" e un numero crescente (v1, v2). ' +

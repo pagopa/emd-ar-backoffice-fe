@@ -1,8 +1,9 @@
-import axios from 'axios';
 import { CONFIG } from '../config';
-import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
-import { store } from '../redux/store';
 import { setSessionError } from '../redux/slices/sessionSlice';
+import { store } from '../redux/store';
+
+import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import axios from 'axios';
 
 const BASE_URL = `${CONFIG.API_BASE_URL}/api/`;
 

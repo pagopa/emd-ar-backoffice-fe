@@ -1,5 +1,6 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { type StoredOrganization } from '../../types/organization';
+
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type OrganizationState = {
     organization: StoredOrganization | null;

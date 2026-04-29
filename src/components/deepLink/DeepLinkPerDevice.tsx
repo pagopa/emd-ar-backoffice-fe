@@ -1,8 +1,10 @@
-import { Box, Divider, Grid, IconButton, TextField, Typography } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { Box, Divider, Grid, IconButton, TextField, Typography } from '@mui/material';
+
 import { VersioneField } from './VersionField';
-import type { DeviceLink, VersionEntry } from '../../../types/stepsOnboarding';
+
+import { ButtonNaked } from '@pagopa/mui-italia';
+import type { DeviceLink, VersionEntry } from '../../types/stepsOnboarding';
 
 interface Props {
     devices: DeviceLink[];

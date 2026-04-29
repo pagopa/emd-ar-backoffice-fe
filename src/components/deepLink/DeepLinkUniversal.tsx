@@ -1,8 +1,10 @@
-import { Box, Grid, IconButton, TextField } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
-import { ButtonNaked } from '@pagopa/mui-italia';
+import { Box, Grid, IconButton, TextField } from '@mui/material';
+
 import { VersioneField } from './VersionField';
-import type { VersionEntry } from '../../../types/stepsOnboarding';
+
+import { ButtonNaked } from '@pagopa/mui-italia';
+import type { VersionEntry } from '../../types/stepsOnboarding';
 
 interface Props {
     fallBackLink: string;

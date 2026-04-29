@@ -1,5 +1,5 @@
-import { ListItemButton, ListItemText, ListItemIcon, Icon } from '@mui/material';
 import { OpenInNew as RedirectExternal, type SvgIconComponent } from '@mui/icons-material';
+import { Icon,ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 type Props = {
     handleClick?: () => void;

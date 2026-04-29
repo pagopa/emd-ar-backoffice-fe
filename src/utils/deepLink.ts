@@ -1,5 +1,5 @@
-import type { AgentLink } from '../types/tpp';
 import type { Step1Values } from '../types/stepsOnboarding';
+import type { AgentLink } from '../types/tpp';
 
 /**
  * Converts the deep link form values into the agentLinks format expected by the BE.
