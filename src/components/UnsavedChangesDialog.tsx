@@ -15,7 +15,7 @@ export const UnsavedChangesDialog = ({ open, onConfirm, onCancel }: Props) => (
                 Hai delle modifiche non salvate. Se esci ora le perderai.
             </Typography>
         </DialogContent>
-        <DialogActions>
+        <DialogActions style={{ padding: 18 }}>
             <Button variant="outlined" onClick={onCancel}>
                 Annulla
             </Button>

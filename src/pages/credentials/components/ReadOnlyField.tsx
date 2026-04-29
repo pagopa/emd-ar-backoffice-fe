@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import {
     ContentCopy as CopyIcon,
-    Visibility as EyeOn,
-    VisibilityOff as EyeOff} from '@mui/icons-material';
+    VisibilityOutlined as EyeOn,
+    VisibilityOffOutlined as EyeOff} from '@mui/icons-material';
 import {
     Box,
     IconButton,
