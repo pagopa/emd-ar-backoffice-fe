@@ -1,5 +1,6 @@
-import { theme } from '@pagopa/mui-italia';
 import { createTheme } from '@mui/material/styles';
+
+import { theme } from '@pagopa/mui-italia';
 
 export const appTheme = createTheme(theme, {
     components: {
@@ -9,6 +10,13 @@ export const appTheme = createTheme(theme, {
                     borderRadius: '8px',
                 },
             },
+        },
+    },
+    typography: {
+        label: {
+            fontFamily: 'Titillium Web',
+            fontWeight: 600,
+            fontSize: 16,
         },
     },
 });

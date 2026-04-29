@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
+
+import { useNavigate } from 'react-router-dom';
+
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { setOrganization } from '../redux/slices/organizationSlice';
-import { getOrganizationFromStorage } from '../utils/organization';
-import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes';
+import { getOrganizationFromStorage } from '../utils/organization';
 
 export default function withAuth<T extends object>(
     WrappedComponent: React.ComponentType<T>

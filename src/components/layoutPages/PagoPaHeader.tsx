@@ -1,9 +1,11 @@
-import { HeaderAccount, HeaderProduct } from '@pagopa/mui-italia';
 import { Box } from '@mui/material';
-import { useAppSelector } from '../../redux/hook';
+
 import { CONFIG } from '../../config';
-import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import { useAppSelector } from '../../redux/hook';
+
+import { HeaderAccount, HeaderProduct } from '@pagopa/mui-italia';
 import { userSelectors } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
+import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 
 
 const Header = () => {

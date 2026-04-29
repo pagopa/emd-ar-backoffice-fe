@@ -1,8 +1,10 @@
-import { Box } from '@mui/material';
 import React from 'react';
+
+import { Box } from '@mui/material';
+
+import PagoPaFooter from './PagoPaFooter';
 import PagoPaHeader from './PagoPaHeader';
 import SideMenu from './SideMenu/SideMenu';
-import PagoPaFooter from './PagoPaFooter';
 
 type Props = {
     children?: React.ReactNode;

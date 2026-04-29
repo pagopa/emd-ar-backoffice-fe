@@ -1,14 +1,16 @@
-import { List, Box } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useUnloadEventOnExit } from '@pagopa/selfcare-common-frontend/lib/hooks/useUnloadEventInterceptor';
 import {
-    VpnKeyOutlined as CredentialIcon,
     ImageOutlined as DasboardIcon,
+    VpnKeyOutlined as CredentialIcon,
 } from '@mui/icons-material';
-import SidenavItem from './SidenavItem';
-import ROUTES from '../../../routes';
+import { Box, List } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { CONFIG } from '../../../config';
 import { useAppSelector } from '../../../redux/hook';
+import ROUTES from '../../../routes';
+import SidenavItem from './SidenavItem';
+
+import { useUnloadEventOnExit } from '@pagopa/selfcare-common-frontend/lib/hooks/useUnloadEventInterceptor';
 
 /** The side menu of the application */
 export default function SideMenu() {
@@ -40,14 +42,14 @@ export default function SideMenu() {
                         title="Utenti"
                         icon="/icons/users.svg"
                         level={0}
-                        href={organization? `${CONFIG.AR_BASE_URL}/dashboard/${organization.id}/users` :  `${CONFIG.AR_BASE_URL}/dashboard`}
+                        href={organization ? `${CONFIG.AR_BASE_URL}/dashboard/${organization.id}/users` : `${CONFIG.AR_BASE_URL}/dashboard`}
                         target="_blank"
                     />
                     <SidenavItem
                         title="Gruppi"
                         icon="/icons/groups.svg"
                         level={0}
-                        href={organization? `${CONFIG.AR_BASE_URL}/dashboard/${organization.id}/groups` :  `${CONFIG.AR_BASE_URL}/dashboard`}
+                        href={organization ? `${CONFIG.AR_BASE_URL}/dashboard/${organization.id}/groups` : `${CONFIG.AR_BASE_URL}/dashboard`}
                         target="_blank"
                     />
                 </List>

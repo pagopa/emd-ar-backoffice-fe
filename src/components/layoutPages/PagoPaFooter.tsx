@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import { Footer as MuiItaliaFooter, type FooterLinksType, type CompanyLinkType, type PreLoginFooterLinksType, type LangCode } from '@pagopa/mui-italia';
+
+import { type CompanyLinkType, Footer as MuiItaliaFooter, type FooterLinksType, type LangCode,type PreLoginFooterLinksType } from '@pagopa/mui-italia';
 
 const companyLink: CompanyLinkType = {
     ariaLabel: 'PagoPA S.p.A.',

@@ -1,10 +1,11 @@
 import {
-    Dialog, DialogTitle, DialogContent, DialogActions,
-    Button, Typography, Box
-} from '@mui/material';
+Box,
+    Button,     Dialog, DialogActions,
+DialogContent, DialogTitle, Typography} from '@mui/material';
+
+import { CONFIG } from '../config';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { clearSessionError } from '../redux/slices/sessionSlice';
-import { CONFIG } from '../config';
 
 // 401 → dialog 
 const UnauthorizedDialog = ({ onClose }: { onClose: () => void }) => {

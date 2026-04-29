@@ -1,7 +1,8 @@
-import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
-import type { StoredOrganization } from '../types/organization'; // rinomina anche il tipo
 import type { OrganizationInfo } from '../types/auth';
+import type { StoredOrganization } from '../types/organization';
 import { ORGANIZATION_STORAGE_KEY } from './constant';
+
+import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 
 
 export const isTokenExpired = (token: string): boolean => {
