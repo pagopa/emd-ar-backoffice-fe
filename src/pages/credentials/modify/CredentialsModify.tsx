@@ -79,16 +79,7 @@ const CredentialsModify = () => {
         };
         const { tppId } = await saveCredentialsTpp(payload);
         dispatch(setTppId(tppId));
-        void navigate(ROUTES.CREDENTIALS);
-    };
-
-    const handleBack = () => {
-        if (formik.dirty) {
-            //Show dialog of confirm of exiting
-            void navigate(ROUTES.CREDENTIALS);
-            return;
-        }
-        void navigate(ROUTES.CREDENTIALS);
+        handleConfirmExit(ROUTES.CREDENTIALS)
     };
 
     return (
@@ -124,7 +115,7 @@ const CredentialsModify = () => {
                         </Paper>
 
                         <Box display="flex" justifyContent="space-between" mt={4}>
-                            <Button variant="outlined" onClick={handleBack}>
+                            <Button variant="outlined" onClick={() => void navigate(ROUTES.CREDENTIALS)}>
                                 Annulla
                             </Button>
                             <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
