@@ -37,7 +37,7 @@ export default function SideMenu() {
                         handleClick={() => onExit(() => void navigate(ROUTES.CREDENTIALS, { replace: true }))}
                         isSelected={location.pathname === ROUTES.CREDENTIALS}
                     />
-                    <Box border={2} borderColor={"#F5F5F5"} marginY={1}></Box>
+                    <Box border={1} borderColor={"#F5F5F5"} marginY={1}></Box>
                     <SidenavItem
                         title="Utenti"
                         icon="/icons/users.svg"
