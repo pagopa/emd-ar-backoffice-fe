@@ -30,7 +30,10 @@ export default function SideMenu({ collapsed, onToggleCollapse }: SideMenuProps)
             display="flex"
             flexDirection="column"
             justifyContent="space-between"
-            sx={{ backgroundColor: 'background.paper', height: '100%' }}
+            sx={{
+                backgroundColor: 'background.paper', height: '100%',
+                overflow: 'hidden',
+            }}
         >
             <Box>
                 <List data-testid="list-test">

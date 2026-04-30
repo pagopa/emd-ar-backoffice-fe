@@ -35,33 +35,24 @@ export default function SidenavItem({
             href={href}
             target={target}
             rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-            sx={{ justifyContent: collapsed ? 'center' : 'flex-start' }}
         >
             <ListItemIcon sx={{ ml: level }}>
                 {typeof icon === 'string' ? (
-                    <img
-                        src={icon}
-                        alt=""
-                        aria-hidden="true"
-                        style={{ width: 20, marginInline: 2, height: 24 }}
-                    />
+                    <img src={icon} alt="" aria-hidden="true" style={{ width: 20, marginInline: 2, height: 24 }} />
                 ) : (
                     <Icon style={{ width: 24, height: 24 }} component={icon} />
                 )}
             </ListItemIcon>
 
-            {!collapsed && (
-                <>
-                    <ListItemText
-                        primary={title}
-                        sx={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}
-                    />
-                    {isExternal && (
-                        <ListItemIcon sx={{ minWidth: 'auto' }}>
-                            <RedirectExternal fontSize="small" style={{ color: '#BBC2D6' }} />
-                        </ListItemIcon>
-                    )}
-                </>
+            <ListItemText
+                primary={title}
+                sx={{ opacity: collapsed ? 0 : 1 }}
+            />
+
+            {isExternal && (
+                <ListItemIcon sx={{ opacity: collapsed ? 0 : 1 }}>
+                    <RedirectExternal fontSize="small" style={{ color: '#BBC2D6' }} />
+                </ListItemIcon>
             )}
         </ListItemButton>
     );

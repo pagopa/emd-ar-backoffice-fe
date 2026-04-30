@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { saveTpp } from '../../api/tpp';
 import CredentialsForm from '../../components/CredentialsForm';
 import EndpointDeepLinkForm from '../../components/EndpointDeepLinkForm';
-import Layout from '../../components/layoutPages/Layout';
 import { CONFIG } from '../../config';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { setTppId } from '../../redux/slices/organizationSlice';
@@ -116,8 +115,6 @@ const Onboarding = () => {
     };
 
     return (
-        <Layout>
-
             <Box component="main" flex={1} display="flex" justifyContent="center" px={2} py={4}>
                 <Box width="100%" maxWidth={760}>
 
@@ -191,8 +188,6 @@ const Onboarding = () => {
 
                 </Box>
             </Box>
-
-        </Layout>
     );
 };
 

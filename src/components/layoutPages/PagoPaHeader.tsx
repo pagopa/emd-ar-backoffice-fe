@@ -37,7 +37,7 @@ const Header = () => {
     };
 
     return (
-        <Box component="header" sx={{ '& .MuiStack-root > :not(style) ~ :not(style)': { marginLeft: '8px' } }}>
+        <Box component="header" >
             <HeaderAccount
                 rootLink={{ title: '', label: 'PagoPA S.p.A.', href: 'https://www.pagopa.it', ariaLabel: 'PagoPA S.p.A.' }}
                 loggedUser={loggedUser}
