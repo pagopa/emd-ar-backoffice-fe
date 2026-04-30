@@ -1,4 +1,4 @@
-import type { CredentialsPageDTO, TppDTO } from "../types/tpp";
+import type { CredentialsPageDTO, EndpoinLinkPageDto, TppDTO } from "../types/tpp";
 
 export const MOCK_TPP_DTO: TppDTO = {
     entityId: 'mock-entity-001',
@@ -50,6 +50,27 @@ export const MOCK_CREDENTIALS_PAGE: CredentialsPageDTO = {
         },
         pathParams: {
             tenantId: 'mock-tenant-id',
+        },
+    },
+};
+
+export const MOCK_OVERVIEW: EndpoinLinkPageDto = {
+    messageUrl: 'https://api.tpp.com/messages',
+    authenticationUrl: 'https://api.tpp.com/auth',
+    authenticationType: 'OAuth2',
+    agentLinks: {
+        IOS: {
+            fallBackLink: 'https://api.tpp.com/ios/fallback',
+            versions: {
+                v1: { link: 'https://api.tpp.com/ios' },
+                v2: { link: 'https://api2.tpp.com/ios' },
+            },
+        },
+        ANDROID: {
+            fallBackLink: 'https://api.tpp.com/android/fallback',
+            versions: {
+                v1: { link: 'https://api.tpp.com/android' },
+            },
         },
     },
 };

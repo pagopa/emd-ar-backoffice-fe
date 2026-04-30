@@ -1,11 +1,10 @@
 import { CONFIG } from '../config';
-import { MOCK_CREDENTIALS_PAGE } from '../mocks/tpp';
-import type { CredentialsPageDTO, TokenSection, TppDTO } from '../types/tpp';
+import { MOCK_CREDENTIALS_PAGE, MOCK_OVERVIEW } from '../mocks/tpp';
+import type { CredentialsPageDTO, EndpoinLinkPageDto, SaveTppResponse, TokenSection, TppDTO } from '../types/tpp';
 import { axiosInstance } from './axiosInstance';
 
-interface SaveTppResponse {
-    tppId: string;
-}
+
+//Mock of api call
 
 const callMock = async (): Promise<SaveTppResponse> => {
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -19,6 +18,13 @@ const callMockGetTpp = async (): Promise<CredentialsPageDTO> => {
     return MOCK_CREDENTIALS_PAGE;
 };
 
+const callMockGetOverview = async (): Promise<EndpoinLinkPageDto> => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return MOCK_OVERVIEW;
+};
+
+
+//TODO Call to be implemented
 
 export const saveTpp = async (form: TppDTO): Promise<SaveTppResponse> => {
 
@@ -48,7 +54,11 @@ export const saveCredentialsTpp = async (form: TokenSection): Promise<SaveTppRes
 
 
 
-export const getTpp = async (): Promise<CredentialsPageDTO> => {
+export const getTppCredentials = async (): Promise<CredentialsPageDTO> => {
 
     return callMockGetTpp();
+};
+
+export const getOverview = async (): Promise<EndpoinLinkPageDto> => {
+    return callMockGetOverview();
 };

@@ -4,7 +4,6 @@ interface Props {
     open: boolean;
     onConfirm: () => void;
     onCancel: () => void;
-    context?: 'navigate' | 'reload'; // opzionale per futuro uso
 }
 
 export const UnsavedChangesDialog = ({ open, onConfirm, onCancel }: Props) => (
