@@ -5,9 +5,8 @@ import { Box, Button, Paper, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
-import { getTpp, saveCredentialsTpp } from '../../../api/tpp';
+import { getTppCredentials, saveCredentialsTpp } from '../../../api/tpp';
 import CredentialsForm from '../../../components/CredentialsForm';
-import Layout from '../../../components/layoutPages/Layout';
 import { useAppDispatch } from '../../../redux/hook';
 import { setTppId } from '../../../redux/slices/organizationSlice';
 import ROUTES from '../../../routes';
@@ -49,7 +48,7 @@ const CredentialsModify = () => {
 
     // Load from with data that already exist
     useEffect(() => {
-        void getTpp().then((data) => {
+        void getTppCredentials().then((data) => {
             const { bodyParams, pathParams } = data.additionalParams;
             formik.resetForm({
                 values: {
@@ -83,7 +82,7 @@ const CredentialsModify = () => {
     };
 
     return (
-        <Layout>
+        <>
             <UnsavedChangesDialog
                 open={showDialog}
                 onConfirm={() => handleConfirmExit(ROUTES.CREDENTIALS)}
@@ -126,7 +125,7 @@ const CredentialsModify = () => {
 
                 </Box >
             </Box >
-        </Layout >
+        </>
     );
 };
 

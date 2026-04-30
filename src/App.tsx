@@ -19,6 +19,7 @@ import { getOrganizationFromStorage } from './utils/organization';
 import { ErrorBoundary } from '@pagopa/selfcare-common-frontend/lib';
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import Layout from './components/layoutPages/Layout';
 
 export const useInitSession = () => {
     const dispatch = useAppDispatch();
@@ -63,7 +64,8 @@ const ProtectedOnboarding = () => {
 };
 
 const AuthOutlet = withAuth(() => <Outlet />);
-
+const LayoutWithSidebar = () => <Layout showSidebar><Outlet /></Layout>
+const LayoutWithoutSidebar = () => <Layout><Outlet /></Layout>
 
 export const router = createBrowserRouter([
     {
@@ -72,13 +74,23 @@ export const router = createBrowserRouter([
         children: [
             { path: 'auth', element: <Auth /> },
             {
-                element: <AuthOutlet />,  // wrapper for check logged user
+                element: <AuthOutlet />,
                 children: [
-                    { index: true, element: <Home /> },
-                    { path: 'onboarding', element: <ProtectedOnboarding /> },
-                    { path: 'credentials', element: <Credentials /> },
-                    { path: 'credentials/modify', element: <CredentialsModify /> },
-                    { path: '*', element: <Navigate to="/" replace /> },
+                    {
+                        element: <LayoutWithSidebar/>,
+                        children: [
+                            { index: true, element: <Home /> },
+                            { path: 'credentials', element: <Credentials /> },
+                        ],
+                    },
+                    {
+                        element: <LayoutWithoutSidebar />,
+                        children: [
+                            { path: 'onboarding', element: <ProtectedOnboarding /> },
+                            { path: 'credentials/modify', element: <CredentialsModify /> },
+                            { path: '*', element: <Navigate to="/" replace /> },
+                        ],
+                    },
                 ],
             },
         ],
