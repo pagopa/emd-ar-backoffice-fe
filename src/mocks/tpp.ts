@@ -54,7 +54,7 @@ export const MOCK_CREDENTIALS_PAGE: CredentialsPageDTO = {
     },
 };
 
-export const MOCK_OVERVIEW: EndpoinLinkPageDto = {
+export const MOCK_ENDPOINT_PAGE: EndpoinLinkPageDto = {
     messageUrl: 'https://api.tpp.com/messages',
     authenticationUrl: 'https://api.tpp.com/auth',
     authenticationType: 'OAuth2',
