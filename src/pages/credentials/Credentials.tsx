@@ -57,7 +57,7 @@ const Credentials = () => {
             {/* TPP ID */}
             {tppData?.tppId && (
                 <Paper elevation={0} sx={{ borderRadius: 2, p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <Typography variant="h6" fontWeight={600}>TPP ID</Typography>
+                    <Typography variant="h6">TPP ID</Typography>
                     <ReadonlyField label="" value={tppData.tppId} />
                 </Paper>
             )}
