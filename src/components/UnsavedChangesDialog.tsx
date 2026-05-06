@@ -15,7 +15,7 @@ export const UnsavedChangesDialog = ({ open, onConfirm, onCancel }: Props) => (
             </Typography>
         </DialogContent>
         <DialogActions style={{ padding: 18 }}>
-            <Button variant="outlined" onClick={onCancel}>
+            <Button autoFocus variant="outlined" onClick={onCancel}>
                 Annulla
             </Button>
             <Button variant="contained" onClick={onConfirm}>

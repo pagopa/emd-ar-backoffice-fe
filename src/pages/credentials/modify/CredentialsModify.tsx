@@ -6,7 +6,7 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
 import { getTppCredentials, saveCredentialsTpp } from '../../../api/tpp';
-import CredentialsForm from '../../../components/CredentialsForm';
+import CredentialsForm from '../../../components/forms/CredentialsForm';
 import { useAppDispatch } from '../../../redux/hook';
 import { setTppId } from '../../../redux/slices/organizationSlice';
 import ROUTES from '../../../routes';

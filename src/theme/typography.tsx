@@ -7,9 +7,8 @@ export const sxSectionTitle: SxProps<Theme> = {
 };
 
 export const sxFieldLabel: SxProps<Theme> = {
-    fontWeight: 400,
-    fontSize: '14px',
-    lineHeight: '20px',
+    fontWeight: 500,
+    fontSize: '16px',
     letterSpacing: 0,
 };
 

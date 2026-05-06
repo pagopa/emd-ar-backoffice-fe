@@ -6,8 +6,8 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
 import { saveTpp } from '../../api/tpp';
-import CredentialsForm from '../../components/CredentialsForm';
-import EndpointDeepLinkForm from '../../components/EndpointDeepLinkForm';
+import CredentialsForm from '../../components/forms/CredentialsForm';
+import EndpointForm from '../../components/forms/EndpointForm';
 import { CONFIG } from '../../config';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
 import { setTppId } from '../../redux/slices/organizationSlice';
@@ -16,7 +16,7 @@ import { ColoredConnector } from '../../theme/stepper';
 import type { Step1Values, Step2Values } from '../../types/stepsOnboarding';
 import type { AuthenticationType, TppDTO } from '../../types/tpp';
 import { buildAgentLinks } from '../../utils/deepLink';
-import { credentialsSchema, endpointDeepLinkSchema } from '../../utils/validations';
+import { credentialsSchema, endpointSchema } from '../../utils/validations';
 
 
 const Onboarding = () => {
@@ -25,7 +25,7 @@ const Onboarding = () => {
     const organization = useAppSelector((state) => state.organization.organization);
 
     type AllValues = Step1Values & Step2Values;
-    const validationSchemas = [endpointDeepLinkSchema, credentialsSchema];
+    const validationSchemas = [endpointSchema, credentialsSchema];
     const STEPS = ['Endpoint e deep link', 'Credenziali'];
 
     const initialValues: AllValues = {
@@ -35,9 +35,9 @@ const Onboarding = () => {
         deepLinkType: 'universale',
         deepLinkUniversale: { fallBackLink: '', versions: [] },
         deepLinkDevices: [
-            { so: 'iOS', fallBackLink: '', versions: [] },
-            { so: 'Android', fallBackLink: '', versions: [] },
-            { so: 'Web', fallBackLink: '', versions: [] },
+            { so: 'ANDROID', fallBackLink: '', versions: [] },
+            { so: 'IOS', fallBackLink: '', versions: [] },
+            { so: 'WEB', fallBackLink: '', versions: [] },
         ],
         clientId: '',
         clientSecret: '',
@@ -108,86 +108,86 @@ const Onboarding = () => {
     // update renderStep
     const renderStep = () => {
         switch (activeStep) {
-            case 0: return <EndpointDeepLinkForm formik={formik as any} />;
+            case 0: return <EndpointForm formik={formik as any} />;
             case 1: return <CredentialsForm formik={formik as any} />;
             default: return null;
         }
     };
 
     return (
-            <Box component="main" flex={1} display="flex" justifyContent="center" px={2} py={4}>
-                <Box width="100%" maxWidth={760}>
+        <Box component="main" flex={1} display="flex" justifyContent="center" px={2} py={4}>
+            <Box width="100%" maxWidth={760}>
 
-                    <Typography variant="h4" fontWeight={700} mb={1.5}>
-                        Configurazione del servizio
-                    </Typography>
-                    <Typography variant="caption" color="error" display="block" mb={3}>
-                        * Campo obbligatorio
-                    </Typography>
+                <Typography variant="h4" fontWeight={700} mb={1.5}>
+                    Configurazione del servizio
+                </Typography>
+                <Typography variant="caption" color="error" display="block" mb={3}>
+                    * Campo obbligatorio
+                </Typography>
 
-                    {/* Stepper MUI standard */}
-                    <Stepper
-                        activeStep={activeStep}
-                        connector={<ColoredConnector />}
-                        sx={{ mb: 3, width: '100%', alignItems: 'center' }}
-                    >
-                        {STEPS.map((label, index) => (
-                            <Step key={label} sx={{ p: 0, flex: 0, paddingInline: 1 }}>
-                                <StepLabel
-                                    sx={{
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        gap: 0.5,
-                                        '& .MuiStepLabel-label': {
-                                            textAlign: index === 0 ? 'left' : 'right',
-                                            mt: 0,
-                                            whiteSpace: 'nowrap',  // ← aggiunto
-                                        },
-                                    }}
-                                >
-                                    {label}
-                                </StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
-
-                    <form onSubmit={formik.handleSubmit} noValidate>
-                        {/* Card */}
-                        <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2 } }}>
-                            <Typography variant="h6" fontWeight={700} mb={3}>
-                                {STEPS[activeStep]}
-                            </Typography>
-
-                            {renderStep()}
-                        </Paper>
-
-                        {/* Navigazione */}
-                        <Box display="flex" justifyContent="space-between" mt={4}>
-                            {
-                                activeStep === 1 ?
-                                    <Button
-                                        variant="outlined"
-                                        onClick={handleBack}
-                                        sx={{ gap: '8px' }}
-                                    >
-                                        <Back style={{ width: 24, height: 24 }} />
-                                        Indietro
-                                    </Button>
-                                    :
-                                    <Box />
-                            }
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                disabled={formik.isSubmitting}
+                {/* Stepper MUI standard */}
+                <Stepper
+                    activeStep={activeStep}
+                    connector={<ColoredConnector />}
+                    sx={{ mb: 3, width: '100%', alignItems: 'center' }}
+                >
+                    {STEPS.map((label, index) => (
+                        <Step key={label} sx={{ p: 0, flex: 0, paddingInline: 1 }}>
+                            <StepLabel
+                                sx={{
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    gap: 0.5,
+                                    '& .MuiStepLabel-label': {
+                                        textAlign: index === 0 ? 'left' : 'right',
+                                        mt: 0,
+                                        whiteSpace: 'nowrap',  // ← aggiunto
+                                    },
+                                }}
                             >
-                                {isLastStep ? 'Completa configurazione' : 'Continua'}
-                            </Button>
-                        </Box>
-                    </form>
+                                {label}
+                            </StepLabel>
+                        </Step>
+                    ))}
+                </Stepper>
 
-                </Box>
+                <form onSubmit={formik.handleSubmit} noValidate>
+                    {/* Card */}
+                    <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2 } }}>
+                        <Typography variant="h6" fontWeight={700} mb={3}>
+                            {STEPS[activeStep]}
+                        </Typography>
+
+                        {renderStep()}
+                    </Paper>
+
+                    {/* Navigazione */}
+                    <Box display="flex" justifyContent="space-between" mt={4}>
+                        {
+                            activeStep === 1 ?
+                                <Button
+                                    variant="outlined"
+                                    onClick={handleBack}
+                                    sx={{ gap: '8px' }}
+                                >
+                                    <Back style={{ width: 24, height: 24 }} />
+                                    Indietro
+                                </Button>
+                                :
+                                <Box />
+                        }
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            disabled={formik.isSubmitting}
+                        >
+                            {isLastStep ? 'Completa configurazione' : 'Continua'}
+                        </Button>
+                    </Box>
+                </form>
+
             </Box>
+        </Box>
     );
 };
 

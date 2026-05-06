@@ -1,5 +1,5 @@
 import { Add as AddIcon } from '@mui/icons-material';
-import { Box, Divider, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Grid, IconButton, TextField, Typography } from '@mui/material';
 
 import { VersioneField } from './VersionField';
 
@@ -22,39 +22,36 @@ export function DeepLinkPerDevice({
     return (
         <Box>
             {devices.map((device, deviceIndex) => (
-                <Box key={device.so} mb={3}>
-                    {deviceIndex > 0 && <Divider sx={{ mb: 3 }} />}
+                <Box key={device.so} mt={deviceIndex === 0 ? 0 : 3} mb={2}>
 
-                    <Typography variant="caption" fontWeight={700}
-                        sx={{ textTransform: 'uppercase', display: 'block', mb: 1 }}>
+                    <Typography variant="labelDevice" mb={2}>
                         {device.so}
                     </Typography>
 
                     {/* Fallback URL — fixed row, always present */}
-                    <Grid container spacing={2} alignItems="flex-center" mb={1}>
-                        <Grid item xs={12} sm={4}>
+                    <Grid container spacing={2} alignItems="flex-start" mb={2}>
+                        <Grid item sx={{ width: 160, flexShrink: 0 }}>
                             <TextField fullWidth disabled label="Versione" value="fallBackLink" />
                         </Grid>
                         <Grid item xs>
                             <TextField
                                 fullWidth
-                                required
-                                InputLabelProps={{ required: false }}
-                                label="URL Redirect *"
+                                required={device.so !== 'WEB'}
+                                label="URL Redirect"
                                 value={device.fallBackLink}
                                 onChange={(e) => onFallBackChange(deviceIndex, e.target.value)}
                                 error={Boolean(errors?.[deviceIndex]?.fallBackLink)}
-                                helperText={errors?.[deviceIndex]?.fallBackLink || ' '}
+                                helperText={errors?.[deviceIndex]?.fallBackLink}
                             />
                         </Grid>
                     </Grid>
 
                     {/* Additional version rows */}
                     {device.versions.map((version, versionIndex) => (
-                        <Grid container spacing={2} alignItems="flex-start" key={versionIndex} mb={1}>
-                            <Grid item xs={12} sm={4}>
+                        <Grid container spacing={2} alignItems="flex-start" key={versionIndex} mb={2}>
+                            <Grid item sx={{ width: 160, flexShrink: 0 }}>
                                 <VersioneField
-                                    showTooltip={versionIndex === 0} // tooltip only on first row per device
+                                    showTooltip={versionIndex === 0}
                                     value={version.versionKey}
                                     onChange={(val) => onVersionChange(deviceIndex, versionIndex, 'versionKey', val)}
                                     error={Boolean(errors?.[deviceIndex]?.versions?.[versionIndex]?.versionKey)}
@@ -65,8 +62,7 @@ export function DeepLinkPerDevice({
                                 <TextField
                                     fullWidth
                                     required
-                                    InputLabelProps={{ required: false }}
-                                    label="URL Redirect *"
+                                    label="URL Redirect"
                                     value={version.link}
                                     onChange={(e) => onVersionChange(deviceIndex, versionIndex, 'link', e.target.value)}
                                     error={Boolean(errors?.[deviceIndex]?.versions?.[versionIndex]?.link)}
@@ -77,7 +73,7 @@ export function DeepLinkPerDevice({
                                 <IconButton
                                     onClick={() => onRemoveVersion(deviceIndex, versionIndex)}
                                     aria-label="Rimuovi versione"
-                                    sx={{ mt: '8px' }}
+                                    sx={{ alignContent: 'center' }}
                                 >
                                     <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 20, height: 24 }} />
                                 </IconButton>

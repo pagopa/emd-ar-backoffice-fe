@@ -4,7 +4,7 @@ export interface VersionEntry {
 }
 
 export interface DeviceLink {
-    so: 'iOS' | 'Android' | 'Web';
+    so: 'ANDROID' | 'IOS' | 'WEB';
     fallBackLink: string;
     versions: VersionEntry[];
 }

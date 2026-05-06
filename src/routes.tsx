@@ -4,7 +4,8 @@ const ROUTES = {
     AUTH: `/auth`,
     ONBOARDING: '/onboarding',
     CREDENTIALS: '/credentials',
-    CREDENTIALS_MODIFY: '/credentials/modify'
+    CREDENTIALS_MODIFY: '/credentials/modify',
+    ENDPOINT_MODIFY: `/endpoint/modify`,
 };
 
 export default ROUTES;
