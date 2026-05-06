@@ -22,8 +22,7 @@ export function VersioneField({
         <TextField
             fullWidth
             required
-            InputLabelProps={{ required: false }}
-            label="Versione *"
+            label="Versione"
             placeholder="es. v1"
             value={value}
             onChange={(e) => onChange(e.target.value)}
@@ -39,6 +38,7 @@ export function VersioneField({
                         </Tooltip>
                     </InputAdornment>
                 ),
+                sx: { paddingRight: 0 },
             } : undefined}
         />
     );

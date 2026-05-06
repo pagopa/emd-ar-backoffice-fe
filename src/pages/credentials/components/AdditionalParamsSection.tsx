@@ -22,7 +22,6 @@ const AdditionalParamsSection = ({ bodyParams, pathParams, onModify }: Additiona
                 alignItems="center"
                 justifyContent={"space-between"}
                 gap={0.5}
-                sx={{ cursor: 'pointer', color: 'primary.main' }}
             >
                 <Typography variant="h6">Parametri aggiuntivi </Typography>
                 <ButtonNaked onClick={() => { onModify() }} color="primary" style={{ display: "flex", gap: 8 }}>

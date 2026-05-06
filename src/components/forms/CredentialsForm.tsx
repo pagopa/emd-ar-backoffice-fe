@@ -13,7 +13,7 @@ import {
     MenuItem, TextField, Typography,
 } from '@mui/material';
 import type { FormikProps } from 'formik';
-import type { Step2Values } from '../types/stepsOnboarding';
+import type { Step2Values } from '../../types/stepsOnboarding';
 
 
 export default function CredentialsForm({ formik }: Readonly<{ formik: FormikProps<Step2Values> }>) {
@@ -163,7 +163,7 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                                     <IconButton
                                         aria-label="Rimuovi parametro body"
                                         onClick={() => removeBodyParam(index)}
-                                        sx={{ mt: 0.5 }}
+                                        sx={{ alignContent: 'center' }}
                                     >
                                         <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
                                     </IconButton>
@@ -225,7 +225,7 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                                     <IconButton
                                         onClick={() => removeUrlParam(index)}
                                         aria-label="Rimuovi versione"
-                                        sx={{ mt: 0.5 }}
+                                        sx={{ alignContent: 'center' }}
                                     >
                                         <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
                                     </IconButton>

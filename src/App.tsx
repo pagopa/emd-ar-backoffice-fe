@@ -1,24 +1,19 @@
-import { useEffect } from 'react';
-
+import { Suspense, useEffect } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 
-import './index.css'
+import './index.css';
 
 import SessionErrorHandler from './components/SessionErrorHandler';
 import withAuth from './decorator/withAuth';
-import Auth from './pages/auth/Auth';
-import Credentials from './pages/credentials/Credentials';
-import CredentialsModify from './pages/credentials/modify/CredentialsModify';
-import Home from './pages/home/Home';
-import Onboarding from './pages/onboarding/Onboarding';
 import { useAppDispatch, useAppSelector } from './redux/hook';
 import { setOrganization, setTppId } from './redux/slices/organizationSlice';
-import ROUTES from './routes';
+import ROUTES, { Auth, Credentials, CredentialsModify, EndpointModify, Home, Onboarding } from './routes';
 import { getOrganizationFromStorage } from './utils/organization';
 
 import { ErrorBoundary } from '@pagopa/selfcare-common-frontend/lib';
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import Layout from './components/layoutPages/Layout';
 
 export const useInitSession = () => {
     const dispatch = useAppDispatch();
@@ -28,16 +23,9 @@ export const useInitSession = () => {
         const tppId = localStorage.getItem('acs_tpp_id');
         const user = storageUserOps.read();
 
-        if (organization) {
-            dispatch(setOrganization(organization));
-        }
-
-        if (user) {
-            dispatch(userActions.setLoggedUser(user));
-        }
-        if (tppId) {
-            dispatch(setTppId(tppId))
-        };
+        if (organization) dispatch(setOrganization(organization));
+        if (user) dispatch(userActions.setLoggedUser(user));
+        if (tppId) dispatch(setTppId(tppId));
     }, [dispatch]);
 };
 
@@ -47,38 +35,52 @@ function Root() {
     return (
         <ErrorBoundary>
             <SessionErrorHandler />
-            <Outlet />
+            {/* Suspense cover all lazy routes */}
+            <Suspense fallback={null}>
+                <Outlet />
+            </Suspense>
         </ErrorBoundary>
     );
 }
 
 
 const ProtectedOnboarding = () => {
-    const tppId = useAppSelector((state) => state.organization.tppId)
-        ?? localStorage.getItem('acs_tpp_id');
+    const tppId =
+        useAppSelector((state) => state.organization.tppId) ??
+        localStorage.getItem('acs_tpp_id');
 
-    return tppId
-        ? <Navigate to={ROUTES.HOME} replace />
-        : <Onboarding />;
+    return tppId ? <Navigate to={ROUTES.HOME} replace /> : <Onboarding />;
 };
 
 const AuthOutlet = withAuth(() => <Outlet />);
-
+const LayoutWithSidebar = () => <Layout showSidebar><Outlet /></Layout>;
+const LayoutWithoutSidebar = () => <Layout><Outlet /></Layout>;
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <Root />,
         children: [
-            { path: 'auth', element: <Auth /> },
+            { path: ROUTES.AUTH, element: <Auth /> },
             {
-                element: <AuthOutlet />,  // wrapper for check logged user
+                element: <AuthOutlet />,
                 children: [
-                    { index: true, element: <Home /> },
-                    { path: 'onboarding', element: <ProtectedOnboarding /> },
-                    { path: 'credentials', element: <Credentials /> },
-                    { path: 'credentials/modify', element: <CredentialsModify /> },
-                    { path: '*', element: <Navigate to="/" replace /> },
+                    {
+                        element: <LayoutWithSidebar />,
+                        children: [
+                            { index: true, element: <Home /> },
+                            { path: ROUTES.CREDENTIALS, element: <Credentials /> },
+                        ],
+                    },
+                    {
+                        element: <LayoutWithoutSidebar />,
+                        children: [
+                            { path: ROUTES.ONBOARDING, element: <ProtectedOnboarding /> },
+                            { path: ROUTES.CREDENTIALS_MODIFY, element: <CredentialsModify /> },
+                            { path: ROUTES.ENDPOINT_MODIFY, element: <EndpointModify /> },
+                            { path: '*', element: <Navigate to={ROUTES.HOME} replace /> },
+                        ],
+                    },
                 ],
             },
         ],

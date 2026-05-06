@@ -1,5 +1,5 @@
 import { OpenInNew as RedirectExternal, type SvgIconComponent } from '@mui/icons-material';
-import { Icon,ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Icon, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 type Props = {
     handleClick?: () => void;
@@ -10,6 +10,7 @@ type Props = {
     disabled?: boolean;
     href?: string;
     target?: string;
+    collapsed?: boolean;
 };
 
 export default function SidenavItem({
@@ -21,6 +22,7 @@ export default function SidenavItem({
     disabled = false,
     href,
     target,
+    collapsed = false
 }: Readonly<Props>) {
     const isExternal = Boolean(href);
 
@@ -36,29 +38,20 @@ export default function SidenavItem({
         >
             <ListItemIcon sx={{ ml: level }}>
                 {typeof icon === 'string' ? (
-                    <img
-                        src={icon}
-                        alt=""
-                        aria-hidden="true"
-                        style={{ width: 20, marginInline:2, height: 24 }}
-                    />
+                    <img src={icon} alt="" aria-hidden="true" style={{ width: 20, marginInline: 2, height: 24 }} />
                 ) : (
                     <Icon style={{ width: 24, height: 24 }} component={icon} />
                 )}
             </ListItemIcon>
+
             <ListItemText
                 primary={title}
-                sx={{
-                    wordWrap: 'break-word',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-word',
-                    textAlign: 'left',
-                    display: 'block',
-                }}
+                sx={{ opacity: collapsed ? 0 : 1 }}
             />
+
             {isExternal && (
-                <ListItemIcon sx={{ minWidth: 'auto' }}>
-                    <RedirectExternal fontSize="small" style={{color:'#BBC2D6'}} />
+                <ListItemIcon sx={{ opacity: collapsed ? 0 : 1 }}>
+                    <RedirectExternal fontSize="small" style={{ color: '#BBC2D6' }} />
                 </ListItemIcon>
             )}
         </ListItemButton>

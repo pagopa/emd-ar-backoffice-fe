@@ -1,11 +1,10 @@
 import { CONFIG } from '../config';
-import { MOCK_CREDENTIALS_PAGE } from '../mocks/tpp';
-import type { CredentialsPageDTO, TokenSection, TppDTO } from '../types/tpp';
+import { MOCK_CREDENTIALS_PAGE, MOCK_ENDPOINT_PAGE } from '../mocks/tpp';
+import type { CredentialsPageDTO, EndpoinLinkPageDto, SaveTppResponse, TokenSection, TppDTO } from '../types/tpp';
 import { axiosInstance } from './axiosInstance';
 
-interface SaveTppResponse {
-    tppId: string;
-}
+
+//Mock of api call
 
 const callMock = async (): Promise<SaveTppResponse> => {
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -14,41 +13,58 @@ const callMock = async (): Promise<SaveTppResponse> => {
 };
 
 
-const callMockGetTpp = async (): Promise<CredentialsPageDTO> => {
+const callMockGetTppCredentials = async (): Promise<CredentialsPageDTO> => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     return MOCK_CREDENTIALS_PAGE;
 };
 
+const callMockGetTppEnpoint = async (): Promise<EndpoinLinkPageDto> => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return MOCK_ENDPOINT_PAGE;
+};
+
+
+//TODO Call to be implemented
 
 export const saveTpp = async (form: TppDTO): Promise<SaveTppResponse> => {
-
-    const { data } = await axiosInstance.get(`/v1/tpp/test`);
-
-    if (CONFIG.ENV === "DEV") {
-        console.log("[TPP] form :", JSON.parse(JSON.stringify(form)))
-        console.log("[TPP] resposnse :", JSON.parse(JSON.stringify(data)))
+    if (CONFIG.MOCK_ACTIVE) {
+        console.log('[TPP][MOCK] saveTpp:', form);
+        return callMock();
     }
-
-    return callMock();
+    const { data } = await axiosInstance.post<SaveTppResponse>('/v1/tpp', form);
+    return data;
 };
 
 
 export const saveCredentialsTpp = async (form: TokenSection): Promise<SaveTppResponse> => {
-
-    const { data } = await axiosInstance.get(`/v1/tpp/test`);
-
-    if (CONFIG.ENV === "DEV") {
-        console.log("[TPP] form :", JSON.parse(JSON.stringify(form)))
-        console.log("[TPP] resposnse :", JSON.parse(JSON.stringify(data)))
+    if (CONFIG.MOCK_ACTIVE) {
+        console.log('[TPP][MOCK] saveCredentialsTpp:', form);
+        return callMock();
     }
-
-    return callMock();
+    const { data } = await axiosInstance.post<SaveTppResponse>('/v1/tpp/credentials', form);
+    return data;
 };
 
 
+export const saveEndpointTpp = async (form: EndpoinLinkPageDto): Promise<SaveTppResponse> => {
+    if (CONFIG.MOCK_ACTIVE) {
+        console.log('[TPP][MOCK] saveEndpointTpp:', form);
+        return callMock();
+    }
+    const { data } = await axiosInstance.post<SaveTppResponse>('/v1/tpp/endpoint', form);
+    return data;
+};
 
 
-export const getTpp = async (): Promise<CredentialsPageDTO> => {
+export const getTppCredentials = async (): Promise<CredentialsPageDTO> => {
+    if (CONFIG.MOCK_ACTIVE) return callMockGetTppCredentials();
+    const { data } = await axiosInstance.get<CredentialsPageDTO>('/v1/tpp/credentials');
+    return data;
+};
 
-    return callMockGetTpp();
+
+export const getTppEndpoint = async (): Promise<EndpoinLinkPageDto> => {
+    if (CONFIG.MOCK_ACTIVE) return callMockGetTppEnpoint();
+    const { data } = await axiosInstance.get<EndpoinLinkPageDto>('/v1/tpp/endpoint');
+    return data;
 };
