@@ -59,17 +59,17 @@ export const MOCK_ENDPOINT_PAGE: EndpoinLinkPageDto = {
     authenticationUrl: 'https://api.tpp.com/auth',
     authenticationType: 'OAuth2',
     agentLinks: {
+        ANDROID: {
+            fallBackLink: 'https://api.tpp.com/android/fallback',
+            versions: {
+                v1: { link: 'https://api.tpp.com/android' },
+            },
+        },
         IOS: {
             fallBackLink: 'https://api.tpp.com/ios/fallback',
             versions: {
                 v1: { link: 'https://api.tpp.com/ios' },
                 v2: { link: 'https://api2.tpp.com/ios' },
-            },
-        },
-        ANDROID: {
-            fallBackLink: 'https://api.tpp.com/android/fallback',
-            versions: {
-                v1: { link: 'https://api.tpp.com/android' },
             },
         },
     },
