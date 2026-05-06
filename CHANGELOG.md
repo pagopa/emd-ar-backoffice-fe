@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.5...v1.3.0) (2026-05-06)
+
+
+### Features
+
+* MMC-499 update page home and page modify endpoint tpp ([#26](https://github.com/pagopa/emd-ar-backoffice-fe/issues/26)) ([da2793d](https://github.com/pagopa/emd-ar-backoffice-fe/commit/da2793d0d8a814940e899c091f200aac68a4c28c))
+* MMC-500 add page handling credentials and formatting of imports with prettier ([#24](https://github.com/pagopa/emd-ar-backoffice-fe/issues/24)) ([512b63a](https://github.com/pagopa/emd-ar-backoffice-fe/commit/512b63a6790d2b8906e332e9e6cfb73c1d1c96ef))
+
 ## [1.2.5](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.4...v1.2.5) (2026-04-24)
 
 
