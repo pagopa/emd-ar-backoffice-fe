@@ -2,7 +2,7 @@ import { Box, Button, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getOverview } from '../../api/tpp';
+import { getTppEndpoint } from '../../api/tpp';
 import ROUTES from '../../routes';
 import { DeepLinkSection } from './components/DeepLinkSection';
 import { EndpointSection } from './components/EndpointSection';
@@ -16,7 +16,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        void getOverview().then((data) => {
+        void getTppEndpoint().then((data) => {
             setOverviewData(data);
             setLoading(false);
         });
@@ -27,7 +27,7 @@ const Home = () => {
     }
 
     const onModify = () => {
-        void navigate(ROUTES.HOME, { replace: true });
+        void navigate(ROUTES.ENDPOINT_MODIFY, { replace: true });
     };
 
     return (

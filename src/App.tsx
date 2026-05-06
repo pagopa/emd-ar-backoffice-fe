@@ -20,6 +20,7 @@ import { ErrorBoundary } from '@pagopa/selfcare-common-frontend/lib';
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import Layout from './components/layoutPages/Layout';
+import EndpointModify from './pages/home/modify/EndpointModify';
 
 export const useInitSession = () => {
     const dispatch = useAppDispatch();
@@ -72,7 +73,7 @@ export const router = createBrowserRouter([
         path: '/',
         element: <Root />,
         children: [
-            { path: 'auth', element: <Auth /> },
+            { path: ROUTES.AUTH, element: <Auth /> },
             {
                 element: <AuthOutlet />,
                 children: [
@@ -80,15 +81,16 @@ export const router = createBrowserRouter([
                         element: <LayoutWithSidebar/>,
                         children: [
                             { index: true, element: <Home /> },
-                            { path: 'credentials', element: <Credentials /> },
+                            { path: ROUTES.CREDENTIALS, element: <Credentials /> },
                         ],
                     },
                     {
                         element: <LayoutWithoutSidebar />,
                         children: [
-                            { path: 'onboarding', element: <ProtectedOnboarding /> },
-                            { path: 'credentials/modify', element: <CredentialsModify /> },
-                            { path: '*', element: <Navigate to="/" replace /> },
+                            { path: ROUTES.ONBOARDING, element: <ProtectedOnboarding /> },
+                            { path: ROUTES.CREDENTIALS_MODIFY, element: <CredentialsModify /> },
+                            { path: ROUTES.ENDPOINT_MODIFY, element: <EndpointModify /> },
+                            { path: '*', element: <Navigate to={ROUTES.HOME} replace /> },
                         ],
                     },
                 ],
