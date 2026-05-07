@@ -13,7 +13,7 @@ export interface TokenSection {
     pathAdditionalProperties?: Record<string, string>;
 }
 
-export type AuthenticationType = 'OAuth2';
+export type AuthenticationType = 'OAUTH2';
 
 export interface TppDTO {
     entityId: string;
@@ -22,6 +22,7 @@ export interface TppDTO {
     authenticationUrl: string;
     authenticationType: AuthenticationType;
     tokenSection: TokenSection;
+    pspDenomination: string;
     agentLinks: Record<string, AgentLink>;
 }
 

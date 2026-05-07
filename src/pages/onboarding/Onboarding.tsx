@@ -31,7 +31,7 @@ const Onboarding = () => {
     const initialValues: AllValues = {
         webhookUrl: '',
         authUrl: '',
-        authType: 'OAuth2',
+        authType: 'OAUTH2',
         deepLinkType: 'universale',
         deepLinkUniversale: { fallBackLink: '', versions: [] },
         deepLinkDevices: [
@@ -83,8 +83,11 @@ const Onboarding = () => {
                     grant_type: values.grantType,
                     ...bodyExtra,
                 },
+                ...(Object.keys(urlExtra).length > 0 && {
                 pathAdditionalProperties: urlExtra,
+            }),
             },
+            pspDenomination: organization?.name ?? '',
             authenticationType: values.authType as AuthenticationType,
             agentLinks: buildAgentLinks(values),
         };

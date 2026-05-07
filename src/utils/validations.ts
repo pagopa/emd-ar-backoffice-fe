@@ -53,7 +53,7 @@ export const endpointSchema = Yup.object({
                 Yup.object({
                     so: Yup.string(),
                     fallBackLink: Yup.string().when('so', {
-                        is: (so: string) => so !== 'Web',
+                        is: (so: string) => so !== 'WEB',
                         then: (s) =>
                             s.matches(URL_REGEX, 'URL non valido').required('Campo obbligatorio'),
                         otherwise: (s) =>
