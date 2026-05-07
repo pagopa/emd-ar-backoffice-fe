@@ -12,6 +12,8 @@ export default defineConfig({
       '@mui/system',
       '@emotion/react',
       '@emotion/styled',
+      'i18next',        
+      'react-i18next', 
     ],
   },
   optimizeDeps: {

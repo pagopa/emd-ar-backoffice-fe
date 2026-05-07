@@ -17,11 +17,14 @@ import type { Step1Values, Step2Values } from '../../types/stepsOnboarding';
 import type { AuthenticationType, TppDTO } from '../../types/tpp';
 import { buildAgentLinks } from '../../utils/deepLink';
 import { credentialsSchema, endpointSchema } from '../../utils/validations';
+import { useApiErrorHandler } from '../../hook/useApiErrorHandler';
 
 
 const Onboarding = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch();
+    const handleApiError = useApiErrorHandler();
+
     const organization = useAppSelector((state) => state.organization.organization);
 
     type AllValues = Step1Values & Step2Values;
@@ -55,13 +58,18 @@ const Onboarding = () => {
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: async (values, { setSubmitting }) => {
-            if (isLastStep) {
-                await saveTPP(values)
-            } else {
-                setActiveStep((prev) => prev + 1);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            try {
+                if (isLastStep) {
+                    await saveTPP(values)
+                } else {
+                    setActiveStep((prev) => prev + 1);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            } catch (err) {
+                handleApiError(err);
+            } finally {
+                setSubmitting(false);
             }
-            setSubmitting(false);
         },
     });
 
@@ -84,8 +92,8 @@ const Onboarding = () => {
                     ...bodyExtra,
                 },
                 ...(Object.keys(urlExtra).length > 0 && {
-                pathAdditionalProperties: urlExtra,
-            }),
+                    pathAdditionalProperties: urlExtra,
+                }),
             },
             pspDenomination: organization?.name ?? '',
             authenticationType: values.authType as AuthenticationType,

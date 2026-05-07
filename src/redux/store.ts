@@ -1,5 +1,6 @@
 import organizationReducer from './slices/organizationSlice';
 import sessionReducer from './slices/sessionSlice';
+import notificationReducer from './slices/notificationSlice';
 
 import { appStateReducer } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
 import { userReducer } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
@@ -10,9 +11,18 @@ export const store = configureStore({
         appState: appStateReducer,
         organization: organizationReducer,
         user: userReducer,
-        session: sessionReducer
+        session: sessionReducer,
+        notification: notificationReducer
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredPaths: ['appState.errors'],
+                ignoredActions: ['appState/addError', 'appState/removeError'],
+            },
+        }),
 });
+
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
