@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.4.0...v1.4.1) (2026-05-07)
+
+
+### Bug Fixes
+
+* errors build for change authenticationType enum ([40e27ce](https://github.com/pagopa/emd-ar-backoffice-fe/commit/40e27ced38ca5af34dcfbfa404be728673840276))
+
 ## [1.4.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.3.1...v1.4.0) (2026-05-07)
 
 
