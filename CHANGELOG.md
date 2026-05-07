@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.3.0...v1.3.1) (2026-05-07)
+
+
+### Bug Fixes
+
+* Add mock data for dev env ([bf4a8cb](https://github.com/pagopa/emd-ar-backoffice-fe/commit/bf4a8cb149ba4611955174f179ac8ee8d6a93075))
+
 ## [1.3.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.2.5...v1.3.0) (2026-05-06)
 
 
