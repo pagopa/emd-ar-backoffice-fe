@@ -61,6 +61,32 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
         void setFieldValue('deepLinkDevices', updated);
     };
 
+    const handleDeviceFallBackBlur = (devIdx: number) =>
+        void setTouched({
+            ...touched,
+            deepLinkDevices: values.deepLinkDevices.map((_, i) =>
+                i === devIdx
+                    ? { ...((touched as any).deepLinkDevices?.[i] ?? {}), fallBackLink: true }
+                    : ((touched as any).deepLinkDevices?.[i] ?? {})
+            ),
+        });
+
+    const handleDeviceVersionBlur = (devIdx: number, vIdx: number, field: 'versionKey' | 'link') => {
+        const currentDevicesTouched = (touched as any).deepLinkDevices ?? [];
+        const updatedDevices = values.deepLinkDevices.map((_, i) => {
+            if (i !== devIdx) return currentDevicesTouched[i] ?? {};
+            const currentVersions = currentDevicesTouched[devIdx]?.versions ?? [];
+            const updatedVersions = currentVersions.map((v: any, vi: number) =>
+                vi === vIdx ? { ...v, [field]: true } : v
+            );
+            // Estendi se necessario
+            while (updatedVersions.length <= vIdx) updatedVersions.push({});
+            updatedVersions[vIdx] = { ...updatedVersions[vIdx], [field]: true };
+            return { ...currentDevicesTouched[i], versions: updatedVersions };
+        });
+        void setTouched({ ...touched, deepLinkDevices: updatedDevices });
+    };
+
     return (
         <Box>
             {/* Endpoint configuration */}
@@ -95,7 +121,7 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
                         <TextField fullWidth select disabled id="authType" name="authType"
                             label="Tipo di autenticazione" value={values.authType}
                             onChange={handleChange} onBlur={handleBlur}>
-                            <option value="OAuth2">OAuth2</option>
+                            <option value="OAUTH2">OAuth2</option>
                         </TextField>
                     </Grid>
                 </Grid>
@@ -150,8 +176,11 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
                     <DeepLinkPerDevice
                         devices={values.deepLinkDevices}
                         errors={errors.deepLinkDevices as any}
+                        touched={(touched as any).deepLinkDevices}
                         onFallBackChange={handleDeviceFallBackChange}
+                        onFallBackBlur={handleDeviceFallBackBlur}
                         onVersionChange={handleDeviceVersionChange}
+                        onVersionBlur={handleDeviceVersionBlur}
                         onAddVersion={addDeviceVersion}
                         onRemoveVersion={removeDeviceVersion}
                     />

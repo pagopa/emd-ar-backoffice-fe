@@ -23,9 +23,8 @@ const callMockGetTppEnpoint = async (): Promise<EndpoinLinkPageDto> => {
 };
 
 
-//TODO Call to be implemented
 export const saveTpp = async (form: TppDTO): Promise<SaveTppResponse> => {
-    if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) {
+    if (CONFIG.MOCK_ACTIVE) {
         console.log('[TPP][MOCK] saveTpp:', form);
         return callMock();
     }

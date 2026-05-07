@@ -9,15 +9,18 @@ import type { DeviceLink, VersionEntry } from '../../types/stepsOnboarding';
 interface Props {
     devices: DeviceLink[];
     errors: any;
+    touched: any;
     onFallBackChange: (deviceIndex: number, val: string) => void;
+    onFallBackBlur: (deviceIndex: number) => void;
     onVersionChange: (deviceIndex: number, versionIndex: number, field: keyof VersionEntry, val: string) => void;
+    onVersionBlur: (deviceIndex: number, versionIndex: number, field: keyof VersionEntry) => void;
     onAddVersion: (deviceIndex: number) => void;
     onRemoveVersion: (deviceIndex: number, versionIndex: number) => void;
 }
 
 export function DeepLinkPerDevice({
-    devices, errors,
-    onFallBackChange, onVersionChange, onAddVersion, onRemoveVersion,
+    devices, errors, touched,
+    onFallBackChange, onVersionChange, onAddVersion, onRemoveVersion, onFallBackBlur, onVersionBlur
 }: Readonly<Props>) {
     return (
         <Box>
@@ -40,8 +43,10 @@ export function DeepLinkPerDevice({
                                 label="URL Redirect"
                                 value={device.fallBackLink}
                                 onChange={(e) => onFallBackChange(deviceIndex, e.target.value)}
-                                error={Boolean(errors?.[deviceIndex]?.fallBackLink)}
-                                helperText={errors?.[deviceIndex]?.fallBackLink}
+                                onBlur={() => onFallBackBlur(deviceIndex)}
+                                error={Boolean(touched?.[deviceIndex]?.fallBackLink && errors?.[deviceIndex]?.fallBackLink)}
+                                helperText={touched?.[deviceIndex]?.fallBackLink && errors?.[deviceIndex]?.fallBackLink}
+
                             />
                         </Grid>
                     </Grid>
@@ -65,8 +70,15 @@ export function DeepLinkPerDevice({
                                     label="URL Redirect"
                                     value={version.link}
                                     onChange={(e) => onVersionChange(deviceIndex, versionIndex, 'link', e.target.value)}
-                                    error={Boolean(errors?.[deviceIndex]?.versions?.[versionIndex]?.link)}
-                                    helperText={errors?.[deviceIndex]?.versions?.[versionIndex]?.link || ''}
+                                    onBlur={() => onVersionBlur(deviceIndex, versionIndex, 'link')}
+                                    error={Boolean(
+                                        touched?.[deviceIndex]?.versions?.[versionIndex]?.link &&
+                                        errors?.[deviceIndex]?.versions?.[versionIndex]?.link
+                                    )}
+                                    helperText={
+                                        touched?.[deviceIndex]?.versions?.[versionIndex]?.link &&
+                                        errors?.[deviceIndex]?.versions?.[versionIndex]?.link || ''
+                                    }
                                 />
                             </Grid>
                             <Grid item xs="auto">

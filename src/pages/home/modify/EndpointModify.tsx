@@ -73,7 +73,7 @@ const EndpointModify = () => {
         const payload: EndpoinLinkPageDto = {
             messageUrl: values.webhookUrl,
             authenticationUrl: values.authUrl,
-            authenticationType: "OAuth2",
+            authenticationType: "OAUTH2",
             agentLinks: buildAgentLinks(values),
         };
         const { tppId } = await saveEndpointTpp(payload);
