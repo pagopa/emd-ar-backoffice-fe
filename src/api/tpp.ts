@@ -5,7 +5,6 @@ import { axiosInstance } from './axiosInstance';
 
 
 //Mock of api call
-
 const callMock = async (): Promise<SaveTppResponse> => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     const tppId = crypto.randomUUID();
@@ -25,9 +24,8 @@ const callMockGetTppEnpoint = async (): Promise<EndpoinLinkPageDto> => {
 
 
 //TODO Call to be implemented
-
 export const saveTpp = async (form: TppDTO): Promise<SaveTppResponse> => {
-    if (CONFIG.MOCK_ACTIVE) {
+    if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) {
         console.log('[TPP][MOCK] saveTpp:', form);
         return callMock();
     }
@@ -36,8 +34,9 @@ export const saveTpp = async (form: TppDTO): Promise<SaveTppResponse> => {
 };
 
 
+//TODO Call to be implemented
 export const saveCredentialsTpp = async (form: TokenSection): Promise<SaveTppResponse> => {
-    if (CONFIG.MOCK_ACTIVE) {
+    if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) {
         console.log('[TPP][MOCK] saveCredentialsTpp:', form);
         return callMock();
     }
@@ -46,8 +45,9 @@ export const saveCredentialsTpp = async (form: TokenSection): Promise<SaveTppRes
 };
 
 
+//TODO Call to be implemented
 export const saveEndpointTpp = async (form: EndpoinLinkPageDto): Promise<SaveTppResponse> => {
-    if (CONFIG.MOCK_ACTIVE) {
+    if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) {
         console.log('[TPP][MOCK] saveEndpointTpp:', form);
         return callMock();
     }
@@ -56,15 +56,17 @@ export const saveEndpointTpp = async (form: EndpoinLinkPageDto): Promise<SaveTpp
 };
 
 
+//TODO Call to be implemented
 export const getTppCredentials = async (): Promise<CredentialsPageDTO> => {
-    if (CONFIG.MOCK_ACTIVE) return callMockGetTppCredentials();
+    if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) return callMockGetTppCredentials();
     const { data } = await axiosInstance.get<CredentialsPageDTO>('/v1/tpp/credentials');
     return data;
 };
 
 
+//TODO Call to be implemented
 export const getTppEndpoint = async (): Promise<EndpoinLinkPageDto> => {
-    if (CONFIG.MOCK_ACTIVE) return callMockGetTppEnpoint();
+    if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) return callMockGetTppEnpoint();
     const { data } = await axiosInstance.get<EndpoinLinkPageDto>('/v1/tpp/endpoint');
     return data;
 };
