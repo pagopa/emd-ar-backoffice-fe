@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.3.1...v1.4.0) (2026-05-07)
+
+
+### Features
+
+* MMC-507 Implementazion call of save of a tpp for onboarding ([#29](https://github.com/pagopa/emd-ar-backoffice-fe/issues/29)) ([b760ce3](https://github.com/pagopa/emd-ar-backoffice-fe/commit/b760ce3dd5684509b3f6f4dec0dc8c534bf09577))
+
 ## [1.3.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.3.0...v1.3.1) (2026-05-07)
 
 
