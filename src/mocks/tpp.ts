@@ -5,7 +5,7 @@ export const MOCK_TPP_DTO: TppDTO = {
     businessName: 'Mock Business S.p.A.',
     messageUrl: 'https://mock.business.it/messages',
     authenticationUrl: 'https://mock.business.it/auth',
-    authenticationType: 'OAuth2',
+    authenticationType: 'OAUTH2',
     tokenSection: {
         contentType: 'application/x-www-form-urlencoded',
         bodyAdditionalProperties: {
@@ -29,6 +29,7 @@ export const MOCK_TPP_DTO: TppDTO = {
             },
         },
     },
+    pspDenomination: "Mock Business S.p.A."
 };
 
 export const MOCK_CREDENTIALS_PAGE: CredentialsPageDTO = {
@@ -57,7 +58,7 @@ export const MOCK_CREDENTIALS_PAGE: CredentialsPageDTO = {
 export const MOCK_ENDPOINT_PAGE: EndpoinLinkPageDto = {
     messageUrl: 'https://api.tpp.com/messages',
     authenticationUrl: 'https://api.tpp.com/auth',
-    authenticationType: 'OAuth2',
+    authenticationType: 'OAUTH2',
     agentLinks: {
         ANDROID: {
             fallBackLink: 'https://api.tpp.com/android/fallback',
