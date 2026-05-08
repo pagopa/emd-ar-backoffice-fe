@@ -1,11 +1,12 @@
+import axios from 'axios';
 import { CONFIG } from '../config';
 import { MOCK_CREDENTIALS_PAGE, MOCK_ENDPOINT_PAGE } from '../mocks/tpp';
-import type { CredentialsPageDTO, EndpoinLinkPageDto, SaveTppResponse, TokenSection, TppDTO } from '../types/tpp';
+import type { CredentialsPageDTO, EndpoinLinkPageDto, TppIdResponse, TokenSection, TppDTO } from '../types/tpp';
 import { axiosInstance } from './axiosInstance';
 
 
 //Mock of api call
-const callMock = async (): Promise<SaveTppResponse> => {
+const callMock = async (): Promise<TppIdResponse> => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     const tppId = crypto.randomUUID();
     return { tppId };
@@ -23,34 +24,40 @@ const callMockGetTppEnpoint = async (): Promise<EndpoinLinkPageDto> => {
 };
 
 
-export const saveTpp = async (form: TppDTO): Promise<SaveTppResponse> => {
+const callMockRedirect = async (): Promise<TppIdResponse> => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return { tppId: 'mock-tpp-id-00000000-0000-0000-0000-000000000000-1706867960900' };
+};
+
+
+export const saveTpp = async (form: TppDTO): Promise<TppIdResponse> => {
     if (CONFIG.MOCK_ACTIVE) {
         console.log('[TPP][MOCK] saveTpp:', form);
         return callMock();
     }
-    const { data } = await axiosInstance.post<SaveTppResponse>('/v1/tpp', form);
+    const { data } = await axiosInstance.post<TppIdResponse>('/v1/tpp', form);
     return data;
 };
 
 
 //TODO Call to be implemented
-export const saveCredentialsTpp = async (form: TokenSection): Promise<SaveTppResponse> => {
+export const saveCredentialsTpp = async (form: TokenSection): Promise<TppIdResponse> => {
     if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) {
         console.log('[TPP][MOCK] saveCredentialsTpp:', form);
         return callMock();
     }
-    const { data } = await axiosInstance.post<SaveTppResponse>('/v1/tpp/credentials', form);
+    const { data } = await axiosInstance.post<TppIdResponse>('/v1/tpp/credentials', form);
     return data;
 };
 
 
 //TODO Call to be implemented
-export const saveEndpointTpp = async (form: EndpoinLinkPageDto): Promise<SaveTppResponse> => {
+export const saveEndpointTpp = async (form: EndpoinLinkPageDto): Promise<TppIdResponse> => {
     if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) {
         console.log('[TPP][MOCK] saveEndpointTpp:', form);
         return callMock();
     }
-    const { data } = await axiosInstance.post<SaveTppResponse>('/v1/tpp/endpoint', form);
+    const { data } = await axiosInstance.post<TppIdResponse>('/v1/tpp/endpoint', form);
     return data;
 };
 
@@ -68,4 +75,20 @@ export const getTppEndpoint = async (): Promise<EndpoinLinkPageDto> => {
     if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) return callMockGetTppEnpoint();
     const { data } = await axiosInstance.get<EndpoinLinkPageDto>('/v1/tpp/endpoint');
     return data;
+};
+
+
+export const getTppByEntityId = async (): Promise<TppIdResponse | null> => {
+    if (CONFIG.MOCK_ACTIVE) {
+        return callMockRedirect()
+    }
+    try {
+        const { data } = await axiosInstance.get<TppIdResponse>(`/v1/tpp`);
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+            return null;
+        }
+        throw error;
+    }
 };

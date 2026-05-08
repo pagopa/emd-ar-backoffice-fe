@@ -1,36 +1,19 @@
 import './i18n';
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 
 import './index.css';
 
 import SessionErrorHandler from './components/SessionErrorHandler';
 import withAuth from './decorator/withAuth';
-import { useAppDispatch, useAppSelector } from './redux/hook';
-import { setOrganization, setTppId } from './redux/slices/organizationSlice';
+import { useAppSelector } from './redux/hook';
 import ROUTES, { Auth, Credentials, CredentialsModify, EndpointModify, Home, Onboarding } from './routes';
-import { getOrganizationFromStorage } from './utils/organization';
 
 import { ErrorBoundary } from '@pagopa/selfcare-common-frontend/lib';
 import UserNotifyHandle from '@pagopa/selfcare-common-frontend/lib/components/UserNotifyHandle';
-import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
-import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import Layout from './components/layoutPages/Layout';
-
-export const useInitSession = () => {
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        const organization = getOrganizationFromStorage();
-        const tppId = localStorage.getItem('acs_tpp_id');
-        const user = storageUserOps.read();
-
-        if (organization) dispatch(setOrganization(organization));
-        if (user) dispatch(userActions.setLoggedUser(user));
-        if (tppId) dispatch(setTppId(tppId));
-    }, [dispatch]);
-};
-
+import { useInitSession } from './hook/useInitSession';
+import LoadingScreen from './components/LoadingScreen';
 
 function Root() {
     useInitSession();
@@ -46,16 +29,25 @@ function Root() {
     );
 }
 
-
 const ProtectedOnboarding = () => {
-    const tppId =
-        useAppSelector((state) => state.organization.tppId) ??
-        localStorage.getItem('acs_tpp_id');
+    const tppId = useAppSelector((state) => state.organization.tppId);
+    const tppIdChecked = useAppSelector((state) => state.organization.tppIdChecked);
+
+    if (!tppIdChecked) return <LoadingScreen />;
 
     return tppId ? <Navigate to={ROUTES.HOME} replace /> : <Onboarding />;
 };
 
 const AuthOutlet = withAuth(() => <Outlet />);
+const TppOutlet = () => {
+    const tppId = useAppSelector((state) => state.organization.tppId);
+    const tppIdChecked = useAppSelector((state) => state.organization.tppIdChecked);
+
+    if (!tppIdChecked) return <LoadingScreen />;
+
+    return tppId ? <Outlet /> : <Navigate to={ROUTES.ONBOARDING} replace />;
+};
+
 const LayoutWithSidebar = () => <Layout showSidebar><Outlet /></Layout>;
 const LayoutWithoutSidebar = () => <Layout><Outlet /></Layout>;
 
@@ -69,19 +61,29 @@ export const router = createBrowserRouter([
                 element: <AuthOutlet />,
                 children: [
                     {
-                        element: <LayoutWithSidebar />,
-                        children: [
-                            { index: true, element: <Home /> },
-                            { path: ROUTES.CREDENTIALS, element: <Credentials /> },
-                        ],
-                    },
-                    {
                         element: <LayoutWithoutSidebar />,
                         children: [
                             { path: ROUTES.ONBOARDING, element: <ProtectedOnboarding /> },
-                            { path: ROUTES.CREDENTIALS_MODIFY, element: <CredentialsModify /> },
-                            { path: ROUTES.ENDPOINT_MODIFY, element: <EndpointModify /> },
-                            { path: '*', element: <Navigate to={ROUTES.HOME} replace /> },
+                        ],
+                    },
+                    {
+                        element: <TppOutlet />,
+                        children: [
+                            {
+                                element: <LayoutWithSidebar />,
+                                children: [
+                                    { index: true, element: <Home /> },
+                                    { path: ROUTES.CREDENTIALS, element: <Credentials /> },
+                                ],
+                            },
+                            {
+                                element: <LayoutWithoutSidebar />,
+                                children: [
+                                    { path: ROUTES.CREDENTIALS_MODIFY, element: <CredentialsModify /> },
+                                    { path: ROUTES.ENDPOINT_MODIFY, element: <EndpointModify /> },
+                                    { path: '*', element: <Navigate to={ROUTES.HOME} replace /> },
+                                ],
+                            },
                         ],
                     },
                 ],

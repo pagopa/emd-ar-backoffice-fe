@@ -51,6 +51,6 @@ export interface EndpoinLinkPageDto {
     agentLinks: Record<string, AgentLink>;
 }
 
-export interface SaveTppResponse {
+export interface TppIdResponse {
     tppId: string;
 }
