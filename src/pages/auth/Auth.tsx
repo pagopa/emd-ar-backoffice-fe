@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { Box, CircularProgress, Link,Typography } from '@mui/material';
+import { Box, CircularProgress, Link, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { acsHandshake, } from '../../api/auth';
+import { getTppByEntityId } from '../../api/tpp';
 import { CONFIG } from '../../config';
 import { useAppDispatch } from '../../redux/hook';
-import { setOrganization } from '../../redux/slices/organizationSlice';
+import { setOrganization, setTppId, setTppIdNotFound } from '../../redux/slices/organizationSlice';
 import ROUTES from '../../routes';
 import { saveOrganization } from '../../utils/organization';
 import { saveUser } from '../../utils/user';
@@ -33,16 +34,25 @@ const Auth = () => {
         if (CONFIG.ENV === "DEV") console.log("[ACS] urlToken : ", urlToken)
 
         acsHandshake(urlToken)
-            .then((response) => {
+            .then(async (response) => {
                 if (!response.token || !response.userInfo?.organization) {
                     throw new Error('Risposta BFF incompleta');
                 }
+
                 storageTokenOps.write(response.token);
                 const organization = saveOrganization(response.userInfo.organization);
-                const user = saveUser(response.userInfo)
+                const user = saveUser(response.userInfo);
                 dispatch(userActions.setLoggedUser(user));
                 dispatch(setOrganization(organization));
-                void navigate(ROUTES.ONBOARDING, { replace: true });
+
+                const tppResponse = await getTppByEntityId();
+                if (tppResponse?.tppId) {
+                    dispatch(setTppId(tppResponse.tppId));
+                    void navigate(ROUTES.HOME, { replace: true });
+                } else {
+                    dispatch(setTppIdNotFound());
+                    void navigate(ROUTES.ONBOARDING, { replace: true });
+                }
             })
             .catch((err) => {
                 console.error('[ACS] handshake failed:', err);
