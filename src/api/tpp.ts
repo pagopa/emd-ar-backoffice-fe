@@ -24,6 +24,12 @@ const callMockGetTppEnpoint = async (): Promise<EndpoinLinkPageDto> => {
 };
 
 
+const callMockRedirect = async (): Promise<TppIdResponse> => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return { tppId: 'mock-tpp-id-00000000-0000-0000-0000-000000000000-1706867960900' };
+};
+
+
 export const saveTpp = async (form: TppDTO): Promise<TppIdResponse> => {
     if (CONFIG.MOCK_ACTIVE) {
         console.log('[TPP][MOCK] saveTpp:', form);
@@ -74,7 +80,7 @@ export const getTppEndpoint = async (): Promise<EndpoinLinkPageDto> => {
 
 export const getTppByEntityId = async (): Promise<TppIdResponse | null> => {
     if (CONFIG.MOCK_ACTIVE) {
-        return { tppId: 'mock-tpp-id-00000000-0000-0000-0000-000000000000-1706867960900' };
+        return callMockRedirect()
     }
     try {
         const { data } = await axiosInstance.get<TppIdResponse>(`/v1/tpp`);

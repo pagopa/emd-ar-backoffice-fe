@@ -12,8 +12,8 @@ import ROUTES, { Auth, Credentials, CredentialsModify, EndpointModify, Home, Onb
 import { ErrorBoundary } from '@pagopa/selfcare-common-frontend/lib';
 import UserNotifyHandle from '@pagopa/selfcare-common-frontend/lib/components/UserNotifyHandle';
 import Layout from './components/layoutPages/Layout';
-import { CircularProgress, Box } from '@mui/material';
 import { useInitSession } from './hook/useInitSession';
+import LoadingScreen from './components/LoadingScreen';
 
 function Root() {
     useInitSession();
@@ -33,18 +33,21 @@ const ProtectedOnboarding = () => {
     const tppId = useAppSelector((state) => state.organization.tppId);
     const tppIdChecked = useAppSelector((state) => state.organization.tppIdChecked);
 
-    if (!tppIdChecked) {
-        return (
-            <Box display="flex" alignItems="center" justifyContent="center" minHeight="100vh">
-                <CircularProgress />
-            </Box>
-        );
-    }
+    if (!tppIdChecked) return <LoadingScreen />;
 
     return tppId ? <Navigate to={ROUTES.HOME} replace /> : <Onboarding />;
 };
 
 const AuthOutlet = withAuth(() => <Outlet />);
+const TppOutlet = () => {
+    const tppId = useAppSelector((state) => state.organization.tppId);
+    const tppIdChecked = useAppSelector((state) => state.organization.tppIdChecked);
+
+    if (!tppIdChecked) return <LoadingScreen />;
+
+    return tppId ? <Outlet /> : <Navigate to={ROUTES.ONBOARDING} replace />;
+};
+
 const LayoutWithSidebar = () => <Layout showSidebar><Outlet /></Layout>;
 const LayoutWithoutSidebar = () => <Layout><Outlet /></Layout>;
 
@@ -58,19 +61,29 @@ export const router = createBrowserRouter([
                 element: <AuthOutlet />,
                 children: [
                     {
-                        element: <LayoutWithSidebar />,
-                        children: [
-                            { index: true, element: <Home /> },
-                            { path: ROUTES.CREDENTIALS, element: <Credentials /> },
-                        ],
-                    },
-                    {
                         element: <LayoutWithoutSidebar />,
                         children: [
                             { path: ROUTES.ONBOARDING, element: <ProtectedOnboarding /> },
-                            { path: ROUTES.CREDENTIALS_MODIFY, element: <CredentialsModify /> },
-                            { path: ROUTES.ENDPOINT_MODIFY, element: <EndpointModify /> },
-                            { path: '*', element: <Navigate to={ROUTES.HOME} replace /> },
+                        ],
+                    },
+                    {
+                        element: <TppOutlet />,
+                        children: [
+                            {
+                                element: <LayoutWithSidebar />,
+                                children: [
+                                    { index: true, element: <Home /> },
+                                    { path: ROUTES.CREDENTIALS, element: <Credentials /> },
+                                ],
+                            },
+                            {
+                                element: <LayoutWithoutSidebar />,
+                                children: [
+                                    { path: ROUTES.CREDENTIALS_MODIFY, element: <CredentialsModify /> },
+                                    { path: ROUTES.ENDPOINT_MODIFY, element: <EndpointModify /> },
+                                    { path: '*', element: <Navigate to={ROUTES.HOME} replace /> },
+                                ],
+                            },
                         ],
                     },
                 ],
