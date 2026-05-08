@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.4.2...v1.5.0) (2026-05-08)
+
+
+### Features
+
+* MMC-506 add switch redirect with check if tpp is onboarded ([#34](https://github.com/pagopa/emd-ar-backoffice-fe/issues/34)) ([4da0532](https://github.com/pagopa/emd-ar-backoffice-fe/commit/4da053211de72b9c44a85702d660ee651031a4cb))
+
 ## [1.4.2](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.4.1...v1.4.2) (2026-05-08)
 
 
