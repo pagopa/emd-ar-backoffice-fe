@@ -1,15 +1,15 @@
 import axios from 'axios';
 import { useCallback } from 'react';
 import { useAppDispatch } from '../redux/hook';
-import { addNotification } from '../redux/slices/notificationSlice';
+import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
 
-const BUSINESS_ERRORS: Record<string | number, { message: string; severity: 'error' | 'warning' | 'info' }> = {
-    409: { message: 'Il TPP esiste già nel sistema.', severity: 'warning' },
-    404: { message: 'Risorsa non trovata.', severity: 'error' },
-    422: { message: 'Dati non validi. Controlla i campi e riprova.', severity: 'warning' },
+const BUSINESS_ERRORS: Record<string | number, { message: string }> = {
+    409: { message: 'Il TPP esiste già nel sistema.' },
+    404: { message: 'Risorsa non trovata.' },
+    422: { message: 'Dati non validi. Controlla i campi e riprova.' },
 };
 
-const FALLBACK = { message: 'Si è verificato un errore imprevisto. Riprova più tardi.', severity: 'error' as const };
+const FALLBACK_MESSAGE = 'Si è verificato un errore imprevisto. Riprova più tardi.';
 
 export const useApiErrorHandler = () => {
     const dispatch = useAppDispatch();
@@ -18,10 +18,20 @@ export const useApiErrorHandler = () => {
         if (!axios.isAxiosError(err)) return;
 
         const status = err.response?.status;
-        const backendCode = err.response?.data?.code as string | undefined;
 
-        const notification = BUSINESS_ERRORS[backendCode ?? ''] ?? (status ? BUSINESS_ERRORS[status] : undefined) ?? FALLBACK;
+        if (!status || status >= 500) return;
 
-        dispatch(addNotification(notification));
+        const found = BUSINESS_ERRORS[status];
+        const message = found?.message ?? FALLBACK_MESSAGE;
+
+        dispatch(appStateActions.addError({
+            id: `API_ERROR_${status}`,
+            error: err,
+            techDescription: `HTTP ${status}`,
+            blocking: false,
+            toNotify: true,
+            component: 'Toast',
+            displayableDescription: message,
+        }));
     }, [dispatch]);
 };

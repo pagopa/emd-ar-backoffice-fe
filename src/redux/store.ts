@@ -1,6 +1,5 @@
 import organizationReducer from './slices/organizationSlice';
 import sessionReducer from './slices/sessionSlice';
-import notificationReducer from './slices/notificationSlice';
 
 import { appStateReducer } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
 import { userReducer } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
@@ -12,7 +11,6 @@ export const store = configureStore({
         organization: organizationReducer,
         user: userReducer,
         session: sessionReducer,
-        notification: notificationReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

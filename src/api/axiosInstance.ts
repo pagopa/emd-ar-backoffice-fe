@@ -1,17 +1,12 @@
 import { CONFIG } from '../config';
 import { setSessionError } from '../redux/slices/sessionSlice';
-import { addNotification } from '../redux/slices/notificationSlice'; // ← cambia import
+import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
 import { store } from '../redux/store';
 
 import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import axios from 'axios';
 
 const BASE_URL = `${CONFIG.API_BASE_URL}/api/`;
-
-const FALLBACK_NOTIFICATION = {
-    message: 'Si è verificato un errore imprevisto. Riprova più tardi.',
-    severity: 'error' as const,
-};
 
 export const axiosPublicInstance = axios.create({
     baseURL: BASE_URL,
@@ -48,7 +43,15 @@ axiosInstance.interceptors.response.use(
                     break;
                 default:
                     if (!status || status >= 500) {
-                        store.dispatch(addNotification(FALLBACK_NOTIFICATION));
+                        store.dispatch(appStateActions.addError({
+                            id: `HTTP_${status ?? 'NETWORK'}`,
+                            error: error,
+                            techDescription: `HTTP ${status ?? 'network error'}`,
+                            blocking: false,
+                            toNotify: true,
+                            component: 'Toast',
+                            displayableDescription: 'Si è verificato un errore imprevisto. Riprova più tardi.',
+                        }));
                     }
                     break;
             }
