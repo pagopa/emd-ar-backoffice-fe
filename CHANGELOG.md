@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.4.1...v1.4.2) (2026-05-08)
+
+
+### Bug Fixes
+
+* MMC-548 add handling generic errors ([#32](https://github.com/pagopa/emd-ar-backoffice-fe/issues/32)) ([b6a5bd3](https://github.com/pagopa/emd-ar-backoffice-fe/commit/b6a5bd3e7182614b191f0dda65d3b2c9d7ec59cf))
+
 ## [1.4.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.4.0...v1.4.1) (2026-05-07)
 
 
