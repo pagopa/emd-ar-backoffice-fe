@@ -1,5 +1,6 @@
 import { CONFIG } from '../config';
 import { setSessionError } from '../redux/slices/sessionSlice';
+import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
 import { store } from '../redux/store';
 
 import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
@@ -29,7 +30,9 @@ axiosInstance.interceptors.response.use(
     (response) => response,
     (error: unknown) => {
         if (axios.isAxiosError(error)) {
-            switch (error.response?.status) {
+            const status = error.response?.status;
+
+            switch (status) {
                 case 401:
                     storageTokenOps.delete();
                     storageUserOps.delete();
@@ -38,8 +41,18 @@ axiosInstance.interceptors.response.use(
                 case 403:
                     store.dispatch(setSessionError('FORBIDDEN'));
                     break;
-                case 500:
-                    store.dispatch(setSessionError('SERVER_ERROR'));
+                default:
+                    if (!status || status >= 500) {
+                        store.dispatch(appStateActions.addError({
+                            id: `HTTP_${status ?? 'NETWORK'}`,
+                            error: error,
+                            techDescription: `HTTP ${status ?? 'network error'}`,
+                            blocking: false,
+                            toNotify: true,
+                            component: 'Toast',
+                            displayableDescription: 'Si è verificato un errore imprevisto. Riprova più tardi.',
+                        }));
+                    }
                     break;
             }
         }

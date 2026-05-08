@@ -1,4 +1,3 @@
-// redux/slices/sessionSlice.ts
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export type SessionError = 'UNAUTHORIZED' | 'FORBIDDEN' | 'SERVER_ERROR' | null;

@@ -1,3 +1,4 @@
+import './i18n';
 import { Suspense, useEffect } from 'react';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 
@@ -11,6 +12,7 @@ import ROUTES, { Auth, Credentials, CredentialsModify, EndpointModify, Home, Onb
 import { getOrganizationFromStorage } from './utils/organization';
 
 import { ErrorBoundary } from '@pagopa/selfcare-common-frontend/lib';
+import UserNotifyHandle from '@pagopa/selfcare-common-frontend/lib/components/UserNotifyHandle';
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import Layout from './components/layoutPages/Layout';
@@ -35,6 +37,7 @@ function Root() {
     return (
         <ErrorBoundary>
             <SessionErrorHandler />
+            <UserNotifyHandle />
             {/* Suspense cover all lazy routes */}
             <Suspense fallback={null}>
                 <Outlet />

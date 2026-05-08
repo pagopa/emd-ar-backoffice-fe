@@ -10,9 +10,17 @@ export const store = configureStore({
         appState: appStateReducer,
         organization: organizationReducer,
         user: userReducer,
-        session: sessionReducer
+        session: sessionReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredPaths: ['appState.errors'],
+                ignoredActions: ['appState/addError', 'appState/removeError'],
+            },
+        }),
 });
+
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

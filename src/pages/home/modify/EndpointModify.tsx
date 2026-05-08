@@ -42,8 +42,11 @@ const EndpointModify = () => {
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: async (values, { setSubmitting }) => {
-            await updateTPP(values);
-            setSubmitting(false);
+            try {
+                await updateTPP(values);
+            } finally {
+                setSubmitting(false);
+            }
         },
     });
 
@@ -63,6 +66,8 @@ const EndpointModify = () => {
                     ...deepLinkValues,
                 },
             });
+            setIsLoading(false);
+        }).catch(() => {
             setIsLoading(false);
         });
     }, []);
