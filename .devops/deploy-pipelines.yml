@@ -3,7 +3,7 @@
 #
 # PARAMETRI:
 #   ENV     → dev | uat | prod
-#   VERSION → tag release-please (es. v1.2.0) oppure vuoto per ultimo commit su main
+#   VERSION → tag release-please (es. v1.2.0) oppure latest per ultimo commit su main
 
 parameters:
   - name: ENV
