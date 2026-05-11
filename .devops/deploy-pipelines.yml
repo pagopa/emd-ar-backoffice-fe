@@ -3,7 +3,7 @@
 #
 # PARAMETRI:
 #   ENV     → dev | uat | prod
-#   VERSION → tag release-please (es. v1.2.0) oppure vuoto per ultimo commit su main
+#   VERSION → tag release-please (es. v1.2.0) oppure latest per ultimo commit su main
 
 parameters:
   - name: ENV
@@ -16,9 +16,9 @@ parameters:
       - prod
 
   - name: VERSION
-    displayName: 'Version tag (es. v1.2.0) — empty = latest commit on main'
+    displayName: 'Version tag (es. v1.2.0) — latest = latest commit on main'
     type: string
-    default: ''
+    default: 'latest'
 
 # NOTA: le variabili di root non possono usare ${{ parameters.* }} con if/elseif.
 # Le variabili per ambiente vengono passate dalla pipeline AzDO (Terraform) e sono
@@ -45,7 +45,14 @@ stages:
             fetchDepth: 0
             fetchTags: true
 
-          - ${{ if ne(parameters.VERSION, '') }}:
+          # Guard: su uat e prod è obbligatorio specificare un tag release
+          - ${{ if and(or(eq(parameters.VERSION, ''), eq(parameters.VERSION, 'latest')), ne(parameters.ENV, 'dev')) }}:
+            - bash: |
+                echo "##[error]VERSION è obbligatorio per ENV=${{ parameters.ENV }}. Specificare un tag (es. v1.2.0)."
+                exit 1
+              displayName: 'Guard: VERSION richiesto per ${{ parameters.ENV }}'
+
+          - ${{ if and(ne(parameters.VERSION, ''), ne(parameters.VERSION, 'latest')) }}:
             - bash: |
                 git checkout tags/${{ parameters.VERSION }}
                 echo "Checked out tag ${{ parameters.VERSION }}"
