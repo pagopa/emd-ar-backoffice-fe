@@ -3,7 +3,7 @@
 #
 # PARAMETRI:
 #   ENV     → dev | uat | prod
-#   VERSION → tag release-please (es. v1.2.0) oppure latest per ultimo commit su main
+#   VERSION → tag release-please (es. v1.2.0) oppure latest per ultimo commit sul branch selezionato
 
 parameters:
   - name: ENV
@@ -16,7 +16,7 @@ parameters:
       - prod
 
   - name: VERSION
-    displayName: 'Version tag (es. v1.2.0) — latest = latest commit on main'
+    displayName: 'Version tag (es. v1.2.0) — latest = latest commit on branch selected (Only for DEV)'
     type: string
     default: 'latest'
 
