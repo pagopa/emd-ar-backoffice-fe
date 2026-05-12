@@ -30,7 +30,7 @@ export const saveCredentialsTpp = async (form: TokenSection): Promise<TokenSecti
 };
 
 export const saveEndpointTpp = async (form: EndpointLinkPageDto): Promise<TppIdResponse> => {
-    if (CONFIG.MOCK_ACTIVE) return callMockSave();
+    if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) return callMockSave();
     const { data } = await axiosInstance.post<TppIdResponse>('/v1/tpp/endpoint', form);
     return data;
 };
@@ -48,7 +48,7 @@ export const getPagoPACredentials = async (): Promise<PagoPACredentialsDTO> => {
 };
 
 export const getTppEndpoint = async (): Promise<EndpointLinkPageDto> => {
-    if (CONFIG.MOCK_ACTIVE) return mockDelay(MOCK_ENDPOINT_PAGE);
+    if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) return mockDelay(MOCK_ENDPOINT_PAGE);
     const { data } = await axiosInstance.get<EndpointLinkPageDto>('/v1/tpp/endpoint');
     return data;
 };
