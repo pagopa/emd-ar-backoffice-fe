@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.5.0...v1.6.0) (2026-05-12)
+
+
+### Features
+
+* MMC-560 implementation view and save credentials page ([#38](https://github.com/pagopa/emd-ar-backoffice-fe/issues/38)) ([d29e8a5](https://github.com/pagopa/emd-ar-backoffice-fe/commit/d29e8a509846068666f253e6ba981b62dae8777f))
+
+
+### Bug Fixes
+
+* MMC-552 Add possibility to realease from last commit ([#36](https://github.com/pagopa/emd-ar-backoffice-fe/issues/36)) ([80f2687](https://github.com/pagopa/emd-ar-backoffice-fe/commit/80f2687fbf15a4937cc592cf32bc44602e8c78ae))
+
 ## [1.5.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.4.2...v1.5.0) (2026-05-08)
 
 
