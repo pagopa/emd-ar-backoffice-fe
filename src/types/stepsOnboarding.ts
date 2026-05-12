@@ -29,7 +29,7 @@ export interface ParamEntry {
 export interface Step2Values {
     clientId: string;
     clientSecret: string;
-    grantType: 'client_credentials';
+    grantType: string;
     bodyParams: ParamEntry[];
     urlParams: ParamEntry[];
 }

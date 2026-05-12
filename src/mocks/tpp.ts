@@ -1,4 +1,4 @@
-import type { CredentialsPageDTO, EndpoinLinkPageDto, TppDTO } from "../types/tpp";
+import type { EndpointLinkPageDto, PagoPACredentialsDTO, TokenSection, TppDTO } from "../types/tpp";
 
 export const MOCK_TPP_DTO: TppDTO = {
     entityId: 'mock-entity-001',
@@ -32,30 +32,7 @@ export const MOCK_TPP_DTO: TppDTO = {
     pspDenomination: "Mock Business S.p.A."
 };
 
-export const MOCK_CREDENTIALS_PAGE: CredentialsPageDTO = {
-    tppId: 'mock-entity-001',
-    pagoPaCredentials: {
-        clientId: 'pagopa-client-id-mock',
-        clientSecret: 'pagopa-secret-mock',
-        grantType: 'client_credentials',
-    },
-    tppCredentials: {
-        clientId: 'tpp-client-id-mock',
-        clientSecret: 'tpp-secret-mock',
-        grantType: 'client_credentials',
-    },
-    additionalParams: {
-        bodyParams: {
-            scope: 'mock.scope',
-            audience: 'mock-audience',
-        },
-        pathParams: {
-            tenantId: 'mock-tenant-id',
-        },
-    },
-};
-
-export const MOCK_ENDPOINT_PAGE: EndpoinLinkPageDto = {
+export const MOCK_ENDPOINT_PAGE: EndpointLinkPageDto = {
     messageUrl: 'https://api.tpp.com/messages',
     authenticationUrl: 'https://api.tpp.com/auth',
     authenticationType: 'OAUTH2',
@@ -73,5 +50,25 @@ export const MOCK_ENDPOINT_PAGE: EndpoinLinkPageDto = {
                 v2: { link: 'https://api2.tpp.com/ios' },
             },
         },
+    },
+};
+
+export const MOCK_PAGOPA_CREDENTIALS: PagoPACredentialsDTO = {
+    clientId: 'pagopa-client-id-mock',
+    clientSecret: 'pagopa-secret-mock',
+    grantType: 'client_credentials',
+};
+
+export const MOCK_TPP_CREDENTIALS: TokenSection = {
+    contentType: 'application/x-www-form-urlencoded',
+    bodyAdditionalProperties: {
+        client_id: 'tpp-client-id-mock',
+        client_secret: 'tpp-secret-mock',
+        grant_type: 'client_credentials',
+        scope: 'mock.scope',
+        audience: 'mock-audience',
+    },
+    pathAdditionalProperties: {
+        tenantId: 'mock-tenant-id',
     },
 };

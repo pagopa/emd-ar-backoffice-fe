@@ -2,26 +2,42 @@
 import { Box, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { getTppCredentials } from '../../api/tpp';
+import { getPagoPACredentials, getTppCredentials } from '../../api/tpp';
 import ROUTES from '../../routes';
 import { CredentialsSection } from './components/CredentialsSection';
 import { ReadonlyField } from './components/ReadOnlyField';
 
-import type { CredentialsPageDTO } from '../../types/tpp';
 import { useState, useEffect } from 'react';
 import CredentialsSkeleton from './components/CredentialsSkeleton';
 import AdditionalParamsSection from './components/AdditionalParamsSection';
+import { useAppSelector } from '../../redux/hook';
+import type { PagoPACredentialsDTO, TokenSection } from '../../types/tpp';
+
+const KNOWN_TOKEN_KEYS = new Set(['client_id', 'client_secret', 'grant_type']);
+
+const extractTppFields = (body: Record<string, string> = {}) => ({
+    tppClientId: body.client_id ?? '',
+    tppClientSecret: body.client_secret ?? '',
+    tppGrantType: body.grant_type ?? '',
+    extraBodyParams: Object.fromEntries(
+        Object.entries(body).filter(([k]) => !KNOWN_TOKEN_KEYS.has(k))
+    ) as Record<string, string>,
+});
 
 const Credentials = () => {
-    const [tppData, setTppData] = useState<CredentialsPageDTO>();
+    const tppId = useAppSelector((state) => state.organization.tppId);
+    const [pagoPaCredentials, setPagoPaCredentials] = useState<PagoPACredentialsDTO>();
+    const [tppCredentials, setTppCredentials] = useState<TokenSection>();
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
-        void getTppCredentials().then((data) => {
-            setTppData(data);
-            setLoading(false);
-        });
+        void Promise.all([getPagoPACredentials(), getTppCredentials()])
+            .then(([pagopa, tpp]) => {
+                setPagoPaCredentials(pagopa);
+                setTppCredentials(tpp);
+            })
+            .finally(() => setLoading(false));
     }, []);
 
     if (loading) {
@@ -31,6 +47,9 @@ const Credentials = () => {
     const onModify = () => {
         void navigate(ROUTES.CREDENTIALS_MODIFY, { replace: true })
     }
+
+    const { tppClientId, tppClientSecret, tppGrantType, extraBodyParams } =
+        extractTppFields(tppCredentials?.bodyAdditionalProperties);
 
     return (
         <Box display="flex" sx={{ padding: 3, gap: 3 }} flexDirection="column">
@@ -45,30 +64,30 @@ const Credentials = () => {
             </Box>
 
             {/* Credentials PagoPA */}
-            {tppData?.pagoPaCredentials && (
+            {pagoPaCredentials && (
                 <CredentialsSection
                     title="Credenziali PagoPA"
-                    clientId={tppData.pagoPaCredentials.clientId}
-                    clientSecret={tppData.pagoPaCredentials.clientSecret}
-                    grantType={tppData.pagoPaCredentials.grantType}
+                    clientId={pagoPaCredentials.clientId}
+                    clientSecret={pagoPaCredentials.clientSecret}
+                    grantType={pagoPaCredentials.grantType}
                 />
             )}
 
             {/* TPP ID */}
-            {tppData?.tppId && (
+            {tppId && (
                 <Paper elevation={0} sx={{ borderRadius: 2, p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Typography variant="h6">TPP ID</Typography>
-                    <ReadonlyField label="" value={tppData.tppId} />
+                    <ReadonlyField label="" value={tppId} />
                 </Paper>
             )}
 
             {/* Credentials TPP */}
-            {tppData?.tppCredentials && (
+            {tppCredentials && (
                 <CredentialsSection
                     title="Credenziali TPP"
-                    clientId={tppData.tppCredentials.clientId}
-                    clientSecret={tppData.tppCredentials.clientSecret}
-                    grantType={tppData.tppCredentials.grantType}
+                    clientId={tppClientId}
+                    clientSecret={tppClientSecret}
+                    grantType={tppGrantType}
                     showEditButton
                     onModify={() => onModify()}
                 />
@@ -76,8 +95,8 @@ const Credentials = () => {
 
             {/* Additional parameters */}
             <AdditionalParamsSection
-                bodyParams={tppData?.additionalParams?.bodyParams}
-                pathParams={tppData?.additionalParams?.pathParams}
+                bodyParams={extraBodyParams}
+                pathParams={tppCredentials?.pathAdditionalProperties}
                 onModify={onModify}
             />
 
