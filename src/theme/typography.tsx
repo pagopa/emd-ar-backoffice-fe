@@ -25,3 +25,11 @@ export const sxOsHeader: SxProps<Theme> = {
     fontSize: '14px',
     lineHeight: 1,
 };
+
+export const sxCapFieldLabel: SxProps<Theme> = {
+    fontWeight: 600,
+    fontSize: '12px',
+    lineHeight: '16px',
+    letterSpacing: '0.5px',
+    textTransform: 'uppercase',
+};

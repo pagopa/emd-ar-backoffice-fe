@@ -15,7 +15,7 @@ interface CredentialsSectionProps {
 }
 
 export const CredentialsSection = ({ title, clientId, clientSecret, grantType, showEditButton, onModify }: CredentialsSectionProps) => (
-    <Paper elevation={0} sx={{ borderRadius: 2, p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <Paper elevation={0} sx={{ borderRadius: 2, p: 3, display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {showEditButton ?
             <Box
                 display="flex"

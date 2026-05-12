@@ -4,6 +4,7 @@ import {
     CodeOutlined as UrlIcon,
     EditOutlined as ModifyIcon
 } from '@mui/icons-material';
+import { sxCapFieldLabel, sxFieldValue } from '../../../theme/typography';
 
 
 interface AdditionalParamsSectionProps {
@@ -35,7 +36,7 @@ const AdditionalParamsSection = ({ bodyParams, pathParams, onModify }: Additiona
                 <Box flex={1} display="flex" flexDirection="column" gap={1}>
                     <Box display="flex" alignItems="center" gap={1}>
                         <img src="/icons/integration_instructions.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
-                        <Typography variant="caption" fontWeight={700} color="text.secondary">
+                        <Typography sx={{ ...sxCapFieldLabel, color: 'text.secondary' }}>
                             PARAMETRI BODY
                         </Typography>
                     </Box>
@@ -43,8 +44,8 @@ const AdditionalParamsSection = ({ bodyParams, pathParams, onModify }: Additiona
                     {Object.entries(bodyParams ?? {}).map(([key, val], index) => (
                         <Box key={key}>
                             {index !== 0 && <Divider orientation="horizontal" />}
-                            <Typography variant="caption" color="text.secondary">{key}</Typography>
-                            <Typography variant="body2" fontWeight={500}>{val}</Typography>
+                            <Typography sx={{ ...sxCapFieldLabel, color: 'text.secondary' }}>{key}</Typography>
+                            <Typography sx={sxFieldValue}>{val}</Typography>
                         </Box>
                     ))}
                 </Box>
@@ -53,7 +54,7 @@ const AdditionalParamsSection = ({ bodyParams, pathParams, onModify }: Additiona
                 <Box flex={1} display="flex" flexDirection="column" gap={1}>
                     <Box display="flex" alignItems="center" gap={1}>
                         <UrlIcon style={{ color: "#BBC2D6", width: 24, height: 24 }} />
-                        <Typography variant="caption" fontWeight={700} color="text.secondary">
+                        <Typography sx={{ ...sxCapFieldLabel, color: 'text.secondary' }}>
                             PARAMETRI URL
                         </Typography>
                     </Box>
@@ -61,8 +62,8 @@ const AdditionalParamsSection = ({ bodyParams, pathParams, onModify }: Additiona
                     {Object.entries(pathParams ?? {}).map(([key, val], index) => (
                         <Box key={key}>
                             {index !== 0 && <Divider orientation="horizontal" />}
-                            <Typography variant="caption" color="text.secondary">{key}</Typography>
-                            <Typography variant="body2" fontWeight={500}>{val}</Typography>
+                            <Typography sx={{ ...sxCapFieldLabel, color: 'text.secondary' }}>{key}</Typography>
+                            <Typography sx={sxFieldValue}>{val}</Typography>
                         </Box>
                     ))}
                 </Box>

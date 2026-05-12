@@ -3,7 +3,8 @@ import { useState } from 'react';
 import {
     ContentCopy as CopyIcon,
     VisibilityOutlined as EyeOn,
-    VisibilityOffOutlined as EyeOff} from '@mui/icons-material';
+    VisibilityOffOutlined as EyeOff
+} from '@mui/icons-material';
 import {
     Box,
     IconButton,
@@ -11,6 +12,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import { sxCapFieldLabel } from '../../../theme/typography';
 
 interface ReadonlyFieldProps {
     label: string;
@@ -28,7 +30,7 @@ export const ReadonlyField = ({ label, value, secret = false }: ReadonlyFieldPro
     return (
         <Box display="flex" flexDirection="column" gap={0.5}>
             <Box display="flex" alignItems="center" gap={1}>
-                <Typography variant="caption" fontWeight={600} color="text.secondary">
+                <Typography sx={{ ...sxCapFieldLabel, color: 'text.secondary' }}>
                     {label}
                 </Typography>
                 {secret && (
@@ -44,7 +46,15 @@ export const ReadonlyField = ({ label, value, secret = false }: ReadonlyFieldPro
             <TextField
                 value={visible ? value : '••••••••••••••••'}
                 size="small"
-                style={{ maxWidth: "558px" }}
+                sx={{
+                    maxWidth: '558px',
+                    '& .MuiInputBase-input': {
+                        fontSize: '16px',
+                        fontWeight: 600,
+                        color: '#17324D',
+                        letterSpacing: 0,
+                    },
+                }}
                 InputProps={{
                     readOnly: true,
                     endAdornment: (
