@@ -11,7 +11,7 @@ import { setTppId } from '../../../redux/slices/organizationSlice';
 import ROUTES from '../../../routes';
 import type { Step1Values } from '../../../types/stepsOnboarding';
 import { endpointSchema } from '../../../utils/validations';
-import type { EndpoinLinkPageDto } from '../../../types/tpp';
+import type { EndpointLinkPageDto } from '../../../types/tpp';
 import { UnsavedChangesDialog } from '../../../components/UnsavedChangesDialog';
 import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker';
 import EndpointForm from '../../../components/forms/EndpointForm';
@@ -75,7 +75,7 @@ const EndpointModify = () => {
 
     // Call for saving the update of data of the form
     const updateTPP = async (values: Step1Values) => {
-        const payload: EndpoinLinkPageDto = {
+        const payload: EndpointLinkPageDto = {
             messageUrl: values.webhookUrl,
             authenticationUrl: values.authUrl,
             authenticationType: "OAUTH2",

@@ -7,6 +7,7 @@ const BUSINESS_ERRORS: Record<string | number, { message: string }> = {
     409: { message: 'Il TPP esiste già nel sistema.' },
     404: { message: 'Risorsa non trovata.' },
     422: { message: 'Dati non validi. Controlla i campi e riprova.' },
+    400: { message: 'Dati non validi. Controlla i campi e riprova.' },
 };
 
 const FALLBACK_MESSAGE = 'Si è verificato un errore imprevisto. Riprova più tardi.';

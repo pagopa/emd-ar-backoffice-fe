@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { getTppCredentials, saveCredentialsTpp } from '../../../api/tpp';
 import CredentialsForm from '../../../components/forms/CredentialsForm';
-import { useAppDispatch } from '../../../redux/hook';
-import { setTppId } from '../../../redux/slices/organizationSlice';
 import ROUTES from '../../../routes';
 import type { Step2Values } from '../../../types/stepsOnboarding';
 import { credentialsSchema } from '../../../utils/validations';
@@ -17,11 +15,34 @@ import { paramsToRecord, recordToParams } from '../../../utils/params';
 import { UnsavedChangesDialog } from '../../../components/UnsavedChangesDialog';
 import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker';
 import CredentialsFormSkeleton from '../components/CredentialsFormSkeleton';
+import { useApiErrorHandler } from '../../../hook/useApiErrorHandler';
 
+const buildTokenPayload = (values: Step2Values): TokenSection => ({
+    contentType: 'application/x-www-form-urlencoded',
+    bodyAdditionalProperties: {
+        client_id: values.clientId,
+        client_secret: values.clientSecret,
+        grant_type: values.grantType,
+        ...paramsToRecord(values.bodyParams),
+    },
+    pathAdditionalProperties: paramsToRecord(values.urlParams),
+});
+
+const parseTokenSection = (data: TokenSection): Step2Values => {
+    const { bodyAdditionalProperties = {}, pathAdditionalProperties = {} } = data;
+    const { client_id, client_secret, grant_type, ...extraBody } = bodyAdditionalProperties;
+    return {
+        clientId: client_id ?? '',
+        clientSecret: client_secret ?? '',
+        grantType: grant_type ?? 'client_credentials',
+        bodyParams: recordToParams(extraBody),
+        urlParams: recordToParams(pathAdditionalProperties),
+    };
+};
 
 const CredentialsModify = () => {
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+    const handleApiError = useApiErrorHandler();
     const [isLoading, setIsLoading] = useState(true);
 
     const initialValues: Step2Values = {
@@ -46,39 +67,21 @@ const CredentialsModify = () => {
 
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 
-    // Load from with data that already exist
     useEffect(() => {
         void getTppCredentials().then((data) => {
-            const { bodyParams, pathParams } = data.additionalParams;
-            formik.resetForm({
-                values: {
-                    clientId: data.tppCredentials.clientId ?? '',
-                    clientSecret: data.tppCredentials.clientSecret ?? '',
-                    grantType: 'client_credentials',
-                    bodyParams: recordToParams(bodyParams),
-                    urlParams: recordToParams(pathParams),
-                }
-            });
+            formik.resetForm({ values: parseTokenSection(data) });
             setIsLoading(false);
         });
     }, []);
 
 
-    // Call for saving the update of data of the form
     const updateTPP = async (values: Step2Values) => {
-        const payload: TokenSection = {
-            contentType: 'application/x-www-form-urlencoded',
-            bodyAdditionalProperties: {
-                client_id: values.clientId,
-                client_secret: values.clientSecret,
-                grant_type: values.grantType,
-                ...paramsToRecord(values.bodyParams),
-            },
-            pathAdditionalProperties: paramsToRecord(values.urlParams),
-        };
-        const { tppId } = await saveCredentialsTpp(payload);
-        dispatch(setTppId(tppId));
-        handleConfirmExit(ROUTES.CREDENTIALS)
+        try {
+            await saveCredentialsTpp(buildTokenPayload(values));
+            handleConfirmExit(ROUTES.CREDENTIALS);
+        } catch (err) {
+            handleApiError(err);
+        }
     };
 
     return (

@@ -7,11 +7,11 @@ import ROUTES from '../../routes';
 import { DeepLinkSection } from './components/DeepLinkSection';
 import { EndpointSection } from './components/EndpointSection';
 import HomeSkeleton from './components/HomeSkeleton';
-import type { EndpoinLinkPageDto } from '../../types/tpp';
+import type { EndpointLinkPageDto } from '../../types/tpp';
 import { sxSectionTitle, sxFieldLabel } from '../../theme/typography';
 
 const Home = () => {
-    const [overviewData, setOverviewData] = useState<EndpoinLinkPageDto>();
+    const [overviewData, setOverviewData] = useState<EndpointLinkPageDto>();
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 

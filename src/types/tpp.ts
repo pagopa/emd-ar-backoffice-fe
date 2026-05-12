@@ -1,3 +1,5 @@
+export type AuthenticationType = 'OAUTH2';
+
 export interface VersionDetails {
     link: string;
 }
@@ -13,8 +15,6 @@ export interface TokenSection {
     pathAdditionalProperties?: Record<string, string>;
 }
 
-export type AuthenticationType = 'OAUTH2';
-
 export interface TppDTO {
     entityId: string;
     businessName: string;
@@ -26,31 +26,21 @@ export interface TppDTO {
     agentLinks: Record<string, AgentLink>;
 }
 
-export interface Credentials {
+export interface TppIdResponse {
+    tppId: string;
+}
+
+// GET /tpp/credentials/pagopa
+export interface PagoPACredentialsDTO {
     clientId: string;
     clientSecret: string;
     grantType: string;
 }
 
-export interface AdditionalParams {
-    bodyParams: Record<string, string>;
-    pathParams?: Record<string, string>;
-}
-
-export interface CredentialsPageDTO {
-    tppId: string;
-    pagoPaCredentials: Credentials;
-    tppCredentials: Credentials;
-    additionalParams: AdditionalParams;
-}
-
-export interface EndpoinLinkPageDto {
+// GET /tpp/endpoint
+export interface EndpointLinkPageDto {
     messageUrl: string;
     authenticationUrl: string;
     authenticationType: AuthenticationType;
     agentLinks: Record<string, AgentLink>;
-}
-
-export interface TppIdResponse {
-    tppId: string;
 }
