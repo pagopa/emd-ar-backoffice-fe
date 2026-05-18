@@ -4,7 +4,7 @@ import { Box, CircularProgress, Link, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { acsHandshake, } from '../../api/auth';
-import { getTppProfile } from '../../api/tpp';
+import { checkTppExists } from '../../api/tpp';
 import { CONFIG } from '../../config';
 import { useAppDispatch } from '../../redux/hook';
 import { setOrganization, setTppRegistered } from '../../redux/slices/organizationSlice';
@@ -45,17 +45,17 @@ const Auth = () => {
                 dispatch(userActions.setLoggedUser(user));
                 dispatch(setOrganization(organization));
 
-                await getTppProfile()
+                await checkTppExists()
                     .then((tppResponse) => {
-                        if (tppResponse !== null) {
-                            dispatch(setTppRegistered(true));
-                            void navigate(ROUTES.HOME, { replace: true });
-                        } else {
+                        if (tppResponse === null) {
                             dispatch(setTppRegistered(false));
                             void navigate(ROUTES.ONBOARDING, { replace: true });
+                        } else {
+                            dispatch(setTppRegistered(true));
+                            void navigate(ROUTES.HOME, { replace: true });
                         }
                     });
-                    
+
             })
             .catch((err) => {
                 console.error('[ACS] handshake failed:', err);

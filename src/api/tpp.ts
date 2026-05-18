@@ -50,18 +50,23 @@ export const getPagoPACredentials = async (): Promise<PagoPACredentialsDTO> => {
 };
 
 
-export const getTppProfile = async (): Promise<TppResponse | null> => {
-    if (CONFIG.MOCK_ACTIVE) {
-        return mockDelay(MOCK_ENDPOINT_PAGE)
-    };
+export const checkTppExists = async (): Promise<TppResponse | null> => {
+    if (CONFIG.MOCK_ACTIVE) return mockDelay(MOCK_ENDPOINT_PAGE);
     try {
-        const { data } = await axiosInstance.get<TppResponse>('/v1/tpp',
-            {
-                headers: { 'x-silent-error': 'true' }
-            });
+        const { data } = await axiosInstance.get<TppResponse>('/v1/tpp', {
+            headers: { 'x-silent-error': 'true' }
+        });
         return data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) return null;
         throw error;
     }
+};
+
+export const getTppProfile = async (): Promise<TppResponse> => {
+    if (CONFIG.MOCK_ACTIVE) return mockDelay(MOCK_ENDPOINT_PAGE);
+    const { data } = await axiosInstance.get<TppResponse>('/v1/tpp', {
+        headers: { 'x-silent-error': 'true' }
+    });
+    return data;
 };

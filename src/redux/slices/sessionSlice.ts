@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store';
 
 export type SessionError = 'UNAUTHORIZED' | 'FORBIDDEN' | 'SERVER_ERROR' | null;
 
@@ -20,6 +21,8 @@ const sessionSlice = createSlice({
         },
     },
 });
+
+export const selectSessionError = (state: RootState) => state.session.error;
 
 export const { setSessionError, clearSessionError } = sessionSlice.actions;
 export default sessionSlice.reducer;

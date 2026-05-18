@@ -21,7 +21,7 @@ export default function SessionErrorHandler() {
         ? `${CONFIG.AR_BASE_URL}/dashboard/${organization.id}`
         : `${CONFIG.AR_BASE_URL}/dashboard`;
 
-    // --- Dialog bloccante per 401 / 403 ---
+    // Dialog bloccante per 401 / 403
     if (isBlockingError(error)) {
         const DIALOG_CONFIG = {
             UNAUTHORIZED: {

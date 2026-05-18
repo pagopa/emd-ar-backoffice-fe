@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { useFormik } from 'formik';
@@ -16,12 +16,11 @@ import EndpointForm from '../../../components/forms/EndpointForm';
 import { buildAgentLinks, parseAgentLinks } from '../../../utils/deepLink';
 import EndpointFormSkeleton from '../components/EndpointFormSkeleton';
 import ErrorContent from '../../../components/ErrorContent';
+import { useSafeFetch } from '../../../hook/useSafeFetch';
 
 
 const EndpointModify = () => {
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
-    const [fetchError, setFetchError] = useState(false);
 
     const initialValues: Step1Values = {
         webhookUrl: '',
@@ -53,27 +52,21 @@ const EndpointModify = () => {
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 
 
-    useEffect(() => {
-        void getTppProfile()
-            .then((data) => {
-                if (data === null) {
-                    void navigate(ROUTES.HOME);
-                } else {
-                    const deepLinkValues = parseAgentLinks(data.agentLinks ?? {});
+    const { data , loading, fetchError } = useSafeFetch(() => getTppProfile());
 
-                    formik.resetForm({
-                        values: {
-                            webhookUrl: data.messageUrl,
-                            authUrl: data.authenticationUrl,
-                            authType: data.authenticationType,
-                            ...deepLinkValues,
-                        },
-                    });
-                }
-            })
-            .catch(() => setFetchError(true))
-            .finally(() => setIsLoading(false));
-    }, []);
+    useEffect(() => {
+        if (data) {
+            const deepLinkValues = parseAgentLinks(data.agentLinks ?? {});
+            formik.resetForm({
+                values: {
+                    webhookUrl: data.messageUrl,
+                    authUrl: data.authenticationUrl,
+                    authType: data.authenticationType,
+                    ...deepLinkValues,
+                },
+            });
+        }
+    }, [data]);
 
     if (fetchError) return <ErrorContent />;
 
@@ -113,7 +106,7 @@ const EndpointModify = () => {
                                 Endpoint e deep link
                             </Typography>
 
-                            {isLoading ?
+                            {loading ?
                                 <EndpointFormSkeleton />
                                 :
                                 <EndpointForm formik={formik} />

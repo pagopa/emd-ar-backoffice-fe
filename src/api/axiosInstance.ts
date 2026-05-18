@@ -5,6 +5,7 @@ import { store } from '../redux/store';
 
 import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import axios from 'axios';
+import { setTppRegistered } from '../redux/slices/organizationSlice';
 
 const BASE_URL = `${CONFIG.API_BASE_URL}/api/`;
 
@@ -32,6 +33,7 @@ axiosInstance.interceptors.response.use(
         if (axios.isAxiosError(error)) {
             const status = error.response?.status;
             const silent = error.config?.headers?.['x-silent-error'] === 'true';
+            const url = error.config?.url ?? '';
 
             switch (status) {
                 case 401:
@@ -41,6 +43,24 @@ axiosInstance.interceptors.response.use(
                     break;
                 case 403:
                     store.dispatch(setSessionError('FORBIDDEN'));
+                    break;
+                case 404:
+                    if (
+                        url.startsWith('/v1/tpp') &&
+                        error.config?.method === 'get'
+                    ) {
+                        localStorage.removeItem('tpp_registered');
+                        store.dispatch(setTppRegistered(false));
+                        store.dispatch(appStateActions.addError({
+                            id: 'TPP_NOT_FOUND',
+                            error: error,
+                            techDescription: 'TPP not found',
+                            blocking: false,
+                            toNotify: true,
+                            component: 'Toast',
+                            displayableDescription: "La TPP non è più disponibile. Ripetere la registrazione o contattare l'assistenza",
+                        }));
+                    }
                     break;
                 default:
                     if (!status || status >= 500) {

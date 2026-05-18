@@ -1,7 +1,7 @@
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { useEffect } from 'react';
-import { getTppProfile } from '../api/tpp';
+import { checkTppExists } from '../api/tpp';
 import { useAppDispatch } from '../redux/hook';
 import {
     setOrganization,
@@ -24,7 +24,7 @@ export const useInitSession = () => {
         if (organization) dispatch(setOrganization(organization));
         if (user) dispatch(userActions.setLoggedUser(user));
 
-        getTppProfile()
+        checkTppExists()
             .then((response) => {
                 if (response === null) {
                     const wasRegistered = localStorage.getItem('tpp_registered') === 'true';

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { Box, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,11 +6,10 @@ import ROUTES from '../../routes';
 import { CredentialsSection } from './components/CredentialsSection';
 import { ReadonlyField } from './components/ReadOnlyField';
 
-import { useState, useEffect } from 'react';
 import CredentialsSkeleton from './components/CredentialsSkeleton';
 import AdditionalParamsSection from './components/AdditionalParamsSection';
-import type { PagoPACredentialsDTO, TokenSection } from '../../types/tpp';
 import ErrorContent from '../../components/ErrorContent';
+import { useSafeFetch } from '../../hook/useSafeFetch';
 
 const KNOWN_TOKEN_KEYS = new Set(['client_id', 'client_secret', 'grant_type']);
 
@@ -25,24 +23,12 @@ const extractTppFields = (body: Record<string, string> = {}) => ({
 });
 
 const Credentials = () => {
-    const [tppId, setTppId] = useState('');
-    const [pagoPaCredentials, setPagoPaCredentials] = useState<PagoPACredentialsDTO>();
-    const [tppCredentials, setTppCredentials] = useState<TokenSection>();
-    const [loading, setLoading] = useState(true);
-    const [fetchError, setFetchError] = useState(false);
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        void Promise.all([getPagoPACredentials(), getTppCredentials(), getTppProfile()])
-            .then(([pagopa, tpp, tppInfo]) => {
-                setPagoPaCredentials(pagopa);
-                setTppCredentials(tpp);
-                setTppId(tppInfo?.tppId ?? '')
-            })
-            .catch(() => setFetchError(true))
-            .finally(() => setLoading(false));
-    }, []);
+    const { data, loading, fetchError } = useSafeFetch(() =>
+        Promise.all([getPagoPACredentials(), getTppCredentials(), getTppProfile()])
+    );
 
     if (loading) return <CredentialsSkeleton />;
     if (fetchError) return <ErrorContent />;
@@ -50,6 +36,9 @@ const Credentials = () => {
     const onModify = () => {
         void navigate(ROUTES.CREDENTIALS_MODIFY, { replace: true })
     }
+
+    const [pagoPaCredentials, tppCredentials, tppInfo] = data ?? [undefined, undefined, null];
+    const tppId = tppInfo?.tppId ?? '';
 
     const { tppClientId, tppClientSecret, tppGrantType, extraBodyParams } =
         extractTppFields(tppCredentials?.bodyAdditionalProperties);
