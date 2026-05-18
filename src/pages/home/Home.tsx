@@ -2,24 +2,27 @@ import { Box, Button, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getTppEndpoint } from '../../api/tpp';
+import { getTppProfile } from '../../api/tpp';
 import ROUTES from '../../routes';
 import { DeepLinkSection } from './components/DeepLinkSection';
 import { EndpointSection } from './components/EndpointSection';
 import HomeSkeleton from './components/HomeSkeleton';
-import type { EndpointLinkPageDto } from '../../types/tpp';
+import type { TppResponse } from '../../types/tpp';
 import { sxSectionTitle, sxFieldLabel } from '../../theme/typography';
 
 const Home = () => {
-    const [overviewData, setOverviewData] = useState<EndpointLinkPageDto>();
+    const [overviewData, setOverviewData] = useState<TppResponse>();
     const [loading, setLoading] = useState(true);
+    const [fetchError, setFetchError] = useState(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        void getTppEndpoint().then((data) => {
-            setOverviewData(data);
-            setLoading(false);
-        });
+        void getTppProfile().then((data) => {
+            if (data) setOverviewData(data);
+        })
+            .catch(() => setFetchError(true))
+            .finally(() => setLoading(false));
     }, []);
 
     if (loading) {

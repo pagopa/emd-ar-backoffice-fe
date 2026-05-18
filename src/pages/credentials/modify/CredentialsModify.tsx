@@ -44,6 +44,7 @@ const CredentialsModify = () => {
     const navigate = useNavigate();
     const handleApiError = useApiErrorHandler();
     const [isLoading, setIsLoading] = useState(true);
+    const [fetchError, setFetchError] = useState(false);
 
     const initialValues: Step2Values = {
         clientId: '',
@@ -68,10 +69,12 @@ const CredentialsModify = () => {
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 
     useEffect(() => {
-        void getTppCredentials().then((data) => {
-            formik.resetForm({ values: parseTokenSection(data) });
-            setIsLoading(false);
-        });
+        void getTppCredentials()
+            .then((data) => {
+                formik.resetForm({ values: parseTokenSection(data) });
+            })
+            .catch(() => setFetchError(true))
+            .finally(() => setIsLoading(false));
     }, []);
 
 

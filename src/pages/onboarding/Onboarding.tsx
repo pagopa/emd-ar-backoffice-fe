@@ -10,7 +10,7 @@ import CredentialsForm from '../../components/forms/CredentialsForm';
 import EndpointForm from '../../components/forms/EndpointForm';
 import { CONFIG } from '../../config';
 import { useAppDispatch, useAppSelector } from '../../redux/hook';
-import { setTppId } from '../../redux/slices/organizationSlice';
+import { setTppRegistered } from '../../redux/slices/organizationSlice';
 import ROUTES from '../../routes';
 import { ColoredConnector } from '../../theme/stepper';
 import type { Step1Values, Step2Values } from '../../types/stepsOnboarding';
@@ -100,14 +100,17 @@ const Onboarding = () => {
             agentLinks: buildAgentLinks(values),
         };
 
-        const { tppId } = await saveTpp(payload);
-        dispatch(setTppId(tppId));
-
         if (CONFIG.ENV === "DEV") {
             console.log('[Onboarding] Form values:', JSON.parse(JSON.stringify(values)));
         }
 
-        void navigate(ROUTES.HOME);
+        const { tppId } = await saveTpp(payload);
+
+
+        if (tppId) {
+            dispatch(setTppRegistered(true));
+            void navigate(ROUTES.HOME);
+        }
     }
 
     const handleBack = () => {

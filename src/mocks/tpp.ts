@@ -1,4 +1,4 @@
-import type { EndpointLinkPageDto, PagoPACredentialsDTO, TokenSection, TppDTO } from "../types/tpp";
+import type { PagoPACredentialsDTO, TokenSection, TppDTO, TppResponse } from "../types/tpp";
 
 export const MOCK_TPP_DTO: TppDTO = {
     entityId: 'mock-entity-001',
@@ -32,7 +32,9 @@ export const MOCK_TPP_DTO: TppDTO = {
     pspDenomination: "Mock Business S.p.A."
 };
 
-export const MOCK_ENDPOINT_PAGE: EndpointLinkPageDto = {
+export const MOCK_ENDPOINT_PAGE: TppResponse = {
+    tppId: 'mock-tpp-id',
+    businessName: 'Mock Business',
     messageUrl: 'https://api.tpp.com/messages',
     authenticationUrl: 'https://api.tpp.com/auth',
     authenticationType: 'OAUTH2',

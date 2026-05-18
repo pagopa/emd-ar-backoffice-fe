@@ -5,9 +5,7 @@ import { Box, Button, Paper, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
-import { getTppEndpoint, saveEndpointTpp } from '../../../api/tpp';
-import { useAppDispatch } from '../../../redux/hook';
-import { setTppId } from '../../../redux/slices/organizationSlice';
+import { getTppProfile, saveEndpointTpp } from '../../../api/tpp';
 import ROUTES from '../../../routes';
 import type { Step1Values } from '../../../types/stepsOnboarding';
 import { endpointSchema } from '../../../utils/validations';
@@ -21,8 +19,8 @@ import EndpointFormSkeleton from '../components/EndpointFormSkeleton';
 
 const EndpointModify = () => {
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(true);
+    const [fetchError, setFetchError] = useState(false);
 
     const initialValues: Step1Values = {
         webhookUrl: '',
@@ -53,23 +51,27 @@ const EndpointModify = () => {
 
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 
-    // Load from with data that already exist
-    useEffect(() => {
-        void getTppEndpoint().then((data) => {
-            const deepLinkValues = parseAgentLinks(data.agentLinks ?? {});
 
-            formik.resetForm({
-                values: {
-                    webhookUrl: data.messageUrl,
-                    authUrl: data.authenticationUrl,
-                    authType: data.authenticationType,
-                    ...deepLinkValues,
-                },
-            });
-            setIsLoading(false);
-        }).catch(() => {
-            setIsLoading(false);
-        });
+    useEffect(() => {
+        void getTppProfile()
+            .then((data) => {
+                if (data === null) {
+                    void navigate(ROUTES.HOME);
+                } else {
+                    const deepLinkValues = parseAgentLinks(data.agentLinks ?? {});
+
+                    formik.resetForm({
+                        values: {
+                            webhookUrl: data.messageUrl,
+                            authUrl: data.authenticationUrl,
+                            authType: data.authenticationType,
+                            ...deepLinkValues,
+                        },
+                    });
+                }
+            })
+            .catch(() => setFetchError(true))
+            .finally(() => setIsLoading(false));
     }, []);
 
 
@@ -81,8 +83,7 @@ const EndpointModify = () => {
             authenticationType: "OAUTH2",
             agentLinks: buildAgentLinks(values),
         };
-        const { tppId } = await saveEndpointTpp(payload);
-        dispatch(setTppId(tppId));
+        await saveEndpointTpp(payload);
         handleConfirmExit(ROUTES.HOME)
     };
 

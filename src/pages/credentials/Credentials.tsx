@@ -2,7 +2,7 @@
 import { Box, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { getPagoPACredentials, getTppCredentials } from '../../api/tpp';
+import { getPagoPACredentials, getTppCredentials, getTppProfile } from '../../api/tpp';
 import ROUTES from '../../routes';
 import { CredentialsSection } from './components/CredentialsSection';
 import { ReadonlyField } from './components/ReadOnlyField';
@@ -10,7 +10,6 @@ import { ReadonlyField } from './components/ReadOnlyField';
 import { useState, useEffect } from 'react';
 import CredentialsSkeleton from './components/CredentialsSkeleton';
 import AdditionalParamsSection from './components/AdditionalParamsSection';
-import { useAppSelector } from '../../redux/hook';
 import type { PagoPACredentialsDTO, TokenSection } from '../../types/tpp';
 
 const KNOWN_TOKEN_KEYS = new Set(['client_id', 'client_secret', 'grant_type']);
@@ -25,18 +24,22 @@ const extractTppFields = (body: Record<string, string> = {}) => ({
 });
 
 const Credentials = () => {
-    const tppId = useAppSelector((state) => state.organization.tppId);
+    const [tppId, setTppId] = useState('');
     const [pagoPaCredentials, setPagoPaCredentials] = useState<PagoPACredentialsDTO>();
     const [tppCredentials, setTppCredentials] = useState<TokenSection>();
     const [loading, setLoading] = useState(true);
+    const [fetchError, setFetchError] = useState(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
-        void Promise.all([getPagoPACredentials(), getTppCredentials()])
-            .then(([pagopa, tpp]) => {
+        void Promise.all([getPagoPACredentials(), getTppCredentials(), getTppProfile()])
+            .then(([pagopa, tpp, tppInfo]) => {
                 setPagoPaCredentials(pagopa);
                 setTppCredentials(tpp);
+                setTppId(tppInfo?.tppId ?? '')
             })
+            .catch(() => setFetchError(true))
             .finally(() => setLoading(false));
     }, []);
 

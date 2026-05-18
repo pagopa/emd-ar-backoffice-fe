@@ -1,17 +1,18 @@
 import { type StoredOrganization } from '../../types/organization';
-
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type OrganizationState = {
     organization: StoredOrganization | null;
-    tppId: string | null;
+    tppRegistered: boolean | null;
     tppIdChecked: boolean;
+    checkFailed: boolean;
 };
 
 const initialState: OrganizationState = {
     organization: null,
-    tppId: null,
+    tppRegistered: null,
     tppIdChecked: false,
+    checkFailed: false,
 };
 
 const organizationSlice = createSlice({
@@ -21,14 +22,15 @@ const organizationSlice = createSlice({
         setOrganization(state, action: PayloadAction<StoredOrganization>) {
             state.organization = action.payload;
         },
-        setTppId(state, action: PayloadAction<string>) {
-            state.tppId = action.payload;
+        setTppRegistered(state, action: PayloadAction<boolean>) {
+            state.tppRegistered = action.payload;
             state.tppIdChecked = true;
-            localStorage.setItem('acs_tpp_id', action.payload);
+            state.checkFailed = false;
         },
-        setTppIdNotFound(state) {
-            state.tppId = null;
+        setTppIdCheckFailed: (state) => {
             state.tppIdChecked = true;
+            state.tppRegistered = null;
+            state.checkFailed = true;
         },
         clearOrganization(state) {
             state.organization = null;
@@ -36,5 +38,11 @@ const organizationSlice = createSlice({
     },
 });
 
-export const { setOrganization, setTppId, setTppIdNotFound, clearOrganization } = organizationSlice.actions;
+export const {
+    setOrganization,
+    setTppRegistered, 
+    setTppIdCheckFailed,
+    clearOrganization,
+} = organizationSlice.actions;
+
 export default organizationSlice.reducer;

@@ -4,10 +4,10 @@ import { Box, CircularProgress, Link, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { acsHandshake, } from '../../api/auth';
-import { getTppByEntityId } from '../../api/tpp';
+import { getTppProfile } from '../../api/tpp';
 import { CONFIG } from '../../config';
 import { useAppDispatch } from '../../redux/hook';
-import { setOrganization, setTppId, setTppIdNotFound } from '../../redux/slices/organizationSlice';
+import { setOrganization, setTppRegistered } from '../../redux/slices/organizationSlice';
 import ROUTES from '../../routes';
 import { saveOrganization } from '../../utils/organization';
 import { saveUser } from '../../utils/user';
@@ -45,14 +45,17 @@ const Auth = () => {
                 dispatch(userActions.setLoggedUser(user));
                 dispatch(setOrganization(organization));
 
-                const tppResponse = await getTppByEntityId();
-                if (tppResponse?.tppId) {
-                    dispatch(setTppId(tppResponse.tppId));
-                    void navigate(ROUTES.HOME, { replace: true });
-                } else {
-                    dispatch(setTppIdNotFound());
-                    void navigate(ROUTES.ONBOARDING, { replace: true });
-                }
+                await getTppProfile()
+                    .then((tppResponse) => {
+                        if (tppResponse !== null) {
+                            dispatch(setTppRegistered(true));
+                            void navigate(ROUTES.HOME, { replace: true });
+                        } else {
+                            dispatch(setTppRegistered(false));
+                            void navigate(ROUTES.ONBOARDING, { replace: true });
+                        }
+                    });
+                    
             })
             .catch((err) => {
                 console.error('[ACS] handshake failed:', err);
