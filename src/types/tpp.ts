@@ -30,6 +30,17 @@ export interface TppIdResponse {
     tppId: string;
 }
 
+
+export interface TppResponse {
+    tppId: string;
+    businessName: string;
+    messageUrl: string;
+    authenticationUrl: string;
+    authenticationType: AuthenticationType;
+    agentLinks: Record<string, AgentLink>;
+}
+
+
 // GET /tpp/credentials/pagopa
 export interface PagoPACredentialsDTO {
     clientId: string;

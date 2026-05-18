@@ -5,6 +5,7 @@ import { store } from '../redux/store';
 
 import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import axios from 'axios';
+import { setTppRegistered } from '../redux/slices/organizationSlice';
 
 const BASE_URL = `${CONFIG.API_BASE_URL}/api/`;
 
@@ -31,6 +32,8 @@ axiosInstance.interceptors.response.use(
     (error: unknown) => {
         if (axios.isAxiosError(error)) {
             const status = error.response?.status;
+            const silent = error.config?.headers?.['x-silent-error'] === 'true';
+            const url = error.config?.url ?? '';
 
             switch (status) {
                 case 401:
@@ -41,17 +44,37 @@ axiosInstance.interceptors.response.use(
                 case 403:
                     store.dispatch(setSessionError('FORBIDDEN'));
                     break;
-                default:
-                    if (!status || status >= 500) {
+                case 404:
+                    if (
+                        url.startsWith('/v1/tpp') &&
+                        error.config?.method === 'get'
+                    ) {
+                        localStorage.removeItem('tpp_registered');
+                        store.dispatch(setTppRegistered(false));
                         store.dispatch(appStateActions.addError({
-                            id: `HTTP_${status ?? 'NETWORK'}`,
+                            id: 'TPP_NOT_FOUND',
                             error: error,
-                            techDescription: `HTTP ${status ?? 'network error'}`,
+                            techDescription: 'TPP not found',
                             blocking: false,
                             toNotify: true,
                             component: 'Toast',
-                            displayableDescription: 'Si è verificato un errore imprevisto. Riprova più tardi.',
+                            displayableDescription: "La TPP non è più disponibile. Ripetere la registrazione o contattare l'assistenza",
                         }));
+                    }
+                    break;
+                default:
+                    if (!status || status >= 500) {
+                        if (!silent) {
+                            store.dispatch(appStateActions.addError({
+                                id: `HTTP_${status ?? 'NETWORK'}`,
+                                error: error,
+                                techDescription: `HTTP ${status ?? 'network error'}`,
+                                blocking: false,
+                                toNotify: true,
+                                component: 'Toast',
+                                displayableDescription: 'Si è verificato un errore imprevisto. Riprova più tardi.',
+                            }));
+                        }
                     }
                     break;
             }

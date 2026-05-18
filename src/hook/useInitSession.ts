@@ -1,38 +1,58 @@
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { useEffect } from 'react';
-import { getTppByEntityId } from '../api/tpp';
+import { checkTppExists } from '../api/tpp';
 import { useAppDispatch } from '../redux/hook';
-import { setOrganization, setTppId, setTppIdNotFound } from '../redux/slices/organizationSlice';
+import {
+    setOrganization,
+    setTppRegistered,
+    setTppIdCheckFailed,
+} from '../redux/slices/organizationSlice';
 import { getOrganizationFromStorage } from '../utils/organization';
+import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
+import { store } from '../redux/store';
+import ROUTES from '../routes';
+import { useLocation } from 'react-router-dom';
 
 export const useInitSession = () => {
     const dispatch = useAppDispatch();
+    const { pathname } = useLocation();
 
     useEffect(() => {
+        localStorage.removeItem('acs_tpp_id');
+
+        if (pathname === ROUTES.AUTH) return;
+
         const organization = getOrganizationFromStorage();
-        const tppId = localStorage.getItem('acs_tpp_id');
         const user = storageUserOps.read();
 
         if (organization) dispatch(setOrganization(organization));
         if (user) dispatch(userActions.setLoggedUser(user));
 
-        if (tppId) {
-            dispatch(setTppId(tppId));
-        } else if (organization?.fiscalCode) {
-            getTppByEntityId()
-                .then((response) => {
-                    if (response?.tppId) {
-                        dispatch(setTppId(response.tppId));
-                    } else {
-                        dispatch(setTppIdNotFound());
+        checkTppExists()
+            .then((response) => {
+                if (response === null) {
+                    const wasRegistered = localStorage.getItem('tpp_registered') === 'true';
+                    if (wasRegistered) {
+                        localStorage.removeItem('tpp_registered');
+                        store.dispatch(appStateActions.addError({
+                            id: 'TPP_NOT_FOUND',
+                            error: new Error('TPP not found'),
+                            techDescription: 'TPP not found',
+                            blocking: false,
+                            toNotify: true,
+                            component: 'Toast',
+                            displayableDescription: "La TPP non è più disponibile. Ripetere la registrazione o contattare l'assistenza",
+                        }));
                     }
-                })
-                .catch((err) => {
-                    console.error('[useInitSession] getTppByEntityId failed:', err);
-                    dispatch(setTppIdNotFound());
-                });
-        }
-
+                    dispatch(setTppRegistered(false));
+                } else {
+                    localStorage.setItem('tpp_registered', 'true');
+                    dispatch(setTppRegistered(true));
+                }
+            })
+            .catch(() => {
+                dispatch(setTppIdCheckFailed());
+            });
     }, [dispatch]);
 };

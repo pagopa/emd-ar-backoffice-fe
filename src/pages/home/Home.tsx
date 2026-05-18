@@ -1,30 +1,25 @@
 import { Box, Button, Paper, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getTppEndpoint } from '../../api/tpp';
+import { getTppProfile } from '../../api/tpp';
 import ROUTES from '../../routes';
 import { DeepLinkSection } from './components/DeepLinkSection';
 import { EndpointSection } from './components/EndpointSection';
 import HomeSkeleton from './components/HomeSkeleton';
-import type { EndpointLinkPageDto } from '../../types/tpp';
 import { sxSectionTitle, sxFieldLabel } from '../../theme/typography';
+import ErrorContent from '../../components/ErrorContent';
+import { useSafeFetch } from '../../hook/useSafeFetch';
 
 const Home = () => {
-    const [overviewData, setOverviewData] = useState<EndpointLinkPageDto>();
-    const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
 
-    useEffect(() => {
-        void getTppEndpoint().then((data) => {
-            setOverviewData(data);
-            setLoading(false);
-        });
-    }, []);
+    const { data, loading, fetchError } = useSafeFetch(() => getTppProfile());
+    const overviewData = data;
 
-    if (loading) {
-        return <HomeSkeleton />;
-    }
+    if (loading) return <HomeSkeleton />;
+    if (fetchError) return <ErrorContent />;
+
 
     const onModify = () => {
         void navigate(ROUTES.ENDPOINT_MODIFY, { replace: true });

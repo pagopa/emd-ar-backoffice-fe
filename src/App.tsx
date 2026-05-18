@@ -30,24 +30,28 @@ function Root() {
 }
 
 const ProtectedOnboarding = () => {
-    const tppId = useAppSelector((state) => state.organization.tppId);
+    const tppRegistered = useAppSelector((state) => state.organization.tppRegistered);
     const tppIdChecked = useAppSelector((state) => state.organization.tppIdChecked);
+    const checkFailed = useAppSelector((state) => state.organization.checkFailed);
 
     if (!tppIdChecked) return <LoadingScreen />;
+    if (checkFailed) return <Navigate to={ROUTES.AUTH} replace />;
 
-    return tppId ? <Navigate to={ROUTES.HOME} replace /> : <Onboarding />;
+    return tppRegistered ? <Navigate to={ROUTES.HOME} replace /> : <Onboarding />;
 };
+const TppOutlet = () => {
+    const tppRegistered = useAppSelector((state) => state.organization.tppRegistered);
+    const tppIdChecked = useAppSelector((state) => state.organization.tppIdChecked);
+    const checkFailed = useAppSelector((state) => state.organization.checkFailed);
+
+    if (!tppIdChecked) return <LoadingScreen />;
+    if (checkFailed) return <Navigate to={ROUTES.AUTH} replace />;
+
+    return tppRegistered ? <Outlet /> : <Navigate to={ROUTES.ONBOARDING} replace />;
+};
+
 
 const AuthOutlet = withAuth(() => <Outlet />);
-const TppOutlet = () => {
-    const tppId = useAppSelector((state) => state.organization.tppId);
-    const tppIdChecked = useAppSelector((state) => state.organization.tppIdChecked);
-
-    if (!tppIdChecked) return <LoadingScreen />;
-
-    return tppId ? <Outlet /> : <Navigate to={ROUTES.ONBOARDING} replace />;
-};
-
 const LayoutWithSidebar = () => <Layout showSidebar><Outlet /></Layout>;
 const LayoutWithoutSidebar = () => <Layout><Outlet /></Layout>;
 

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { Box, Button, Paper, Typography } from '@mui/material';
 import { useFormik } from 'formik';
@@ -16,6 +16,8 @@ import { UnsavedChangesDialog } from '../../../components/UnsavedChangesDialog';
 import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker';
 import CredentialsFormSkeleton from '../components/CredentialsFormSkeleton';
 import { useApiErrorHandler } from '../../../hook/useApiErrorHandler';
+import ErrorContent from '../../../components/ErrorContent';
+import { useSafeFetch } from '../../../hook/useSafeFetch';
 
 const buildTokenPayload = (values: Step2Values): TokenSection => ({
     contentType: 'application/x-www-form-urlencoded',
@@ -43,7 +45,6 @@ const parseTokenSection = (data: TokenSection): Step2Values => {
 const CredentialsModify = () => {
     const navigate = useNavigate();
     const handleApiError = useApiErrorHandler();
-    const [isLoading, setIsLoading] = useState(true);
 
     const initialValues: Step2Values = {
         clientId: '',
@@ -64,16 +65,15 @@ const CredentialsModify = () => {
         },
     });
 
-
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 
-    useEffect(() => {
-        void getTppCredentials().then((data) => {
-            formik.resetForm({ values: parseTokenSection(data) });
-            setIsLoading(false);
-        });
-    }, []);
+    const { data, loading, fetchError } = useSafeFetch(() => getTppCredentials());
 
+    useEffect(() => {
+        if (data) formik.resetForm({ values: parseTokenSection(data) });
+    }, [data]);
+
+    if (fetchError) return <ErrorContent />;
 
     const updateTPP = async (values: Step2Values) => {
         try {
@@ -108,7 +108,7 @@ const CredentialsModify = () => {
                                 Credenziali
                             </Typography>
 
-                            {isLoading ?
+                            {loading ?
                                 <CredentialsFormSkeleton />
                                 :
                                 <CredentialsForm formik={formik} />
