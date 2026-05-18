@@ -11,12 +11,17 @@ import {
 import { getOrganizationFromStorage } from '../utils/organization';
 import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
 import { store } from '../redux/store';
+import ROUTES from '../routes';
+import { useLocation } from 'react-router-dom';
 
 export const useInitSession = () => {
     const dispatch = useAppDispatch();
+    const { pathname } = useLocation();
 
     useEffect(() => {
         localStorage.removeItem('acs_tpp_id');
+
+        if (pathname === ROUTES.AUTH) return;
 
         const organization = getOrganizationFromStorage();
         const user = storageUserOps.read();
