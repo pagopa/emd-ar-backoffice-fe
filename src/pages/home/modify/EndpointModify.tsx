@@ -15,6 +15,7 @@ import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker
 import EndpointForm from '../../../components/forms/EndpointForm';
 import { buildAgentLinks, parseAgentLinks } from '../../../utils/deepLink';
 import EndpointFormSkeleton from '../components/EndpointFormSkeleton';
+import ErrorContent from '../../../components/ErrorContent';
 
 
 const EndpointModify = () => {
@@ -74,6 +75,7 @@ const EndpointModify = () => {
             .finally(() => setIsLoading(false));
     }, []);
 
+    if (fetchError) return <ErrorContent />;
 
     // Call for saving the update of data of the form
     const updateTPP = async (values: Step1Values) => {

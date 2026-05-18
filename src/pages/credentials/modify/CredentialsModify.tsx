@@ -16,6 +16,7 @@ import { UnsavedChangesDialog } from '../../../components/UnsavedChangesDialog';
 import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker';
 import CredentialsFormSkeleton from '../components/CredentialsFormSkeleton';
 import { useApiErrorHandler } from '../../../hook/useApiErrorHandler';
+import ErrorContent from '../../../components/ErrorContent';
 
 const buildTokenPayload = (values: Step2Values): TokenSection => ({
     contentType: 'application/x-www-form-urlencoded',
@@ -77,6 +78,7 @@ const CredentialsModify = () => {
             .finally(() => setIsLoading(false));
     }, []);
 
+    if (fetchError) return <ErrorContent />;
 
     const updateTPP = async (values: Step2Values) => {
         try {

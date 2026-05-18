@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 import CredentialsSkeleton from './components/CredentialsSkeleton';
 import AdditionalParamsSection from './components/AdditionalParamsSection';
 import type { PagoPACredentialsDTO, TokenSection } from '../../types/tpp';
+import ErrorContent from '../../components/ErrorContent';
 
 const KNOWN_TOKEN_KEYS = new Set(['client_id', 'client_secret', 'grant_type']);
 
@@ -43,9 +44,8 @@ const Credentials = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    if (loading) {
-        return <CredentialsSkeleton />;
-    }
+    if (loading) return <CredentialsSkeleton />;
+    if (fetchError) return <ErrorContent />;
 
     const onModify = () => {
         void navigate(ROUTES.CREDENTIALS_MODIFY, { replace: true })

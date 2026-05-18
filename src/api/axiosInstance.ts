@@ -31,6 +31,7 @@ axiosInstance.interceptors.response.use(
     (error: unknown) => {
         if (axios.isAxiosError(error)) {
             const status = error.response?.status;
+            const silent = error.config?.headers?.['x-silent-error'] === 'true';
 
             switch (status) {
                 case 401:
@@ -43,15 +44,17 @@ axiosInstance.interceptors.response.use(
                     break;
                 default:
                     if (!status || status >= 500) {
-                        store.dispatch(appStateActions.addError({
-                            id: `HTTP_${status ?? 'NETWORK'}`,
-                            error: error,
-                            techDescription: `HTTP ${status ?? 'network error'}`,
-                            blocking: false,
-                            toNotify: true,
-                            component: 'Toast',
-                            displayableDescription: 'Si è verificato un errore imprevisto. Riprova più tardi.',
-                        }));
+                        if (!silent) { // ← non mostrare toast se silent
+                            store.dispatch(appStateActions.addError({
+                                id: `HTTP_${status ?? 'NETWORK'}`,
+                                error: error,
+                                techDescription: `HTTP ${status ?? 'network error'}`,
+                                blocking: false,
+                                toNotify: true,
+                                component: 'Toast',
+                                displayableDescription: 'Si è verificato un errore imprevisto. Riprova più tardi.',
+                            }));
+                        }
                     }
                     break;
             }

@@ -9,6 +9,7 @@ import { EndpointSection } from './components/EndpointSection';
 import HomeSkeleton from './components/HomeSkeleton';
 import type { TppResponse } from '../../types/tpp';
 import { sxSectionTitle, sxFieldLabel } from '../../theme/typography';
+import ErrorContent from '../../components/ErrorContent';
 
 const Home = () => {
     const [overviewData, setOverviewData] = useState<TppResponse>();
@@ -25,10 +26,10 @@ const Home = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    if (loading) {
-        return <HomeSkeleton />;
-    }
+    if (loading) return <HomeSkeleton />;
+    if (fetchError) return <ErrorContent />;
 
+    
     const onModify = () => {
         void navigate(ROUTES.ENDPOINT_MODIFY, { replace: true });
     };
