@@ -14,11 +14,17 @@ import UserNotifyHandle from '@pagopa/selfcare-common-frontend/lib/components/Us
 import Layout from './components/layoutPages/Layout';
 import { useInitSession } from './hook/useInitSession';
 import LoadingScreen from './components/LoadingScreen';
+import EnvironmentBanner from './components/EnvironmentBanner';
+import { CONFIG } from './config';
 
 function Root() {
     useInitSession();
+
     return (
         <ErrorBoundary>
+            {
+                CONFIG.ENV !== 'PROD' && < EnvironmentBanner message={'Ambiente di collaudo: attenzione i dati non devono essere reali'} />
+            }
             <SessionErrorHandler />
             <UserNotifyHandle />
             {/* Suspense cover all lazy routes */}
