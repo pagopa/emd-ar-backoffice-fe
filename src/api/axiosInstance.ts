@@ -44,7 +44,7 @@ axiosInstance.interceptors.response.use(
                     break;
                 default:
                     if (!status || status >= 500) {
-                        if (!silent) { // ← non mostrare toast se silent
+                        if (!silent) {
                             store.dispatch(appStateActions.addError({
                                 id: `HTTP_${status ?? 'NETWORK'}`,
                                 error: error,
