@@ -60,7 +60,7 @@ export const ReadonlyField = ({ label, value, secret = false }: ReadonlyFieldPro
                     endAdornment: (
                         <InputAdornment position="end">
                             <IconButton size="small" onClick={handleCopy}>
-                                <CopyIcon fontSize="small" />
+                                <CopyIcon fontSize="small" sx={{ transform: 'scaleY(-1)' }} />
                             </IconButton>
                         </InputAdornment>
                     ),

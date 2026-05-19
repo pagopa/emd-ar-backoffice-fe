@@ -27,9 +27,5 @@ export const buildPatchPayload = (
         patch.agentLinks = newAgentLinks;
     }
 
-    console.log('[UpdateEndpoint] Form original:', JSON.parse(JSON.stringify(original)));
-    console.log('[UpdateEndpoint] Form values:', JSON.parse(JSON.stringify(values)));
-    console.log('[UpdateEndpoint] Form patch:', JSON.parse(JSON.stringify(patch)));
-
     return patch;
 };
