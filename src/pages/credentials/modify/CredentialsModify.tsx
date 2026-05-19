@@ -18,6 +18,8 @@ import CredentialsFormSkeleton from '../components/CredentialsFormSkeleton';
 import { useApiErrorHandler } from '../../../hook/useApiErrorHandler';
 import ErrorContent from '../../../components/ErrorContent';
 import { useSafeFetch } from '../../../hook/useSafeFetch';
+import { useAppSelector } from '../../../redux/hook';
+import { selectSessionError } from '../../../redux/slices/sessionSlice';
 
 const buildTokenPayload = (values: Step2Values): TokenSection => ({
     contentType: 'application/x-www-form-urlencoded',
@@ -45,6 +47,7 @@ const parseTokenSection = (data: TokenSection): Step2Values => {
 const CredentialsModify = () => {
     const navigate = useNavigate();
     const handleApiError = useApiErrorHandler();
+    const sessionError = useAppSelector(selectSessionError);
 
     const initialValues: Step2Values = {
         clientId: '',
@@ -73,6 +76,7 @@ const CredentialsModify = () => {
         if (data) formik.resetForm({ values: parseTokenSection(data) });
     }, [data]);
 
+    if (sessionError) return null;
     if (fetchError) return <ErrorContent />;
 
     const updateTPP = async (values: Step2Values) => {

@@ -17,10 +17,13 @@ import EndpointFormSkeleton from '../components/EndpointFormSkeleton';
 import ErrorContent from '../../../components/ErrorContent';
 import { useSafeFetch } from '../../../hook/useSafeFetch';
 import { buildPatchPayload } from '../../../utils/forms';
+import { useAppSelector } from '../../../redux/hook';
+import { selectSessionError } from '../../../redux/slices/sessionSlice';
 
 
 const EndpointModify = () => {
     const navigate = useNavigate();
+    const sessionError = useAppSelector(selectSessionError);
 
     const initialValues: Step1Values = {
         webhookUrl: '',
@@ -68,11 +71,12 @@ const EndpointModify = () => {
         }
     }, [data]);
 
+    if (sessionError) return null;
     if (fetchError) return <ErrorContent />;
 
     // Call for saving the update of data of the form
     const updateTPP = async (values: Step1Values) => {
-        if (!data) return; 
+        if (!data) return;
 
         const patch = buildPatchPayload(data, values);
 

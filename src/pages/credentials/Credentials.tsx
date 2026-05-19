@@ -10,6 +10,8 @@ import CredentialsSkeleton from './components/CredentialsSkeleton';
 import AdditionalParamsSection from './components/AdditionalParamsSection';
 import ErrorContent from '../../components/ErrorContent';
 import { useSafeFetch } from '../../hook/useSafeFetch';
+import { useAppSelector } from '../../redux/hook';
+import { selectSessionError } from '../../redux/slices/sessionSlice';
 
 const KNOWN_TOKEN_KEYS = new Set(['client_id', 'client_secret', 'grant_type']);
 
@@ -25,12 +27,14 @@ const extractTppFields = (body: Record<string, string> = {}) => ({
 const Credentials = () => {
 
     const navigate = useNavigate();
+    const sessionError = useAppSelector(selectSessionError);
 
     const { data, loading, fetchError } = useSafeFetch(() =>
         Promise.all([getPagoPACredentials(), getTppCredentials(), getTppProfile()])
     );
 
     if (loading) return <CredentialsSkeleton />;
+    if (sessionError) return null;
     if (fetchError) return <ErrorContent />;
 
     const onModify = () => {
