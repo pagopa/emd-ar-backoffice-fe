@@ -32,6 +32,7 @@ export function DeepLinkUniversal({
                 onChange={(e) => onFallBackChange(e.target.value)}
                 error={Boolean(touched?.fallBackLink && errors?.fallBackLink)}
                 helperText={touched?.fallBackLink && errors?.fallBackLink || ' '}
+                inputProps={{ maxLength: 2048 }}
             />
 
             {versions.map((version, index) => (
@@ -54,6 +55,7 @@ export function DeepLinkUniversal({
                             onChange={(e) => onVersionChange(index, 'link', e.target.value)}
                             error={Boolean(errors?.versions?.[index]?.link)}
                             helperText={errors?.versions?.[index]?.link || ' '}
+                            inputProps={{ maxLength: 2048 }}
                         />
                     </Grid>
                     <Grid item xs="auto">

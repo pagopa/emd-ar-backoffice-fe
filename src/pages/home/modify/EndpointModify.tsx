@@ -9,14 +9,14 @@ import { getTppProfile, saveEndpointTpp } from '../../../api/tpp';
 import ROUTES from '../../../routes';
 import type { Step1Values } from '../../../types/stepsOnboarding';
 import { endpointSchema } from '../../../utils/validations';
-import type { EndpointLinkPageDto } from '../../../types/tpp';
 import { UnsavedChangesDialog } from '../../../components/UnsavedChangesDialog';
 import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker';
 import EndpointForm from '../../../components/forms/EndpointForm';
-import { buildAgentLinks, parseAgentLinks } from '../../../utils/deepLink';
+import { parseAgentLinks } from '../../../utils/deepLink';
 import EndpointFormSkeleton from '../components/EndpointFormSkeleton';
 import ErrorContent from '../../../components/ErrorContent';
 import { useSafeFetch } from '../../../hook/useSafeFetch';
+import { buildPatchPayload } from '../../../utils/forms';
 
 
 const EndpointModify = () => {
@@ -52,7 +52,7 @@ const EndpointModify = () => {
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 
 
-    const { data , loading, fetchError } = useSafeFetch(() => getTppProfile());
+    const { data, loading, fetchError } = useSafeFetch(() => getTppProfile());
 
     useEffect(() => {
         if (data) {
@@ -72,14 +72,17 @@ const EndpointModify = () => {
 
     // Call for saving the update of data of the form
     const updateTPP = async (values: Step1Values) => {
-        const payload: EndpointLinkPageDto = {
-            messageUrl: values.webhookUrl,
-            authenticationUrl: values.authUrl,
-            authenticationType: "OAUTH2",
-            agentLinks: buildAgentLinks(values),
-        };
-        await saveEndpointTpp(payload);
-        handleConfirmExit(ROUTES.HOME)
+        if (!data) return; 
+
+        const patch = buildPatchPayload(data, values);
+
+        if (Object.keys(patch).length === 0) {
+            handleConfirmExit(ROUTES.HOME);
+            return;
+        }
+
+        await saveEndpointTpp(patch);
+        handleConfirmExit(ROUTES.HOME);
     };
 
     return (

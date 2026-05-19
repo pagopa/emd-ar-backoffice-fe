@@ -62,7 +62,7 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                             name="clientId"
                             label="Client ID"
                             required
-                            inputProps={{ autoComplete: 'new-password' }}
+                            inputProps={{ maxLength: 256, autoComplete: 'new-password' }}
                             value={values.clientId}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -79,7 +79,7 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                             label="Client Secret"
                             required
                             type={isSecretVisible ? 'text' : 'password'}
-                            inputProps={{ autoComplete: 'new-password' }}
+                            inputProps={{ maxLength: 256, autoComplete: 'new-password' }}
                             value={values.clientSecret}
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -148,6 +148,7 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                                         error={bodyTouched[index]?.name && Boolean(bodyErrors[index]?.name)}
                                         helperText={bodyTouched[index]?.name && bodyErrors[index]?.name}
                                         sx={{ flex: 1 }}
+                                        inputProps={{ maxLength: 256 }}
                                     />
                                     <TextField
                                         size="small"
@@ -159,6 +160,7 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                                         error={bodyTouched[index]?.value && Boolean(bodyErrors[index]?.value)}
                                         helperText={bodyTouched[index]?.value && bodyErrors[index]?.value}
                                         sx={{ flex: 2 }}
+                                        inputProps={{ maxLength: 512 }}
                                     />
                                     <IconButton
                                         aria-label="Rimuovi parametro body"

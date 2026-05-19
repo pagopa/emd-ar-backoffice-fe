@@ -27,9 +27,9 @@ export const saveCredentialsTpp = async (form: TokenSection): Promise<TokenSecti
     return data;
 };
 
-export const saveEndpointTpp = async (form: EndpointLinkPageDto): Promise<TppIdResponse> => {
-    if (CONFIG.ENV === "DEV" || CONFIG.MOCK_ACTIVE) return callMockSave();
-    const { data } = await axiosInstance.post<TppIdResponse>('/v1/tpp/endpoint', form);
+export const saveEndpointTpp = async (form: Partial<EndpointLinkPageDto>): Promise<TppResponse> => {
+    if (CONFIG.MOCK_ACTIVE) return mockDelay(MOCK_ENDPOINT_PAGE);
+    const { data } = await axiosInstance.patch<TppResponse>('/v1/tpp', form);
     return data;
 };
 
