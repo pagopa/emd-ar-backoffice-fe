@@ -2,9 +2,9 @@ import { URL_REGEX, NO_SPACES } from './constant';
 import * as Yup from 'yup';
 
 /**
- * Yup test: trova il primo duplicato nel campo `field` dell'array
- * e riporta l'errore sull'elemento duplicato (non sul primo).
- * Il parametro `message` è la stringa da mostrare in UI.
+ * Yup test factory: finds the first duplicate value in the given `field` of an array
+ * and reports the error on the duplicate item (not the first occurrence).
+ * The `message` parameter is the string displayed in the UI.
  */
 function makeUniqueFieldTest<T extends Record<string, unknown>>(
     field: keyof T,
@@ -32,7 +32,7 @@ function makeUniqueFieldTest<T extends Record<string, unknown>>(
     };
 }
 
-// Passare il messaggio direttamente nella factory
+// Reusable uniqueness tests for array fields
 const uniqueParamNames  = makeUniqueFieldTest<{ name?: string; value?: string }>('name', 'Chiave duplicata');
 const uniqueVersionKeys = makeUniqueFieldTest<{ versionKey?: string; link?: string }>('versionKey', 'Versione già inserita');
 
@@ -58,7 +58,7 @@ const versionsSchema = Yup.array()
     .of(versionEntrySchema)
     .test('unique-version-keys', 'Versione già inserita', uniqueVersionKeys);
 
-// Credenziali
+// Credentials form validation
 export const credentialsSchema = Yup.object({
     clientId: Yup.string()
         .required('Campo obbligatorio')
@@ -75,7 +75,7 @@ export const credentialsSchema = Yup.object({
         .test('unique-url-names', 'Chiave duplicata', uniqueParamNames),
 });
 
-// Endpoint
+// Endpoint form validation
 export const endpointSchema = Yup.object({
     webhookUrl: Yup.string().matches(URL_REGEX, 'Inserisci un URL valido').required('Campo obbligatorio'),
     authUrl:    Yup.string().matches(URL_REGEX, 'Inserisci un URL valido').required('Campo obbligatorio'),
