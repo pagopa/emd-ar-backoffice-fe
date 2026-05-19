@@ -26,5 +26,9 @@ export const useSafeFetch = <T>(fetcher: () => Promise<T>) => {
         return () => { cancelled = true; };
     }, []);
 
-    return { data, loading, fetchError: _fetchError && !sessionError };
+    if (sessionError) {
+        return { data: null, loading: false, fetchError: false };
+    }
+
+    return { data, loading, fetchError: _fetchError };
 };
