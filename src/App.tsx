@@ -22,9 +22,6 @@ function Root() {
 
     return (
         <ErrorBoundary>
-            {
-                CONFIG.ENV !== 'PROD' && < EnvironmentBanner message={'Ambiente di collaudo: attenzione i dati non devono essere reali'} />
-            }
             <SessionErrorHandler />
             <UserNotifyHandle />
             {/* Suspense cover all lazy routes */}
@@ -58,8 +55,22 @@ const TppOutlet = () => {
 
 
 const AuthOutlet = withAuth(() => <Outlet />);
-const LayoutWithSidebar = () => <Layout showSidebar><Outlet /></Layout>;
-const LayoutWithoutSidebar = () => <Layout><Outlet /></Layout>;
+const LayoutWithSidebar = () => {
+    return (<>
+        {CONFIG.ENV !== 'PROD' && < EnvironmentBanner message={'Ambiente di collaudo: attenzione i dati non devono essere reali'} />}
+        <Layout showSidebar>
+            <Outlet />
+        </Layout>
+    </>)
+};
+const LayoutWithoutSidebar = () => {
+    return (<>
+        {CONFIG.ENV !== 'PROD' && < EnvironmentBanner message={'Ambiente di collaudo: attenzione i dati non devono essere reali'} />}
+        <Layout>
+            <Outlet />
+        </Layout>
+    </>)
+};
 
 export const router = createBrowserRouter([
     {
