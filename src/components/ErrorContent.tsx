@@ -1,11 +1,21 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Link, Typography } from '@mui/material';
 import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 
+interface ErrorContentProps {
+    arUrl?: string;
+}
 
-export default function ErrorContent() {
+export default function ErrorContent({ arUrl }: ErrorContentProps = {}) {
     return (
-        <Box display="flex" flexDirection="column" alignItems="center"
-            justifyContent="center" gap={2} p={4} height="100%">
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap={2}
+            p={4}
+            height="100%"
+        >
             <ErrorOutlineIcon color="error" sx={{ fontSize: 48 }} />
             <Typography variant="h6">Qualcosa è andato storto</Typography>
             <Typography variant="body2" color="text.secondary" textAlign="center">
@@ -14,6 +24,11 @@ export default function ErrorContent() {
             <Button variant="outlined" onClick={() => window.location.reload()}>
                 Riprova
             </Button>
+            {arUrl && (
+                <Link href={arUrl} underline="always" color="primary" variant="body2">
+                    Torna all&apos;Area Riservata
+                </Link>
+            )}
         </Box>
     );
 }

@@ -9,8 +9,6 @@ import {
     setTppIdCheckFailed,
 } from '../redux/slices/organizationSlice';
 import { getOrganizationFromStorage } from '../utils/organization';
-import { appStateActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/appStateSlice';
-import { store } from '../redux/store';
 import ROUTES from '../routes';
 import { useLocation } from 'react-router-dom';
 
@@ -32,19 +30,7 @@ export const useInitSession = () => {
         checkTppExists()
             .then((response) => {
                 if (response === null) {
-                    const wasRegistered = localStorage.getItem('tpp_registered') === 'true';
-                    if (wasRegistered) {
-                        localStorage.removeItem('tpp_registered');
-                        store.dispatch(appStateActions.addError({
-                            id: 'TPP_NOT_FOUND',
-                            error: new Error('TPP not found'),
-                            techDescription: 'TPP not found',
-                            blocking: false,
-                            toNotify: true,
-                            component: 'Toast',
-                            displayableDescription: "La TPP non è più disponibile. Ripetere la registrazione o contattare l'assistenza",
-                        }));
-                    }
+                    localStorage.removeItem('tpp_registered');
                     dispatch(setTppRegistered(false));
                 } else {
                     localStorage.setItem('tpp_registered', 'true');
