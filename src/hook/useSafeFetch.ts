@@ -5,7 +5,7 @@ import { selectSessionError } from '../redux/slices/sessionSlice';
 export const useSafeFetch = <T>(fetcher: () => Promise<T>) => {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(true);
-    const [_fetchError, setFetchError] = useState(false);
+    const [fetchError, setFetchError] = useState(false);
 
     const sessionError = useAppSelector(selectSessionError);
 
@@ -30,5 +30,5 @@ export const useSafeFetch = <T>(fetcher: () => Promise<T>) => {
         return { data: null, loading: false, fetchError: false };
     }
 
-    return { data, loading, fetchError: _fetchError };
+    return { data, loading, fetchError };
 };

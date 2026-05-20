@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
-export type SessionError = 'UNAUTHORIZED' | 'FORBIDDEN' | 'SERVER_ERROR' | null;
+export type SessionError = 'UNAUTHORIZED' | 'FORBIDDEN' | null;
 
 type SessionState = {
     error: SessionError;
