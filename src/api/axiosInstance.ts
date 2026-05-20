@@ -38,6 +38,20 @@ axiosInstance.interceptors.request.use((config) => {
 if (CONFIG.MOCK_ACTIVE) {
     axiosInstance.interceptors.request.use((config) => {
         applyMockScenario(config);
+
+        const key = `${config.method?.toUpperCase()} ${config.url}`;
+        if (MOCK_RESPONSES[key]) {
+            config.adapter = () =>
+                new Promise((resolve) =>
+                    setTimeout(() => resolve({
+                        data: MOCK_RESPONSES[key],
+                        status: 200,
+                        statusText: 'OK',
+                        headers: {},
+                        config,
+                    }), 1000)
+                );
+        }
         return config;
     });
 }
@@ -119,21 +133,3 @@ axiosInstance.interceptors.response.use(
 );
 
 
-axiosInstance.interceptors.request.use((config) => {
-    applyMockScenario(config);
-
-    const key = `${config.method?.toUpperCase()} ${config.url}`;
-    if (MOCK_RESPONSES[key]) {
-        config.adapter = () =>
-            new Promise((resolve) =>
-                setTimeout(() => resolve({
-                    data: MOCK_RESPONSES[key],
-                    status: 200,
-                    statusText: 'OK',
-                    headers: {},
-                    config,
-                }), 1000)
-            );
-    }
-    return config;
-});
