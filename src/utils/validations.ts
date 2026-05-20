@@ -48,7 +48,8 @@ const paramEntrySchema = Yup.object({
 
 const versionEntrySchema = Yup.object({
     versionKey: Yup.string()
-        .required('Campo obbligatorio'),
+        .required('Campo obbligatorio')
+        .matches(NO_SPACES, 'Non sono ammessi spazi'),
     link: Yup.string()
         .matches(URL_REGEX, 'URL non valido')
         .required('Campo obbligatorio'),

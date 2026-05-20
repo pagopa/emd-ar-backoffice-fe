@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Paper, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
@@ -125,7 +125,13 @@ const EndpointModify = () => {
                             <Button variant="outlined" onClick={() => void navigate(ROUTES.HOME)}>
                                 Annulla
                             </Button>
-                            <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
+
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                disabled={formik.isSubmitting}
+                                endIcon={formik.isSubmitting ? <CircularProgress size={16} color="inherit" /> : undefined}
+                            >
                                 Salva
                             </Button>
                         </Box>
