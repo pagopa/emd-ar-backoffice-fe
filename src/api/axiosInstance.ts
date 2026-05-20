@@ -127,8 +127,9 @@ axiosInstance.interceptors.response.use(
         if (axios.isAxiosError(error)) {
             const silent = error.config?.headers?.['x-silent-error'] === 'true';
             handleInterceptedError(error, silent);
+            return Promise.reject(error);
         }
-        return Promise.reject(error instanceof Error ? error : new Error(String(error)));
+        return Promise.reject(new Error(String(error)));
     }
 );
 
