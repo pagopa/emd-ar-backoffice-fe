@@ -4,7 +4,7 @@
 // Reads mock_scenario from localStorage and simulates the corresponding
 // response without touching any API code.
 import type { InternalAxiosRequestConfig } from 'axios';
-import { getMockScenario , throwForbidden, throwServerError, throwTppNotFound, throwUnauthorized } from './scenarios';
+import { getMockScenario, makeMockAxiosError, throwForbidden, throwServerError, throwTppNotFound, throwUnauthorized } from './scenarios';
 
 
 type RoutePattern = {
@@ -48,7 +48,12 @@ export function applyMockScenario(config: InternalAxiosRequestConfig): void {
         case 'auth-handshake-500':
         case 'auth-check-500':
         case 'auth-no-tpp':
+            if (matches(config, { method: 'get', urlIncludes: '/v1/tpp' }))
+                throw makeMockAxiosError(404, {});
+            break;
         case 'init-check-500':
+            if (matches(config, { method: 'get', urlIncludes: '/v1/tpp' }))
+                throwServerError(true);
             break;
     }
 }

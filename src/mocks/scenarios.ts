@@ -72,7 +72,6 @@ export function printMockHelp(): void {
     console.group('%c[MockScenarios] Available scenarios', 'color: #7c3aed; font-weight: bold');
     const scenarios: Array<[MockScenario, string]> = [
         ['auth-handshake-500', 'Auth: handshake fails → error page'],
-        ['auth-check-500',     'Auth: handshake ok, TPP check 500 → error page'],
         ['auth-no-tpp',        'Auth: handshake ok, TPP not found → Onboarding'],
         ['session-401',        'Any request → "Session expired" dialog'],
         ['session-403',        'Any request → "Access denied" dialog'],
