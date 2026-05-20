@@ -23,7 +23,6 @@ import { selectSessionError } from '../../../redux/slices/sessionSlice';
 
 const EndpointModify = () => {
     const navigate = useNavigate();
-    const sessionError = useAppSelector(selectSessionError);
 
     const initialValues: Step1Values = {
         webhookUrl: '',
@@ -56,6 +55,8 @@ const EndpointModify = () => {
 
 
     const { data, loading, fetchError } = useSafeFetch(() => getTppProfile());
+
+    const sessionError = useAppSelector(selectSessionError);
 
     useEffect(() => {
         if (data) {

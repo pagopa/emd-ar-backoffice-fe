@@ -47,7 +47,6 @@ const parseTokenSection = (data: TokenSection): Step2Values => {
 const CredentialsModify = () => {
     const navigate = useNavigate();
     const handleApiError = useApiErrorHandler();
-    const sessionError = useAppSelector(selectSessionError);
 
     const initialValues: Step2Values = {
         clientId: '',
@@ -71,6 +70,7 @@ const CredentialsModify = () => {
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 
     const { data, loading, fetchError } = useSafeFetch(() => getTppCredentials());
+    const sessionError = useAppSelector(selectSessionError);
 
     useEffect(() => {
         if (data) formik.resetForm({ values: parseTokenSection(data) });

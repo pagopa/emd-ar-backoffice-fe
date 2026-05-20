@@ -27,11 +27,11 @@ const extractTppFields = (body: Record<string, string> = {}) => ({
 const Credentials = () => {
 
     const navigate = useNavigate();
-    const sessionError = useAppSelector(selectSessionError);
-
     const { data, loading, fetchError } = useSafeFetch(() =>
         Promise.all([getPagoPACredentials(), getTppCredentials(), getTppProfile()])
     );
+
+    const sessionError = useAppSelector(selectSessionError);
 
     if (loading) return <CredentialsSkeleton />;
     if (sessionError) return null;

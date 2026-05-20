@@ -15,9 +15,9 @@ import { selectSessionError } from '../../redux/slices/sessionSlice';
 const Home = () => {
 
     const navigate = useNavigate();
-    const sessionError = useAppSelector(selectSessionError);
-
     const { data, loading, fetchError } = useSafeFetch(() => getTppProfile());
+
+    const sessionError = useAppSelector(selectSessionError);
     const overviewData = data;
 
     if (loading) return <HomeSkeleton />;
