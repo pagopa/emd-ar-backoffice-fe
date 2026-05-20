@@ -16,7 +16,11 @@ export const useSafeFetch = <T>(fetcher: () => Promise<T>) => {
             .then((result) => {
                 if (!cancelled) setData(result);
             })
-            .catch(() => {
+            .catch((err: any) => {
+                if (err?.response?.status === 401 || err?.response?.status === 403) {
+                    return;
+                }
+
                 if (!cancelled) setFetchError(true);
             })
             .finally(() => {
