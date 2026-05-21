@@ -3,7 +3,7 @@ import { Box } from '@mui/material';
 import { CONFIG } from '../../config';
 import { useAppSelector } from '../../redux/hook';
 
-import { HeaderAccount, HeaderProduct } from '@pagopa/mui-italia';
+import { HeaderAccount, HeaderProduct, type LinkType } from '@pagopa/mui-italia';
 import { userSelectors } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 
@@ -28,6 +28,19 @@ const Header = () => {
         }]
         : [];
 
+    const productsList = [{
+        id: 'mdc-pagopa',
+        title: 'Messaggi di cortesia',
+        productUrl: '',
+        linkType: 'internal' as LinkType
+    },
+    {
+        id: 'ar-pagopa',
+        title: 'Area Riservata',
+        productUrl: organization ? `${CONFIG.AR_BASE_URL}/dashboard/${organization.id}` : `${CONFIG.AR_BASE_URL}/dashboard`,
+        linkType: 'internal' as LinkType
+    }]
+
     const handleLogout = () => {
         storageTokenOps.delete();
         storageUserOps.delete();
@@ -37,7 +50,12 @@ const Header = () => {
     };
 
     return (
-        <Box component="header" >
+        <Box component="header" sx={{
+            backgroundColor: "white",
+            '& .MuiAvatar-root': {
+                backgroundColor: 'transparent',
+            }
+        }}>
             <HeaderAccount
                 rootLink={{ title: '', label: 'PagoPA S.p.A.', href: 'https://www.pagopa.it', ariaLabel: 'PagoPA S.p.A.' }}
                 loggedUser={loggedUser}
@@ -47,7 +65,7 @@ const Header = () => {
             />
             <HeaderProduct
                 productId="mdc-pagopa"
-                productsList={[{ id: 'mdc-pagopa', title: 'Messaggi di cortesia', productUrl: '', linkType: 'internal' }]}
+                productsList={productsList}
                 partyId={organization?.id ?? ''}
                 partyList={partyList}
                 onSelectedParty={() => undefined}

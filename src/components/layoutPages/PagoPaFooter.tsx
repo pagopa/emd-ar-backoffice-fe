@@ -1,6 +1,6 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
-import { type CompanyLinkType, Footer as MuiItaliaFooter, type FooterLinksType, type LangCode,type PreLoginFooterLinksType } from '@pagopa/mui-italia';
+import { type CompanyLinkType, Footer as MuiItaliaFooter, type FooterLinksType, type LangCode, type PreLoginFooterLinksType } from '@pagopa/mui-italia';
 
 const companyLink: CompanyLinkType = {
     ariaLabel: 'PagoPA S.p.A.',
@@ -51,11 +51,13 @@ const preLoginLinks: PreLoginFooterLinksType = {
 };
 
 const legalInfo = (
-    <Typography variant="caption" color="text.secondary">
-        PagoPA S.p.A. · Società per azioni con socio unico · Capitale sociale di euro 1.000.000 interamente versato ·
-        Sede legale in Roma, Piazza Colonna 370 · CAP 00187 · N. di iscrizione a Registro Imprese di Roma,
-        CF e P.IVA 15376371009
-    </Typography>
+    <>
+        <strong>PagoPA S.p.A.</strong>
+        {' '}· Società per azioni con socio unico · Capitale sociale di euro 1.000.000 interamente versato ·
+        Sede legale in Roma, Piazza Colonna 370,{' '}
+        <br />
+        CAP 00187 · N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009
+    </>
 );
 
 
