@@ -30,14 +30,8 @@ const Header = () => {
 
     const productsList = [{
         id: 'mdc-pagopa',
-        title: 'Messaggi di cortesia',
+        title: 'Messaggi di Cortesia',
         productUrl: '',
-        linkType: 'internal' as LinkType
-    },
-    {
-        id: 'ar-pagopa',
-        title: 'Area Riservata',
-        productUrl: organization ? `${CONFIG.AR_BASE_URL}/dashboard/${organization.id}` : `${CONFIG.AR_BASE_URL}/dashboard`,
         linkType: 'internal' as LinkType
     }]
 
