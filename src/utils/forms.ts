@@ -1,6 +1,6 @@
 import type { Step1Values } from "../types/stepsOnboarding";
 import type { TppResponse, EndpointLinkPageDto } from "../types/tpp";
-import { buildAgentLinks } from "./deepLink";
+import { buildAgentLinks, remapAgentLinkKeys } from "./deepLink";
 
 export const buildPatchPayload = (
     original: TppResponse,
@@ -8,14 +8,12 @@ export const buildPatchPayload = (
 ): Partial<EndpointLinkPageDto> => {
     const patch: Partial<EndpointLinkPageDto> = {};
 
-    const newMessageUrl = values.webhookUrl;
-    if (newMessageUrl !== original.messageUrl) {
-        patch.messageUrl = newMessageUrl;
+    if (values.webhookUrl !== original.messageUrl) {
+        patch.messageUrl = values.webhookUrl;
     }
 
-    const newAuthUrl = values.authUrl;
-    if (newAuthUrl !== original.authenticationUrl) {
-        patch.authenticationUrl = newAuthUrl;
+    if (values.authUrl !== original.authenticationUrl) {
+        patch.authenticationUrl = values.authUrl;
     }
 
     if ("OAUTH2" !== original.authenticationType) {
@@ -23,8 +21,12 @@ export const buildPatchPayload = (
     }
 
     const newAgentLinks = buildAgentLinks(values);
-    if (JSON.stringify(newAgentLinks) !== JSON.stringify(original.agentLinks ?? {})) {
-        patch.agentLinks = newAgentLinks;
+    const remappedAgentLinks = original.agentLinks
+        ? remapAgentLinkKeys(newAgentLinks, original.agentLinks)
+        : newAgentLinks;
+
+    if (JSON.stringify(remappedAgentLinks) !== JSON.stringify(original.agentLinks ?? {})) {
+        patch.agentLinks = remappedAgentLinks;
     }
 
     return patch;
