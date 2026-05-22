@@ -9,15 +9,19 @@ import HomeSkeleton from './components/HomeSkeleton';
 import { sxSectionTitle, sxFieldLabel } from '../../theme/typography';
 import ErrorContent from '../../components/ErrorContent';
 import { useSafeFetch } from '../../hook/useSafeFetch';
+import { useAppSelector } from '../../redux/hook';
+import { selectSessionError } from '../../redux/slices/sessionSlice';
 
 const Home = () => {
 
     const navigate = useNavigate();
-
     const { data, loading, fetchError } = useSafeFetch(() => getTppProfile());
+
+    const sessionError = useAppSelector(selectSessionError);
     const overviewData = data;
 
     if (loading) return <HomeSkeleton />;
+    if (sessionError) return null;
     if (fetchError) return <ErrorContent />;
 
 

@@ -28,6 +28,7 @@ export function VersioneField({
             onChange={(e) => onChange(e.target.value)}
             error={error}
             helperText={helperText}
+            inputProps={{ maxLength: 50 }}
             InputProps={showTooltip ? {
                 endAdornment: (
                     <InputAdornment position="end">

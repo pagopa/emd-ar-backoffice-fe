@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Paper, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,8 @@ import CredentialsFormSkeleton from '../components/CredentialsFormSkeleton';
 import { useApiErrorHandler } from '../../../hook/useApiErrorHandler';
 import ErrorContent from '../../../components/ErrorContent';
 import { useSafeFetch } from '../../../hook/useSafeFetch';
+import { useAppSelector } from '../../../redux/hook';
+import { selectSessionError } from '../../../redux/slices/sessionSlice';
 
 const buildTokenPayload = (values: Step2Values): TokenSection => ({
     contentType: 'application/x-www-form-urlencoded',
@@ -68,11 +70,13 @@ const CredentialsModify = () => {
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 
     const { data, loading, fetchError } = useSafeFetch(() => getTppCredentials());
+    const sessionError = useAppSelector(selectSessionError);
 
     useEffect(() => {
         if (data) formik.resetForm({ values: parseTokenSection(data) });
     }, [data]);
 
+    if (sessionError) return null;
     if (fetchError) return <ErrorContent />;
 
     const updateTPP = async (values: Step2Values) => {
@@ -120,7 +124,13 @@ const CredentialsModify = () => {
                             <Button variant="outlined" onClick={() => void navigate(ROUTES.CREDENTIALS)}>
                                 Annulla
                             </Button>
-                            <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
+
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                disabled={formik.isSubmitting}
+                                endIcon={formik.isSubmitting ? <CircularProgress size={16} color="inherit" /> : undefined}
+                            >
                                 Salva
                             </Button>
                         </Box>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { ArrowBack as Back } from '@mui/icons-material';
-import { Box, Button, Paper, Step, StepLabel, Stepper, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Paper, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
@@ -194,6 +194,7 @@ const Onboarding = () => {
                             type="submit"
                             variant="contained"
                             disabled={formik.isSubmitting}
+                            endIcon={formik.isSubmitting ? <CircularProgress size={16} color="inherit" /> : undefined}
                         >
                             {isLastStep ? 'Completa configurazione' : 'Continua'}
                         </Button>

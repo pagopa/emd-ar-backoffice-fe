@@ -14,9 +14,13 @@ import UserNotifyHandle from '@pagopa/selfcare-common-frontend/lib/components/Us
 import Layout from './components/layoutPages/Layout';
 import { useInitSession } from './hook/useInitSession';
 import LoadingScreen from './components/LoadingScreen';
+import EnvironmentBanner from './components/EnvironmentBanner';
+import ErrorContent from './components/ErrorContent';
+import { CONFIG } from './config';
 
 function Root() {
     useInitSession();
+
     return (
         <ErrorBoundary>
             <SessionErrorHandler />
@@ -29,31 +33,55 @@ function Root() {
     );
 }
 
+function useArUrl() {
+    const organization = useAppSelector((state) => state.organization.organization);
+    return organization?.id
+        ? `${CONFIG.AR_BASE_URL}/dashboard/${organization.id}`
+        : `${CONFIG.AR_BASE_URL}/dashboard`;
+}
+
 const ProtectedOnboarding = () => {
     const tppRegistered = useAppSelector((state) => state.organization.tppRegistered);
     const tppIdChecked = useAppSelector((state) => state.organization.tppIdChecked);
     const checkFailed = useAppSelector((state) => state.organization.checkFailed);
+    const arUrl = useArUrl();
 
     if (!tppIdChecked) return <LoadingScreen />;
-    if (checkFailed) return <Navigate to={ROUTES.AUTH} replace />;
+    if (checkFailed) return <ErrorContent arUrl={arUrl} />;
 
     return tppRegistered ? <Navigate to={ROUTES.HOME} replace /> : <Onboarding />;
 };
+
 const TppOutlet = () => {
     const tppRegistered = useAppSelector((state) => state.organization.tppRegistered);
     const tppIdChecked = useAppSelector((state) => state.organization.tppIdChecked);
     const checkFailed = useAppSelector((state) => state.organization.checkFailed);
+    const arUrl = useArUrl();
 
     if (!tppIdChecked) return <LoadingScreen />;
-    if (checkFailed) return <Navigate to={ROUTES.AUTH} replace />;
+    if (checkFailed) return <ErrorContent arUrl={arUrl} />
 
     return tppRegistered ? <Outlet /> : <Navigate to={ROUTES.ONBOARDING} replace />;
 };
 
 
 const AuthOutlet = withAuth(() => <Outlet />);
-const LayoutWithSidebar = () => <Layout showSidebar><Outlet /></Layout>;
-const LayoutWithoutSidebar = () => <Layout><Outlet /></Layout>;
+const LayoutWithSidebar = () => (
+    <>
+        {CONFIG.ENV !== 'PROD' && <EnvironmentBanner message={'Ambiente di collaudo: attenzione i dati non devono essere reali'} />}
+        <Layout showSidebar>
+            <Outlet />
+        </Layout>
+    </>
+);
+const LayoutWithoutSidebar = () => (
+    <>
+        {CONFIG.ENV !== 'PROD' && <EnvironmentBanner message={'Ambiente di collaudo: attenzione i dati non devono essere reali'} />}
+        <Layout>
+            <Outlet />
+        </Layout>
+    </>
+);
 
 export const router = createBrowserRouter([
     {

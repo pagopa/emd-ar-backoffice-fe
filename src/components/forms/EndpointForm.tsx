@@ -106,7 +106,9 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
                             placeholder="https://api.tuoservizio.it/messages"
                             value={values.webhookUrl} onChange={handleChange} onBlur={handleBlur}
                             error={touched.webhookUrl && Boolean(errors.webhookUrl)}
-                            helperText={touched.webhookUrl && errors.webhookUrl} />
+                            helperText={touched.webhookUrl && errors.webhookUrl}
+                            inputProps={{ maxLength: 2048 }}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth id="authUrl" name="authUrl" required
@@ -115,7 +117,9 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
                             placeholder="https://api.tuoservizio.it/auth"
                             value={values.authUrl} onChange={handleChange} onBlur={handleBlur}
                             error={touched.authUrl && Boolean(errors.authUrl)}
-                            helperText={touched.authUrl && errors.authUrl} />
+                            helperText={touched.authUrl && errors.authUrl}
+                            inputProps={{ maxLength: 2048 }}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth select disabled id="authType" name="authType"

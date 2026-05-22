@@ -10,11 +10,13 @@ export const useUnsavedChangesBlocker = (isDirty: boolean) => {
     const showDialog = blocker.state === 'blocked';
 
     const handleConfirmExit = (route: string) => {
+        intentionalExit.current = true;
+
         if (blocker.state === 'blocked') {
             blocker.proceed();
             return;
         }
-        intentionalExit.current = true;
+
         void navigate(route);
     };
 

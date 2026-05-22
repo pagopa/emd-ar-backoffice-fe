@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Box, CircularProgress, Link, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { acsHandshake, } from '../../api/auth';
+import { acsHandshake } from '../../api/auth';
 import { checkTppExists } from '../../api/tpp';
 import { CONFIG } from '../../config';
 import { useAppDispatch } from '../../redux/hook';
@@ -15,7 +15,18 @@ import { saveUser } from '../../utils/user';
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 
-type AcsState = 'loading' | 'error';
+type AcsState = 'loading' | 'error' | 'check-failed';
+
+const ERROR_CONFIG = {
+    error: {
+        title: 'Accesso non riuscito',
+        description: 'Il link potrebbe essere scaduto.',
+    },
+    'check-failed': {
+        title: 'Errore durante la verifica del profilo',
+        description: 'Non è stato possibile verificare il tuo profilo. Riprova o contatta l\'assistenza.',
+    },
+} as const;
 
 const Auth = () => {
 
@@ -31,7 +42,7 @@ const Auth = () => {
         if (!urlToken) return;
         history.replaceState(null, '', window.location.pathname);
 
-        if (CONFIG.ENV === "DEV") console.log("[ACS] urlToken : ", urlToken)
+        if (CONFIG.ENV === 'DEV') console.log('[ACS] urlToken : ', urlToken);
 
         acsHandshake(urlToken)
             .then(async (response) => {
@@ -45,17 +56,18 @@ const Auth = () => {
                 dispatch(userActions.setLoggedUser(user));
                 dispatch(setOrganization(organization));
 
-                await checkTppExists()
-                    .then((tppResponse) => {
-                        if (tppResponse === null) {
-                            dispatch(setTppRegistered(false));
-                            void navigate(ROUTES.ONBOARDING, { replace: true });
-                        } else {
-                            dispatch(setTppRegistered(true));
-                            void navigate(ROUTES.HOME, { replace: true });
-                        }
-                    });
-
+                try {
+                    const tppResponse = await checkTppExists();
+                    if (tppResponse === null) {
+                        dispatch(setTppRegistered(false));
+                        void navigate(ROUTES.ONBOARDING, { replace: true });
+                    } else {
+                        dispatch(setTppRegistered(true));
+                        void navigate(ROUTES.HOME, { replace: true });
+                    }
+                } catch {
+                    setState('check-failed');
+                }
             })
             .catch((err) => {
                 console.error('[ACS] handshake failed:', err);
@@ -63,7 +75,8 @@ const Auth = () => {
             });
     }, [urlToken, navigate, dispatch]);
 
-    if (state === 'error') {
+    if (state === 'error' || state === 'check-failed') {
+        const cfg = ERROR_CONFIG[state];
         return (
             <Box
                 display="flex"
@@ -74,12 +87,12 @@ const Auth = () => {
                 gap={2}
             >
                 <Typography variant="h6" color="error">
-                    Accesso non riuscito
+                    {cfg.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Il link potrebbe essere scaduto.&nbsp;
+                    {cfg.description}&nbsp;
                     <Link
-                        href={CONFIG.AR_BASE_URL + "/auth"}
+                        href={CONFIG.AR_BASE_URL + '/auth'}
                         underline="always"
                         color="primary"
                     >

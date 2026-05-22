@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { store } from '../redux/store';
+import { useAppSelector } from '../redux/hook';
 import { selectSessionError } from '../redux/slices/sessionSlice';
 
 export const useSafeFetch = <T>(fetcher: () => Promise<T>) => {
@@ -7,14 +7,32 @@ export const useSafeFetch = <T>(fetcher: () => Promise<T>) => {
     const [loading, setLoading] = useState(true);
     const [fetchError, setFetchError] = useState(false);
 
+    const sessionError = useAppSelector(selectSessionError);
+
     useEffect(() => {
+        let cancelled = false;
+
         fetcher()
-            .then((result) => setData(result))
-            .catch(() => {
-                if (!selectSessionError(store.getState())) setFetchError(true);
+            .then((result) => {
+                if (!cancelled) setData(result);
             })
-            .finally(() => setLoading(false));
+            .catch((err: any) => {
+                if (err?.response?.status === 401 || err?.response?.status === 403) {
+                    return;
+                }
+
+                if (!cancelled) setFetchError(true);
+            })
+            .finally(() => {
+                if (!cancelled) setLoading(false);
+            });
+
+        return () => { cancelled = true; };
     }, []);
+
+    if (sessionError) {
+        return { data: null, loading: false, fetchError: false };
+    }
 
     return { data, loading, fetchError };
 };
