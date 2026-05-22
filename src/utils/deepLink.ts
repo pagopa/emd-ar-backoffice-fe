@@ -1,40 +1,45 @@
 import type { AgentLink } from '../types/tpp';
 import type { DeviceLink, VersionEntry, Step1Values } from '../types/stepsOnboarding';
 
-/**
- * Converts the deep link form values into the agentLinks format expected by the BE.
- */
+const parseVersions = (versions: Record<string, { link: string }>): VersionEntry[] =>
+    Object.entries(versions).map(([versionKey, { link }]) => ({ versionKey, link }));
+
+const findDevice = (
+    agentLinks: Record<string, AgentLink>,
+    normalizedKey: string
+): { originalKey: string; link: AgentLink } | undefined => {
+    const key = Object.keys(agentLinks).find(k => k.toUpperCase() === normalizedKey);
+    return key ? { originalKey: key, link: agentLinks[key] } : undefined;
+};
+
+const isUniversalConfig = (agentLinks: Record<string, AgentLink>): boolean => {
+    const android = findDevice(agentLinks, 'ANDROID')?.link;
+    const ios = findDevice(agentLinks, 'IOS')?.link;
+    if (!android || !ios) return false;
+
+    const candidates = [android, ios];
+    const web = findDevice(agentLinks, 'WEB')?.link;
+    if (web) candidates.push(web);
+
+    const serialized = candidates.map(d => JSON.stringify(d));
+    return serialized.every(s => s === serialized[0]);
+};
+
+/** Converts form values into the agentLinks format expected by the BE. */
 export function buildAgentLinks(values: Step1Values): Record<string, AgentLink> {
     if (values.deepLinkType === 'universale') {
-        const sharedVersions = Object.fromEntries(
-            values.deepLinkUniversale.versions.map(({ versionKey, link }) => [
-                versionKey,
-                { link },
-            ])
-        );
-
         const sharedLink: AgentLink = {
             fallBackLink: values.deepLinkUniversale.fallBackLink,
-            versions: sharedVersions,
+            versions: Object.fromEntries(
+                values.deepLinkUniversale.versions.map(({ versionKey, link }) => [versionKey, { link }])
+            ),
         };
-
-        // Same config applied to all operating systems
-        return {
-            IOS: sharedLink,
-            ANDROID: sharedLink,
-            WEB: sharedLink,
-        };
+        return { ANDROID: sharedLink, IOS: sharedLink, WEB: sharedLink };
     }
 
-    // Per-device — each OS has its own config, Web skipped if not filled
     const entries = values.deepLinkDevices
-        .filter((device) => {
-            if (device.so === 'WEB' && !device.fallBackLink && device.versions.length === 0) {
-                return false;
-            }
-            return true;
-        })
-        .map((device) => [
+        .filter(device => device.so !== 'WEB' || device.fallBackLink || device.versions.length > 0)
+        .map(device => [
             device.so,
             {
                 fallBackLink: device.fallBackLink,
@@ -47,31 +52,54 @@ export function buildAgentLinks(values: Step1Values): Record<string, AgentLink> 
     return Object.fromEntries(entries);
 }
 
-/** Converts versions from BE format ({ v1: { link } }) to form format ([{ versionKey, link }]) */
-const parseVersions = (versions: Record<string, { link: string }>): VersionEntry[] =>
-    Object.entries(versions).map(([versionKey, { link }]) => ({ versionKey, link }));
+/**
+ * Remaps normalized keys (ANDROID/IOS/WEB) back to the original BE keys (e.g. Android, iOS)
+ * to avoid breaking existing TPP integrations. Keys not present in the original are kept as-is.
+ */
+export const remapAgentLinkKeys = (
+    newLinks: Record<string, AgentLink>,
+    originalLinks: Record<string, AgentLink>
+): Record<string, AgentLink> => {
+    const originalKeyMap: Record<string, string> = Object.fromEntries(
+        Object.keys(originalLinks).map(k => [k.toUpperCase(), k])
+    );
+
+    return Object.fromEntries(
+        Object.entries(newLinks).map(([key, value]) => [
+            originalKeyMap[key.toUpperCase()] ?? key,
+            value,
+        ])
+    );
+};
 
 /**
- * Converts agentLinks from the BE into the Step1Values format (deepLinkType, deepLinkUniversale, deepLinkDevices).
+ * Converts agentLinks from the BE into Step1Values format.
+ * Detects "universale" automatically if ANDROID and IOS share the same config.
+ * Always populates both deepLinkUniversale and deepLinkDevices so switching modes doesn't clear fields.
  */
 export const parseAgentLinks = (
     agentLinks: Record<string, AgentLink>
 ): Pick<Step1Values, 'deepLinkType' | 'deepLinkUniversale' | 'deepLinkDevices'> => {
-
-    const DEVICE_KEY_MAP: Record<string, DeviceLink['so']> = {
-        IOS: 'IOS',
-        ANDROID: 'ANDROID',
-        WEB: 'WEB',
-    };
-
-    const deepLinkDevices: DeviceLink[] = (['ANDROID', 'IOS', 'WEB'] as const).map((key) => {
-        const device = agentLinks[key];
+    const deepLinkDevices: DeviceLink[] = (['ANDROID', 'IOS', 'WEB'] as const).map(normalizedKey => {
+        const found = findDevice(agentLinks, normalizedKey);
         return {
-            so: DEVICE_KEY_MAP[key],
-            fallBackLink: device?.fallBackLink ?? '',
-            versions: device?.versions ? parseVersions(device.versions) : [],
+            so: normalizedKey,
+            fallBackLink: found?.link.fallBackLink ?? '',
+            versions: found?.link.versions ? parseVersions(found.link.versions) : [],
         };
     });
+
+    if (isUniversalConfig(agentLinks)) {
+        const reference = findDevice(agentLinks, 'ANDROID')!.link;
+        return {
+            deepLinkType: 'universale',
+            deepLinkUniversale: {
+                fallBackLink: reference.fallBackLink,
+                versions: reference.versions ? parseVersions(reference.versions) : [],
+            },
+            deepLinkDevices,
+        };
+    }
 
     return {
         deepLinkType: 'specifico',
