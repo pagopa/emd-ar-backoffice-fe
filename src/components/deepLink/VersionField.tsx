@@ -1,9 +1,6 @@
 import { InfoOutlined as InfoIcon } from '@mui/icons-material';
-import { InputAdornment, TextField, Tooltip } from "@mui/material";
-
-const TOOLTIP_VERSIONE =
-    'Ti consigliamo di nominare le versioni con il prefisso "v" e un numero crescente (v1, v2). ' +
-    'Non è possibile utilizzare punti (esempio: v1.2), quindi consigliamo di utilizzare altre modalità (esempio: v1_2).';
+import { InputAdornment, TextField, Tooltip } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 export function VersioneField({
     value,
@@ -18,29 +15,36 @@ export function VersioneField({
     helperText?: string;
     showTooltip?: boolean;
 }>) {
+    const { t } = useTranslation();
+    const dl = 'onboarding.step1.deepLink';
+
     return (
         <TextField
             fullWidth
             required
-            label="Versione"
-            placeholder="es. v1"
+            label={t(`${dl}.versionLabel`)}
+            placeholder={t(`${dl}.versionPlaceholder`)}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             error={error}
             helperText={helperText}
             inputProps={{ maxLength: 50 }}
-            InputProps={showTooltip ? {
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <Tooltip title={TOOLTIP_VERSIONE} arrow placement="top">
-                            <span style={{ display: 'flex', cursor: 'pointer' }}>
-                                <InfoIcon sx={{ fontSize: 20, color: "primary.main" }} />
-                            </span>
-                        </Tooltip>
-                    </InputAdornment>
-                ),
-                sx: { paddingRight: 0 },
-            } : undefined}
+            InputProps={
+                showTooltip
+                    ? {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <Tooltip title={t(`${dl}.versionTooltip`)} arrow placement="top">
+                                    <span style={{ display: 'flex', cursor: 'pointer' }}>
+                                        <InfoIcon sx={{ fontSize: 20, color: 'primary.main' }} />
+                                    </span>
+                                </Tooltip>
+                            </InputAdornment>
+                        ),
+                        sx: { paddingRight: 0 },
+                    }
+                    : undefined
+            }
         />
     );
 }

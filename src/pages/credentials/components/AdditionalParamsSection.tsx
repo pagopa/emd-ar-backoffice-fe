@@ -1,5 +1,6 @@
-import { Box, Divider, Paper, Typography } from "@mui/material";
-import { ButtonNaked } from "@pagopa/mui-italia";
+import { Box, Divider, Paper, Typography } from '@mui/material';
+import { ButtonNaked } from '@pagopa/mui-italia';
+import { useTranslation } from 'react-i18next';
 import {
     CodeOutlined as UrlIcon,
     EditOutlined as ModifyIcon
@@ -15,35 +16,30 @@ interface AdditionalParamsSectionProps {
 
 
 const AdditionalParamsSection = ({ bodyParams, pathParams, onModify }: AdditionalParamsSectionProps) => {
+    const { t } = useTranslation();
 
     return (
         <Paper elevation={0} sx={{ borderRadius: 2, p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Box
-                display="flex"
-                alignItems="center"
-                justifyContent={"space-between"}
-                gap={0.5}
-            >
-                <Typography variant="h6">Parametri aggiuntivi </Typography>
-                <ButtonNaked onClick={() => { onModify() }} color="primary" style={{ display: "flex", gap: 8 }}>
+            <Box display="flex" alignItems="center" justifyContent="space-between" gap={0.5}>
+                <Typography variant="h6">{t('credentials.additionalParams.title')}</Typography>
+                <ButtonNaked onClick={() => { onModify(); }} color="primary" style={{ display: 'flex', gap: 8 }}>
                     <ModifyIcon fontSize="small" />
-                    <Typography variant="label">Modifica</Typography>
+                    <Typography variant="label">{t('commonLabel.modify')}</Typography>
                 </ButtonNaked>
             </Box>
 
             <Box display="flex" gap={3}>
                 {/* BODY parameters */}
-                <Box flex={1} display="flex" flexDirection="column" gap={1}>
+                <Box flex={1} display="flex" flexDirection="column" gap={1.5}>
                     <Box display="flex" alignItems="center" gap={1}>
                         <img src="/icons/integration_instructions.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
                         <Typography sx={{ ...sxCapFieldLabel, color: 'text.secondary' }}>
-                            PARAMETRI BODY
+                            {t('credentials.additionalParams.bodyParams')}
                         </Typography>
                     </Box>
-                    {/* Value BODY parameters */}
                     {Object.entries(bodyParams ?? {}).map(([key, val], index) => (
-                        <Box key={key}>
-                            {index !== 0 && <Divider orientation="horizontal" />}
+                        <Box key={key} display="flex" flexDirection="column" gap={0.5}>
+                            {index !== 0 && <Divider sx={{ mb: 0.5 }} />}  {/* ← margine sotto il divider */}
                             <Typography sx={{ ...sxCapFieldLabel, color: 'text.secondary' }}>{key}</Typography>
                             <Typography sx={sxFieldValue}>{val}</Typography>
                         </Box>
@@ -51,17 +47,16 @@ const AdditionalParamsSection = ({ bodyParams, pathParams, onModify }: Additiona
                 </Box>
 
                 {/* URL parameters */}
-                <Box flex={1} display="flex" flexDirection="column" gap={1}>
+                <Box flex={1} display="flex" flexDirection="column" gap={1.5}>
                     <Box display="flex" alignItems="center" gap={1}>
-                        <UrlIcon style={{ color: "#BBC2D6", width: 24, height: 24 }} />
+                        <UrlIcon style={{ color: '#BBC2D6', width: 24, height: 24 }} />
                         <Typography sx={{ ...sxCapFieldLabel, color: 'text.secondary' }}>
-                            PARAMETRI URL
+                            {t('credentials.additionalParams.urlParams')}
                         </Typography>
                     </Box>
-                    {/* Value URL parameters */}
                     {Object.entries(pathParams ?? {}).map(([key, val], index) => (
-                        <Box key={key}>
-                            {index !== 0 && <Divider orientation="horizontal" />}
+                        <Box key={key} display="flex" flexDirection="column" gap={0.5}>
+                            {index !== 0 && <Divider sx={{ mb: 0.5 }} />}
                             <Typography sx={{ ...sxCapFieldLabel, color: 'text.secondary' }}>{key}</Typography>
                             <Typography sx={sxFieldValue}>{val}</Typography>
                         </Box>
@@ -70,6 +65,6 @@ const AdditionalParamsSection = ({ bodyParams, pathParams, onModify }: Additiona
             </Box>
         </Paper>
     );
-}
+};
 
 export default AdditionalParamsSection;

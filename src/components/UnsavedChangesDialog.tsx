@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     open: boolean;
@@ -6,21 +7,26 @@ interface Props {
     onCancel: () => void;
 }
 
-export const UnsavedChangesDialog = ({ open, onConfirm, onCancel }: Props) => (
-    <Dialog open={open} onClose={onCancel}>
-        <DialogTitle>Modifiche non salvate</DialogTitle>
-        <DialogContent>
-            <Typography variant="body2" color="text.secondary">
-                Hai delle modifiche non salvate. Se esci ora le perderai.
-            </Typography>
-        </DialogContent>
-        <DialogActions style={{ padding: 18 }}>
-            <Button autoFocus variant="outlined" onClick={onCancel}>
-                Annulla
-            </Button>
-            <Button variant="contained" onClick={onConfirm}>
-                Esci senza salvare
-            </Button>
-        </DialogActions>
-    </Dialog>
-);
+export const UnsavedChangesDialog = ({ open, onConfirm, onCancel }: Props) => {
+    const { t } = useTranslation();
+    
+    return (
+        <Dialog open={open} onClose={onCancel}>
+            <DialogTitle>{t('unsavedChangesDialog.title')}</DialogTitle>
+
+            <DialogContent>
+                <Typography variant="body2" color="text.secondary">
+                    {t('unsavedChangesDialog.description')}
+                </Typography>
+            </DialogContent>
+            <DialogActions style={{ padding: 18 }}>
+                <Button autoFocus variant="outlined" onClick={onCancel}>
+                    {t('commonLabel.cancel')}
+                </Button>
+                <Button variant="contained" onClick={onConfirm}>
+                    {t('unsavedChangesDialog.exitWithoutSaving')}
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+}

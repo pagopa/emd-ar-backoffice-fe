@@ -1,9 +1,10 @@
 import {
     ImageOutlined as DasboardIcon,
     VpnKeyOutlined as CredentialIcon,
-    Menu as MenuIcon
+    Menu as MenuIcon,
 } from '@mui/icons-material';
 import { Box, List, ListItemButton, ListItemIcon } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { CONFIG } from '../../../config';
@@ -20,6 +21,7 @@ type SideMenuProps = {
 
 /** The side menu of the application */
 export default function SideMenu({ collapsed, onToggleCollapse }: SideMenuProps) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const onExit = useUnloadEventOnExit();
     const location = useLocation();
@@ -38,7 +40,7 @@ export default function SideMenu({ collapsed, onToggleCollapse }: SideMenuProps)
             <Box>
                 <List data-testid="list-test">
                     <SidenavItem
-                        title="Panoramica"
+                        title={t('sideMenu.overview')}
                         icon={DasboardIcon}
                         level={0}
                         collapsed={collapsed}
@@ -46,7 +48,7 @@ export default function SideMenu({ collapsed, onToggleCollapse }: SideMenuProps)
                         isSelected={location.pathname === ROUTES.HOME}
                     />
                     <SidenavItem
-                        title="Credenziali"
+                        title={t('sideMenu.credentials')}
                         icon={CredentialIcon}
                         level={0}
                         collapsed={collapsed}
@@ -55,7 +57,7 @@ export default function SideMenu({ collapsed, onToggleCollapse }: SideMenuProps)
                     />
                     <Box border={1} borderColor="#F5F5F5" marginY={1} />
                     <SidenavItem
-                        title="Utenti"
+                        title={t('sideMenu.users')}
                         icon="/icons/users.svg"
                         level={0}
                         collapsed={collapsed}
@@ -63,7 +65,7 @@ export default function SideMenu({ collapsed, onToggleCollapse }: SideMenuProps)
                         target="_blank"
                     />
                     <SidenavItem
-                        title="Gruppi"
+                        title={t('sideMenu.groups')}
                         icon="/icons/groups.svg"
                         level={0}
                         collapsed={collapsed}

@@ -20,6 +20,7 @@ import ErrorContent from '../../../components/ErrorContent';
 import { useSafeFetch } from '../../../hook/useSafeFetch';
 import { useAppSelector } from '../../../redux/hook';
 import { selectSessionError } from '../../../redux/slices/sessionSlice';
+import { useTranslation } from 'react-i18next';
 
 const buildTokenPayload = (values: Step2Values): TokenSection => ({
     contentType: 'application/x-www-form-urlencoded',
@@ -47,6 +48,7 @@ const parseTokenSection = (data: TokenSection): Step2Values => {
 const CredentialsModify = () => {
     const navigate = useNavigate();
     const handleApiError = useApiErrorHandler();
+    const { t } = useTranslation();
 
     const initialValues: Step2Values = {
         clientId: '',
@@ -99,17 +101,17 @@ const CredentialsModify = () => {
                 <Box width="100%" maxWidth={760}>
 
                     <Typography variant="h4" fontWeight={700} mb={1.5}>
-                        Modifica credenziali
+                        {t('credentialsModify.title')}
                     </Typography>
                     <Typography variant="caption" color="error" display="block" mb={3}>
-                        * Campo obbligatorio
+                        {t('commonLabel.requiredField')}
                     </Typography>
 
                     {/* Card of modify of Credentials */}
                     <form onSubmit={formik.handleSubmit} noValidate>
                         <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2 } }}>
                             <Typography variant="h6" fontWeight={700} mb={3}>
-                                Credenziali
+                                {t('credentialsModify.cardTitle')}
                             </Typography>
 
                             {loading ?
@@ -122,7 +124,7 @@ const CredentialsModify = () => {
 
                         <Box display="flex" justifyContent="space-between" mt={4}>
                             <Button variant="outlined" onClick={() => void navigate(ROUTES.CREDENTIALS)}>
-                                Annulla
+                                {t('commonLabel.cancel')}
                             </Button>
 
                             <Button
@@ -131,7 +133,7 @@ const CredentialsModify = () => {
                                 disabled={formik.isSubmitting}
                                 endIcon={formik.isSubmitting ? <CircularProgress size={16} color="inherit" /> : undefined}
                             >
-                                Salva
+                                {t('commonLabel.save')}
                             </Button>
                         </Box>
                     </form >

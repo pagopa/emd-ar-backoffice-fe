@@ -6,6 +6,7 @@ import { VersioneField } from './VersionField';
 import { ButtonNaked } from '@pagopa/mui-italia';
 import type { DeviceLink, VersionEntry } from '../../types/stepsOnboarding';
 
+import { useTranslation } from 'react-i18next';
 interface Props {
     devices: DeviceLink[];
     errors: any;
@@ -22,36 +23,33 @@ export function DeepLinkPerDevice({
     devices, errors, touched,
     onFallBackChange, onVersionChange, onAddVersion, onRemoveVersion, onFallBackBlur, onVersionBlur
 }: Readonly<Props>) {
+    const { t } = useTranslation();
+    const dl = 'onboarding.step1.deepLink';
+
     return (
         <Box>
             {devices.map((device, deviceIndex) => (
                 <Box key={device.so} mt={deviceIndex === 0 ? 0 : 3} mb={2}>
+                    <Typography variant="labelDevice" mb={2}>{device.so}</Typography>
 
-                    <Typography variant="labelDevice" mb={2}>
-                        {device.so}
-                    </Typography>
-
-                    {/* Fallback URL — fixed row, always present */}
                     <Grid container spacing={2} alignItems="flex-start" mb={2}>
                         <Grid item sx={{ width: 160, flexShrink: 0 }}>
-                            <TextField fullWidth disabled label="Versione" value="fallBackLink" />
+                            <TextField fullWidth disabled label={t(`${dl}.versionLabel`)} value="fallBackLink" />
                         </Grid>
                         <Grid item xs>
                             <TextField
                                 fullWidth
                                 required={device.so !== 'WEB'}
-                                label="URL Redirect"
+                                label={t(`${dl}.urlRedirect`)}
                                 value={device.fallBackLink}
                                 onChange={(e) => onFallBackChange(deviceIndex, e.target.value)}
                                 onBlur={() => onFallBackBlur(deviceIndex)}
                                 error={Boolean(touched?.[deviceIndex]?.fallBackLink && errors?.[deviceIndex]?.fallBackLink)}
                                 helperText={touched?.[deviceIndex]?.fallBackLink && errors?.[deviceIndex]?.fallBackLink}
-
                             />
                         </Grid>
                     </Grid>
 
-                    {/* Additional version rows */}
                     {device.versions.map((version, versionIndex) => (
                         <Grid container spacing={2} alignItems="flex-start" key={versionIndex} mb={2}>
                             <Grid item sx={{ width: 160, flexShrink: 0 }}>
@@ -67,7 +65,7 @@ export function DeepLinkPerDevice({
                                 <TextField
                                     fullWidth
                                     required
-                                    label="URL Redirect"
+                                    label={t(`${dl}.urlRedirect`)}
                                     value={version.link}
                                     onChange={(e) => onVersionChange(deviceIndex, versionIndex, 'link', e.target.value)}
                                     onBlur={() => onVersionBlur(deviceIndex, versionIndex, 'link')}
@@ -84,7 +82,7 @@ export function DeepLinkPerDevice({
                             <Grid item xs="auto">
                                 <IconButton
                                     onClick={() => onRemoveVersion(deviceIndex, versionIndex)}
-                                    aria-label="Rimuovi versione"
+                                    aria-label={t(`${dl}.removeVersion`)}
                                     sx={{ alignContent: 'center' }}
                                 >
                                     <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 20, height: 24 }} />
@@ -95,7 +93,7 @@ export function DeepLinkPerDevice({
 
                     <ButtonNaked color="primary" startIcon={<AddIcon />}
                         onClick={() => onAddVersion(deviceIndex)} size="small">
-                        Aggiungi versione
+                        {t(`${dl}.addVersion`)}
                     </ButtonNaked>
                 </Box>
             ))}

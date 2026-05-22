@@ -12,17 +12,20 @@ import { DeepLinkPerDevice } from '../deepLink/DeepLinkPerDevice';
 import { DeepLinkUniversal } from '../deepLink/DeepLinkUniversal';
 import type { Step1Values } from '../../types/stepsOnboarding';
 import { CustomRadio } from './RadioButtons';
+import { useTranslation } from 'react-i18next';
 
 
 
 
 export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<Step1Values> }>) {
     const { values, errors, touched, handleChange, handleBlur, setFieldValue, setTouched, setErrors } = formik;
+    const { t } = useTranslation();
+    const ep = 'onboarding.step1.endpoint';
+    const dl = 'onboarding.step1.deepLink';
 
     // Reset errors on type change
     const handleDeepLinkTypeChange = (newType: string) => {
         void setFieldValue('deepLinkType', newType);
-        // Reset touched and errors for fields of the other type
         void setTouched({ ...touched, deepLinkUniversale: undefined, deepLinkDevices: undefined });
         setErrors({ ...errors, deepLinkUniversale: undefined, deepLinkDevices: undefined });
     };
@@ -79,7 +82,6 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
             const updatedVersions = currentVersions.map((v: any, vi: number) =>
                 vi === vIdx ? { ...v, [field]: true } : v
             );
-            // Estendi se necessario
             while (updatedVersions.length <= vIdx) updatedVersions.push({});
             updatedVersions[vIdx] = { ...updatedVersions[vIdx], [field]: true };
             return { ...currentDevicesTouched[i], versions: updatedVersions };
@@ -89,21 +91,20 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
 
     return (
         <Box>
-            {/* Endpoint configuration */}
-            <Box className="cardsForm" mb={3} >
+            <Box className="cardsForm" mb={3}>
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                    <Mail fontSize="small" style={{ color: "#BBC2D6" }} />
-                    <Typography variant="subtitle1" fontWeight={600}>Configurazione endpoint</Typography>
+                    <Mail fontSize="small" style={{ color: '#BBC2D6' }} />
+                    <Typography variant="subtitle1" fontWeight={600}>{t(`${ep}.title`)}</Typography>
                 </Box>
                 <Typography variant="body2" color="text.secondary" mb={2}>
-                    PagoPA utilizzerà questi endpoint per inviarti i messaggi di cortesia destinati agli utenti.
+                    {t(`${ep}.description`)}
                 </Typography>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} >
+                    <Grid item xs={12}>
                         <TextField fullWidth id="webhookUrl" name="webhookUrl" required
+                            label={t(`${ep}.webhookLabel`)}
+                            placeholder={t(`${ep}.webhookPlaceholder`)}
                             sx={{ borderRadius: '8px' }}
-                            label="URL per ricezione messaggi di cortesia (webhook)"
-                            placeholder="https://api.tuoservizio.it/messages"
                             value={values.webhookUrl} onChange={handleChange} onBlur={handleBlur}
                             error={touched.webhookUrl && Boolean(errors.webhookUrl)}
                             helperText={touched.webhookUrl && errors.webhookUrl}
@@ -112,9 +113,9 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth id="authUrl" name="authUrl" required
+                            label={t(`${ep}.authUrlLabel`)}
+                            placeholder={t(`${ep}.authUrlPlaceholder`)}
                             style={{ borderRadius: '8px' }}
-                            label="URL di autenticazione"
-                            placeholder="https://api.tuoservizio.it/auth"
                             value={values.authUrl} onChange={handleChange} onBlur={handleBlur}
                             error={touched.authUrl && Boolean(errors.authUrl)}
                             helperText={touched.authUrl && errors.authUrl}
@@ -123,8 +124,10 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth select disabled id="authType" name="authType"
-                            label="Tipo di autenticazione" value={values.authType}
-                            onChange={handleChange} onBlur={handleBlur}>
+                            label={t(`${ep}.authTypeLabel`)}
+                            value={values.authType}
+                            onChange={handleChange}
+                            onBlur={handleBlur}>
                             <option value="OAUTH2">OAuth2</option>
                         </TextField>
                     </Grid>
@@ -134,31 +137,18 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
             {/* Deep link configuration */}
             <Box className="cardsForm">
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                    <Phone fontSize="small" style={{ color: "#BBC2D6" }} />
-                    <Typography variant="subtitle1" fontWeight={600}>Configurazione deep link app</Typography>
+                    <Phone fontSize="small" style={{ color: '#BBC2D6' }} />
+                    <Typography variant="subtitle1" fontWeight={600}>{t(`${dl}.title`)}</Typography>
                 </Box>
-                <Typography variant="body2" color="text.secondary" >
-                    &quot;Deep link necessari&quot; per reindirizzare l&apos;utente sull&apos;app per il pagamento.
+                <Typography variant="body2" color="text.secondary">
+                    {t(`${dl}.description`)}
                 </Typography>
-
-
-                <RadioGroup
-                    row
-                    name="deepLinkType"
-                    value={values.deepLinkType}
+                <RadioGroup row name="deepLinkType" value={values.deepLinkType}
                     onChange={(e) => handleDeepLinkTypeChange(e.target.value)}
-                    sx={{ gap: 18, paddingY: "24px", }}
+                    sx={{ gap: 18, paddingY: '24px' }}
                 >
-                    <FormControlLabel
-                        value="universale"
-                        control={<CustomRadio />}
-                        label="Deep link universale"
-                    />
-                    <FormControlLabel
-                        value="specifico"
-                        control={<CustomRadio />}
-                        label="Deep link specifico per SO"
-                    />
+                    <FormControlLabel value="universale" control={<CustomRadio />} label={t(`${dl}.universal`)} />
+                    <FormControlLabel value="specifico" control={<CustomRadio />} label={t(`${dl}.perDevice`)} />
                 </RadioGroup>
 
                 {/* Universal deep link */}

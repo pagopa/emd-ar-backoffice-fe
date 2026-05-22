@@ -22,6 +22,7 @@ interface ReadonlyFieldProps {
 
 export const ReadonlyField = ({ label, value, secret = false }: ReadonlyFieldProps) => {
     const [visible, setVisible] = useState(!secret);
+    const valueHiden = value ? '•'.repeat(value.length) : '';
 
     const handleCopy = () => {
         void navigator.clipboard.writeText(value);
@@ -44,7 +45,7 @@ export const ReadonlyField = ({ label, value, secret = false }: ReadonlyFieldPro
                 )}
             </Box>
             <TextField
-                value={visible ? value : '••••••••••••••••'}
+                value={visible ? value : valueHiden}
                 size="small"
                 sx={{
                     maxWidth: '558px',

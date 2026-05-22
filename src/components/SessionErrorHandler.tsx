@@ -4,19 +4,11 @@ import {
 } from '@mui/material';
 import { CONFIG } from '../config';
 import { useAppSelector } from '../redux/hook';
+import { useTranslation } from 'react-i18next';
 
-const DIALOG_CONFIG = {
-    UNAUTHORIZED: {
-        title: 'Sessione scaduta',
-        message: 'Il tuo accesso non è più valido. Effettua nuovamente il login.',
-    },
-    FORBIDDEN: {
-        title: 'Accesso negato',
-        message: 'Non hai i permessi per accedere a questa risorsa.',
-    },
-} as const;
 
 export default function SessionErrorHandler() {
+    const { t } = useTranslation();
     const error = useAppSelector((state) => state.session.error);
     const organization = useAppSelector((state) => state.organization.organization);
 
@@ -26,19 +18,24 @@ export default function SessionErrorHandler() {
         ? `${CONFIG.AR_BASE_URL}/dashboard/${organization.id}`
         : `${CONFIG.AR_BASE_URL}/dashboard`;
 
-    const cfg = DIALOG_CONFIG[error];
 
     return (
         <Dialog open>
-            <DialogTitle>{cfg.title}</DialogTitle>
+            <DialogTitle>
+                {error === 'UNAUTHORIZED'
+                    ? t('sessionError.unauthorized.title')
+                    : t('sessionError.forbidden.title')}
+            </DialogTitle>
             <DialogContent>
                 <Typography variant="body2" color="text.secondary">
-                    {cfg.message}
+                    {error === 'UNAUTHORIZED'
+                        ? t('sessionError.unauthorized.message')
+                        : t('sessionError.forbidden.message')}
                 </Typography>
             </DialogContent>
             <DialogActions>
                 <Button variant="outlined" href={arUrl}>
-                    Torna all&apos;Area Riservata
+                    {t('commonLabel.backToArea')}
                 </Button>
             </DialogActions>
         </Dialog>

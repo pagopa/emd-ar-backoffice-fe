@@ -19,10 +19,12 @@ import { useSafeFetch } from '../../../hook/useSafeFetch';
 import { buildPatchPayload } from '../../../utils/forms';
 import { useAppSelector } from '../../../redux/hook';
 import { selectSessionError } from '../../../redux/slices/sessionSlice';
+import { useTranslation } from 'react-i18next';
 
 
 const EndpointModify = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const initialValues: Step1Values = {
         webhookUrl: '',
@@ -101,17 +103,17 @@ const EndpointModify = () => {
                 <Box width="100%" maxWidth={760}>
 
                     <Typography variant="h4" fontWeight={700} mb={1.5}>
-                        Modifica endpoint e deep link
+                        {t('endpointModify.title')}
                     </Typography>
                     <Typography variant="caption" color="error" display="block" mb={3}>
-                        * Campo obbligatorio
+                        {t('commonLabel.requiredField')}
                     </Typography>
 
                     {/* Card of modify of Credentials */}
                     <form onSubmit={formik.handleSubmit} noValidate>
                         <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2 } }}>
                             <Typography variant="h6" fontWeight={700} mb={3}>
-                                Endpoint e deep link
+                                {t('endpointModify.cardTitle')}
                             </Typography>
 
                             {loading ?
@@ -124,7 +126,7 @@ const EndpointModify = () => {
 
                         <Box display="flex" justifyContent="space-between" mt={4}>
                             <Button variant="outlined" onClick={() => void navigate(ROUTES.HOME)}>
-                                Annulla
+                                {t('commonLabel.cancel')}
                             </Button>
 
                             <Button
@@ -133,7 +135,7 @@ const EndpointModify = () => {
                                 disabled={formik.isSubmitting}
                                 endIcon={formik.isSubmitting ? <CircularProgress size={16} color="inherit" /> : undefined}
                             >
-                                Salva
+                                {t('commonLabel.save')}
                             </Button>
                         </Box>
                     </form >

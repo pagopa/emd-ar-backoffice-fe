@@ -1,50 +1,30 @@
-import { Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-import { type CompanyLinkType, Footer as MuiItaliaFooter, type FooterLinksType, type LangCode, type PreLoginFooterLinksType } from '@pagopa/mui-italia';
+import {
+    type CompanyLinkType,
+    Footer as MuiItaliaFooter,
+    type FooterLinksType,
+    type LangCode,
+    type PreLoginFooterLinksType,
+    type Languages,
+} from '@pagopa/mui-italia';
 
 const companyLink: CompanyLinkType = {
     ariaLabel: 'PagoPA S.p.A.',
     href: 'https://www.pagopa.it',
 };
 
-const postLoginLinks: Array<FooterLinksType> = [
-    {
-        label: 'Informativa Privacy',
-        href: '#',
-        ariaLabel: 'Informativa Privacy',
-        linkType: 'internal',
-    },
-    {
-        label: 'Diritto alla protezione dei dati personali',
-        href: '#',
-        ariaLabel: 'Diritto alla protezione dei dati personali',
-        linkType: 'internal',
-    },
-    {
-        label: 'Termini e condizioni d\'uso',
-        href: '#',
-        ariaLabel: 'Termini e condizioni d\'uso',
-        linkType: 'internal',
-    },
-    {
-        label: 'Accessibilità',
-        href: '#',
-        ariaLabel: 'Accessibilità',
-        linkType: 'internal',
-    },
-];
-
 const preLoginLinks: PreLoginFooterLinksType = {
     aboutUs: {
-        title: "",
+        title: '',
         links: [],
     },
     resources: {
-        title: "",
+        title: '',
         links: [],
     },
     followUs: {
-        title: "",
+        title: '',
         socialLinks: [],
         links: [],
     },
@@ -61,20 +41,60 @@ const legalInfo = (
 );
 
 
-const Footer = () => (
-    <Box sx={{ '& button[aria-label="lingua"]': { display: 'none' } }}>
+const languages = {
+    it: { it: 'Italiano', en: 'Inglese' },
+    en: { it: 'Italian', en: 'English' },
+} as Languages;
+
+const Footer = () => {
+    const { t, i18n } = useTranslation();
+
+    const currentLang = i18n.language as LangCode;
+
+    const postLoginLinks: Array<FooterLinksType> = [
+        {
+            label: t('common.footer.postLoginLinks.privacyPolicy'),
+            href: '#',
+            ariaLabel: t('common.footer.postLoginLinks.privacyPolicy'),
+            linkType: 'internal',
+        },
+        {
+            label: t('common.footer.postLoginLinks.protectionofpersonaldata'),
+            href: '#',
+            ariaLabel: t('common.footer.postLoginLinks.protectionofpersonaldata'),
+            linkType: 'internal',
+        },
+        {
+            label: t('common.footer.postLoginLinks.termsandconditions'),
+            href: '#',
+            ariaLabel: t('common.footer.postLoginLinks.termsandconditions'),
+            linkType: 'internal',
+        },
+        {
+            label: t('common.footer.postLoginLinks.accessibility'),
+            href: '#',
+            ariaLabel: t('common.footer.postLoginLinks.accessibility'),
+            linkType: 'internal',
+        },
+    ];
+
+    const handleLanguageChange = (newLang: LangCode) => {
+        void i18n.changeLanguage(newLang);
+    };
+
+    return (
         <MuiItaliaFooter
             companyLink={companyLink}
             postLoginLinks={postLoginLinks}
             preLoginLinks={preLoginLinks}
             loggedUser={true}
             legalInfo={legalInfo}
-            languages={{ it: { it: 'Italiano' } }}
-            currentLangCode="it"
-            onLanguageChanged={(_newLang: LangCode) => undefined}
+            languages={languages}
+            currentLangCode={currentLang}
+            onLanguageChanged={handleLanguageChange}
             hideProductsColumn={true}
         />
-    </Box>
-);
+    );
+};
 
 export default Footer;
