@@ -3,17 +3,26 @@ import { Box } from '@mui/material';
 import { CONFIG } from '../../config';
 import { useAppSelector } from '../../redux/hook';
 
-import { HeaderAccount, HeaderProduct, type LinkType } from '@pagopa/mui-italia';
+import { HeaderAccount, HeaderProduct, type LinkType, type RootLinkType } from '@pagopa/mui-italia';
 import { userSelectors } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageTokenOps, storageUserOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { useTranslation } from 'react-i18next';
-import i18n from '../../i18n';
-
+import { useState } from 'react';
+import AssistanceDialog from '../AssistanceDialog';
 
 const PagopaHeader = () => {
     const organization = useAppSelector((state) => state.organization.organization);
     const user = useAppSelector(userSelectors.selectLoggedUser);
     const { t } = useTranslation();
+
+    const [assistanceOpen, setAssistanceOpen] = useState(false);
+
+    const rootLink: RootLinkType = {
+        title: '',
+        label: 'PagoPA S.p.A.',
+        ariaLabel: 'PagoPA S.p.A.',
+        href: CONFIG.LINKS.PAGOPA_COMPANY,
+    };
 
     const loggedUser = user
         ? {
@@ -48,6 +57,17 @@ const PagopaHeader = () => {
         window.location.href = CONFIG.AR_BASE_URL + '/auth';
     };
 
+    const handleDocumentationClick = () => {
+        const url = CONFIG.LINKS.OPERATIVE_MANUAL_AR;
+        if (!url) return;
+        window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    const handleAssistanceClick = () => {
+        if (!CONFIG.ASSISTANCE_EMAIL) return;
+        setAssistanceOpen(true);
+    };
+
     return (
         <Box component="header" sx={{
             backgroundColor: "white",
@@ -56,7 +76,7 @@ const PagopaHeader = () => {
             }
         }}>
             <HeaderAccount
-                rootLink={{ title: '', label: 'PagoPA S.p.A.', href: 'https://www.pagopa.it', ariaLabel: 'PagoPA S.p.A.' }}
+                rootLink={rootLink}
                 loggedUser={loggedUser}
                 onLogout={handleLogout}
                 translationsMap={{
@@ -64,9 +84,8 @@ const PagopaHeader = () => {
                     assistance: t('header.assistance'),
                     documentation: t('header.documentation'),
                 }}
-                onDocumentationClick={i18n.language === 'it' ? () => undefined : undefined}
-
-                onAssistanceClick={() => undefined}
+                onDocumentationClick={handleDocumentationClick}
+                onAssistanceClick={handleAssistanceClick}
             />
             <HeaderProduct
                 productId="mdc-pagopa"
@@ -76,6 +95,11 @@ const PagopaHeader = () => {
                 onSelectedParty={() => undefined}
                 onSelectedProduct={() => undefined}
                 borderBottom={0}
+            />
+
+            <AssistanceDialog
+                open={assistanceOpen}
+                onClose={() => setAssistanceOpen(false)}
             />
         </Box>
     );

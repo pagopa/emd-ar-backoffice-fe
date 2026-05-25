@@ -1,6 +1,9 @@
 import { Box, Button, Link, Typography } from '@mui/material';
 import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { CONFIG } from '../config';
+import AssistanceDialog from './AssistanceDialog';
+import { useState } from 'react';
 
 interface ErrorContentProps {
     arUrl?: string;
@@ -8,7 +11,8 @@ interface ErrorContentProps {
 
 export default function ErrorContent({ arUrl }: ErrorContentProps = {}) {
     const { t } = useTranslation();
-    
+    const [assistanceOpen, setAssistanceOpen] = useState(false);
+
     return (
         <Box
             display="flex"
@@ -27,11 +31,29 @@ export default function ErrorContent({ arUrl }: ErrorContentProps = {}) {
             <Button variant="outlined" onClick={() => window.location.reload()}>
                 {t('commonLabel.retry')}
             </Button>
-            {arUrl && (
+            {arUrl && <>
                 <Link href={arUrl} underline="always" color="primary" variant="body2">
                     {t('commonLabel.backToArea')}
                 </Link>
-            )}
+
+                {CONFIG.ASSISTANCE_EMAIL && (
+                    <Link
+                        component="button"
+                        underline="always"
+                        color="primary"
+                        variant="body2"
+                        onClick={() => setAssistanceOpen(true)}
+                    >
+                        {t('error.contactAssistance')}
+                    </Link>
+                )}
+            </>
+            }
+
+            <AssistanceDialog
+                open={assistanceOpen}
+                onClose={() => setAssistanceOpen(false)}
+            />
         </Box>
     );
 }

@@ -26,6 +26,8 @@ const en = {
     error: {
         title: 'Something went wrong',
         description: 'The information could not be loaded. Please try again later.',
+        persistsInfo: 'If the problem persists,',
+        contactAssistance: 'Contact support',
     },
     header: {
         admin: 'Administrator',
@@ -33,6 +35,16 @@ const en = {
         logout: 'Log out',
         assistance: 'Assistance',
         documentation: 'User manual',
+        assistancePopover: {
+            title: 'Contact support',
+            subtitle: 'Choose how to send your request:',
+            copy: 'Copy email address',
+            externalApp: 'External email app',
+            orCopy: 'Or copy the address:',
+        },
+    },
+    footer: {
+        legalInfo: '<strong>PagoPA S.p.A.</strong> - Joint stock company with sole shareholder - Share capital of EUR 1,000,000 fully paid up - Registered office in Rome, Piazza Colonna 370, <br/> CAP 00187 - Rome Companies Register, Tax Code and VAT no. 15376371009',
     },
     sideMenu: {
         overview: 'Overview',
@@ -45,11 +57,11 @@ const en = {
         loadingDescription: 'Please wait while your credentials are being verified.',
         error: {
             title: 'Login failed',
-            description: 'The link may have expired.',
+            description: 'Your session has expired or the access link is no longer valid.',
         },
         checkFailed: {
             title: 'Profile verification error',
-            description: 'We could not verify your profile. Please try again or contact support.',
+            description: 'We could not complete the verification of your profile.',
         },
     },
     home: {
@@ -150,7 +162,7 @@ const en = {
         cardTitle: 'Credentials',
     },
     environmentBanner: {
-        message: 'Test environment: data must not be real',
+        message: 'Data for Test Environment',
     },
 };
 

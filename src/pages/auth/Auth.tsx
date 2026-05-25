@@ -15,6 +15,7 @@ import { saveUser } from '../../utils/user';
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
 import { useTranslation } from 'react-i18next';
+import AssistanceDialog from '../../components/AssistanceDialog';
 
 type AcsState = 'loading' | 'error' | 'check-failed';
 
@@ -25,6 +26,7 @@ const Auth = () => {
     const urlToken = hash.startsWith('#token=') ? hash.slice('#token='.length).trim() : '';
 
     const [state, setState] = useState<AcsState>(urlToken ? 'loading' : 'error');
+    const [assistanceOpen, setAssistanceOpen] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -80,16 +82,33 @@ const Auth = () => {
                 <Typography variant="h6" color="error">
                     {state === 'error' ? t('auth.error.title') : t('auth.checkFailed.title')}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {state === 'error' ? t('auth.error.description') : t('auth.checkFailed.description')}&nbsp;                    <Link
-                        href={CONFIG.AR_BASE_URL + '/auth'}
-                        underline="always"
-                        color="primary"
-                    >
+                <Typography variant="body2" color="text.secondary" textAlign="center">
+                    {state === 'error' ? t('auth.error.description') : t('auth.checkFailed.description')}
+                    {' '}
+                    <Link href={CONFIG.AR_BASE_URL + '/auth'} underline="always" color="primary">
                         {t('commonLabel.backToArea')}
                     </Link>
-                    .
                 </Typography>
+                {CONFIG.ASSISTANCE_EMAIL && (
+                    <Typography variant="body2" color="text.secondary" textAlign="center">
+                        {t('error.persistsInfo')}{' '}
+                        <Link
+                            component="button"
+                            underline="always"
+                            color="primary"
+                            variant="body2"
+                            onClick={() => setAssistanceOpen(true)}
+                        >
+                            {t('error.contactAssistance')}
+                        </Link>
+                    </Typography>
+                )}
+
+
+                <AssistanceDialog
+                    open={assistanceOpen}
+                    onClose={() => setAssistanceOpen(false)}
+                />
             </Box>
         );
     }

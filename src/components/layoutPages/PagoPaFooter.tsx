@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import {
     type CompanyLinkType,
@@ -8,37 +8,7 @@ import {
     type PreLoginFooterLinksType,
     type Languages,
 } from '@pagopa/mui-italia';
-
-const companyLink: CompanyLinkType = {
-    ariaLabel: 'PagoPA S.p.A.',
-    href: 'https://www.pagopa.it',
-};
-
-const preLoginLinks: PreLoginFooterLinksType = {
-    aboutUs: {
-        title: '',
-        links: [],
-    },
-    resources: {
-        title: '',
-        links: [],
-    },
-    followUs: {
-        title: '',
-        socialLinks: [],
-        links: [],
-    },
-};
-
-const legalInfo = (
-    <>
-        <strong>PagoPA S.p.A.</strong>
-        {' '}· Società per azioni con socio unico · Capitale sociale di euro 1.000.000 interamente versato ·
-        Sede legale in Roma, Piazza Colonna 370,{' '}
-        <br />
-        CAP 00187 · N. di iscrizione a Registro Imprese di Roma, CF e P.IVA 15376371009
-    </>
-);
+import { CONFIG } from '../../config';
 
 
 const languages = {
@@ -51,28 +21,60 @@ const Footer = () => {
 
     const currentLang = i18n.language as LangCode;
 
+    const legalInfo = (
+        <Trans
+            i18nKey="footer.legalInfo"
+            components={{
+                strong: <strong />,
+                br: <br />,
+            }}
+        />
+    );
+
+    const companyLink: CompanyLinkType = {
+        ariaLabel: 'PagoPA S.p.A.',
+        href: CONFIG.LINKS.PAGOPA_COMPANY,
+    };
+
+    const preLoginLinks: PreLoginFooterLinksType = {
+        aboutUs: {
+            title: '',
+            links: [],
+        },
+        resources: {
+            title: '',
+            links: [],
+        },
+        followUs: {
+            title: '',
+            socialLinks: [],
+            links: [],
+        },
+    };
+
+
     const postLoginLinks: Array<FooterLinksType> = [
         {
             label: t('common.footer.postLoginLinks.privacyPolicy'),
-            href: '#',
+            href: CONFIG.LINKS.PRIVACY_POLICY,
             ariaLabel: t('common.footer.postLoginLinks.privacyPolicy'),
             linkType: 'internal',
         },
         {
             label: t('common.footer.postLoginLinks.protectionofpersonaldata'),
-            href: '#',
+            href: CONFIG.LINKS.PERSONAL_DATA_PROTECTION,
             ariaLabel: t('common.footer.postLoginLinks.protectionofpersonaldata'),
             linkType: 'internal',
         },
         {
             label: t('common.footer.postLoginLinks.termsandconditions'),
-            href: '#',
+            href: CONFIG.LINKS.TERMS_AND_CONDITIONS,
             ariaLabel: t('common.footer.postLoginLinks.termsandconditions'),
             linkType: 'internal',
         },
         {
             label: t('common.footer.postLoginLinks.accessibility'),
-            href: '#',
+            href: CONFIG.LINKS.ACCESSIBILITY,
             ariaLabel: t('common.footer.postLoginLinks.accessibility'),
             linkType: 'internal',
         },
