@@ -1,15 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
-import { Box, Button, CircularProgress, Paper, Typography } from '@mui/material';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
 
 import { getTppProfile, saveEndpointTpp } from '../../../api/tpp';
 import ROUTES from '../../../routes';
 import type { Step1Values } from '../../../types/stepsOnboarding';
 import { endpointSchema } from '../../../utils/validations';
-import { UnsavedChangesDialog } from '../../../components/UnsavedChangesDialog';
 import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker';
 import EndpointForm from '../../../components/forms/EndpointForm';
 import { parseAgentLinks } from '../../../utils/deepLink';
@@ -19,12 +15,10 @@ import { useSafeFetch } from '../../../hook/useSafeFetch';
 import { buildPatchPayload } from '../../../utils/forms';
 import { useAppSelector } from '../../../redux/hook';
 import { selectSessionError } from '../../../redux/slices/sessionSlice';
-import { useTranslation } from 'react-i18next';
+import ModifyPageLayout from '../../../components/ModifyPageLayout';
 
 
 const EndpointModify = () => {
-    const navigate = useNavigate();
-    const { t } = useTranslation();
 
     const initialValues: Step1Values = {
         webhookUrl: '',
@@ -72,6 +66,7 @@ const EndpointModify = () => {
                 },
             });
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     if (sessionError) return null;
@@ -93,56 +88,19 @@ const EndpointModify = () => {
     };
 
     return (
-        <>
-            <UnsavedChangesDialog
-                open={showDialog}
-                onConfirm={() => handleConfirmExit(ROUTES.HOME)}
-                onCancel={handleCancelExit}
-            />
-            <Box component="main" flex={1} display="flex" justifyContent="center" px={2} py={4}>
-                <Box width="100%" maxWidth={760}>
-
-                    <Typography variant="h4" fontWeight={700} mb={1.5}>
-                        {t('endpointModify.title')}
-                    </Typography>
-                    <Typography variant="caption" color="error" display="block" mb={3}>
-                        {t('commonLabel.requiredField')}
-                    </Typography>
-
-                    {/* Card of modify of Credentials */}
-                    <form onSubmit={formik.handleSubmit} noValidate>
-                        <Paper elevation={0} variant="outlined" sx={{ borderRadius: 2, p: { xs: 2 } }}>
-                            <Typography variant="h6" fontWeight={700} mb={3}>
-                                {t('endpointModify.cardTitle')}
-                            </Typography>
-
-                            {loading ?
-                                <EndpointFormSkeleton />
-                                :
-                                <EndpointForm formik={formik} />
-                            }
-
-                        </Paper>
-
-                        <Box display="flex" justifyContent="space-between" mt={4}>
-                            <Button variant="outlined" onClick={() => void navigate(ROUTES.HOME)}>
-                                {t('commonLabel.cancel')}
-                            </Button>
-
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                disabled={formik.isSubmitting}
-                                endIcon={formik.isSubmitting ? <CircularProgress size={16} color="inherit" /> : undefined}
-                            >
-                                {t('commonLabel.save')}
-                            </Button>
-                        </Box>
-                    </form >
-
-                </Box >
-            </Box >
-        </>
+        <ModifyPageLayout
+            formik={formik}
+            titleKey="endpointModify.title"
+            cardTitleKey="endpointModify.cardTitle"
+            cancelRoute={ROUTES.HOME}
+            showDialog={showDialog}
+            onConfirmExit={() => handleConfirmExit(ROUTES.HOME)}
+            onCancelExit={handleCancelExit}
+            loading={loading}
+            skeleton={<EndpointFormSkeleton />}
+        >
+            <EndpointForm formik={formik} />
+        </ModifyPageLayout>
     );
 };
 
