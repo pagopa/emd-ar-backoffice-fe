@@ -17,6 +17,7 @@ import LoadingScreen from './components/LoadingScreen';
 import EnvironmentBanner from './components/EnvironmentBanner';
 import ErrorContent from './components/ErrorContent';
 import { CONFIG } from './config';
+import { useTranslation } from 'react-i18next';
 
 function Root() {
     useInitSession();
@@ -66,22 +67,28 @@ const TppOutlet = () => {
 
 
 const AuthOutlet = withAuth(() => <Outlet />);
-const LayoutWithSidebar = () => (
-    <>
-        {CONFIG.ENV !== 'PROD' && <EnvironmentBanner message={'Ambiente di collaudo: attenzione i dati non devono essere reali'} />}
-        <Layout showSidebar>
-            <Outlet />
-        </Layout>
-    </>
-);
-const LayoutWithoutSidebar = () => (
-    <>
-        {CONFIG.ENV !== 'PROD' && <EnvironmentBanner message={'Ambiente di collaudo: attenzione i dati non devono essere reali'} />}
-        <Layout>
-            <Outlet />
-        </Layout>
-    </>
-);
+const LayoutWithSidebar = () => {
+    const { t } = useTranslation();
+    return (
+        <>
+            {CONFIG.ENV !== 'PROD' && <EnvironmentBanner message={t('environmentBanner.message')} />}
+            <Layout showSidebar>
+                <Outlet />
+            </Layout>
+        </>
+    )
+};
+const LayoutWithoutSidebar = () => {
+    const { t } = useTranslation();
+    return (
+        <>
+            {CONFIG.ENV !== 'PROD' && <EnvironmentBanner message={t('environmentBanner.message')} />}
+            <Layout>
+                <Outlet />
+            </Layout>
+        </>
+    )
+};
 
 export const router = createBrowserRouter([
     {

@@ -1,4 +1,5 @@
 import { Box, Button, Paper, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { getTppProfile } from '../../api/tpp';
@@ -13,7 +14,7 @@ import { useAppSelector } from '../../redux/hook';
 import { selectSessionError } from '../../redux/slices/sessionSlice';
 
 const Home = () => {
-
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { data, loading, fetchError } = useSafeFetch(() => getTppProfile());
 
@@ -24,7 +25,6 @@ const Home = () => {
     if (sessionError) return null;
     if (fetchError) return <ErrorContent />;
 
-
     const onModify = () => {
         void navigate(ROUTES.ENDPOINT_MODIFY, { replace: true });
     };
@@ -34,7 +34,7 @@ const Home = () => {
 
             {/* Header */}
             <Typography sx={{ ...sxSectionTitle, fontSize: '28px', lineHeight: '36px' }}>
-                Panoramica
+                {t('home.title')}
             </Typography>
 
             {/* Two-column layout */}
@@ -45,16 +45,16 @@ const Home = () => {
 
                     {/* and now? card */}
                     <Paper elevation={0} sx={{ borderRadius: 2, p: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <Typography sx={sxSectionTitle}>E ora?</Typography>
+                        <Typography sx={sxSectionTitle}>{t('home.nowCard.title')}</Typography>
                         <Typography sx={{ ...sxFieldLabel, color: 'text.secondary' }}>
-                            Visualizza e gestisci le credenziali per la connessione con i sistemi di PagoPA.
+                            {t('home.nowCard.description')}
                         </Typography>
                         <Box>
                             <Button
                                 variant="contained"
                                 onClick={() => void navigate(ROUTES.CREDENTIALS)}
                             >
-                                Gestisci credenziali
+                                {t('home.nowCard.button')}
                             </Button>
                         </Box>
                     </Paper>

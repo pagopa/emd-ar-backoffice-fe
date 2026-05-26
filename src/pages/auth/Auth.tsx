@@ -14,26 +14,19 @@ import { saveUser } from '../../utils/user';
 
 import { userActions } from '@pagopa/selfcare-common-frontend/lib/redux/slices/userSlice';
 import { storageTokenOps } from '@pagopa/selfcare-common-frontend/lib/utils/storage';
+import { useTranslation } from 'react-i18next';
+import AssistanceDialog from '../../components/AssistanceDialog';
 
 type AcsState = 'loading' | 'error' | 'check-failed';
 
-const ERROR_CONFIG = {
-    error: {
-        title: 'Accesso non riuscito',
-        description: 'Il link potrebbe essere scaduto.',
-    },
-    'check-failed': {
-        title: 'Errore durante la verifica del profilo',
-        description: 'Non è stato possibile verificare il tuo profilo. Riprova o contatta l\'assistenza.',
-    },
-} as const;
-
 const Auth = () => {
+    const { t } = useTranslation();
 
     const { hash } = useLocation();
     const urlToken = hash.startsWith('#token=') ? hash.slice('#token='.length).trim() : '';
 
     const [state, setState] = useState<AcsState>(urlToken ? 'loading' : 'error');
+    const [assistanceOpen, setAssistanceOpen] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -76,7 +69,7 @@ const Auth = () => {
     }, [urlToken, navigate, dispatch]);
 
     if (state === 'error' || state === 'check-failed') {
-        const cfg = ERROR_CONFIG[state];
+
         return (
             <Box
                 display="flex"
@@ -87,19 +80,35 @@ const Auth = () => {
                 gap={2}
             >
                 <Typography variant="h6" color="error">
-                    {cfg.title}
+                    {state === 'error' ? t('auth.error.title') : t('auth.checkFailed.title')}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {cfg.description}&nbsp;
-                    <Link
-                        href={CONFIG.AR_BASE_URL + '/auth'}
-                        underline="always"
-                        color="primary"
-                    >
-                        Torna all&apos;Area Riservata
+                <Typography variant="body2" color="text.secondary" textAlign="center">
+                    {state === 'error' ? t('auth.error.description') : t('auth.checkFailed.description')}
+                    {' '}
+                    <Link href={CONFIG.AR_BASE_URL + '/auth'} underline="always" color="primary">
+                        {t('commonLabel.backToArea')}
                     </Link>
-                    .
                 </Typography>
+                {CONFIG.ASSISTANCE_EMAIL && (
+                    <Typography variant="body2" color="text.secondary" textAlign="center">
+                        {t('error.persistsInfo')}{' '}
+                        <Link
+                            component="button"
+                            underline="always"
+                            color="primary"
+                            variant="body2"
+                            onClick={() => setAssistanceOpen(true)}
+                        >
+                            {t('error.contactAssistance')}
+                        </Link>
+                    </Typography>
+                )}
+
+
+                <AssistanceDialog
+                    open={assistanceOpen}
+                    onClose={() => setAssistanceOpen(false)}
+                />
             </Box>
         );
     }
@@ -115,10 +124,10 @@ const Auth = () => {
         >
             <CircularProgress size={48} />
             <Typography variant="h6" component="h1">
-                Autenticazione in corso...
+                {t('auth.loading')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-                Attendere, verifica delle credenziali in corso.
+                {t('auth.loadingDescription')}
             </Typography>
         </Box>
     );

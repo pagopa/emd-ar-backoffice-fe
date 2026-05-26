@@ -14,11 +14,16 @@ import {
 } from '@mui/material';
 import type { FormikProps } from 'formik';
 import type { Step2Values } from '../../types/stepsOnboarding';
+import { useTranslation } from 'react-i18next';
 
 
 export default function CredentialsForm({ formik }: Readonly<{ formik: FormikProps<Step2Values> }>) {
     const { values, errors, touched, handleChange, handleBlur, setFieldValue } = formik;
     const [isSecretVisible, setIsSecretVisible] = useState(false);
+    const { t } = useTranslation();
+    const cr = 'onboarding.step2.credentials';
+    const bp = 'onboarding.step2.bodyParams';
+    const up = 'onboarding.step2.urlParams';
 
     // Body params helpers 
     const addBodyParam = () =>
@@ -45,13 +50,11 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
             {/* Access Credentials TPP */}
             <Box className="cardsForm" mb={3}>
                 <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                    <CredentialIcon fontSize="small" style={{ color: "#BBC2D6" }} />
-                    <Typography variant="subtitle1" fontWeight={600}>
-                        Credenziali di accesso
-                    </Typography>
+                    <CredentialIcon fontSize="small" style={{ color: '#BBC2D6' }} />
+                    <Typography variant="subtitle1" fontWeight={600}>{t(`${cr}.title`)}</Typography>
                 </Box>
                 <Typography variant="body2" color="text.secondary" mb={3}>
-                    Credenziali necessarie per comunicare coi vostri sistemi in modo sicuro.
+                    {t(`${cr}.description`)}
                 </Typography>
 
                 <Grid container spacing={2}>
@@ -89,7 +92,7 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
-                                            aria-label={isSecretVisible ? 'Nascondi secret' : 'Mostra secret'}
+                                            aria-label={isSecretVisible ? t(`${cr}.hideSecret`) : t(`${cr}.showSecret`)}
                                             onClick={() => setIsSecretVisible((prev) => !prev)}
                                             edge="end"
                                         >
@@ -125,22 +128,16 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                 <Box mb={2}>
                     <Box display="flex" alignItems="center" gap={1} mb={0.5}>
                         <img src="/icons/integration_instructions.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
-                        <Typography variant="subtitle1" fontWeight={600}>
-                            Parametri aggiuntivi (Body)
-                        </Typography>
+                        <Typography variant="subtitle1" fontWeight={600}>{t(`${bp}.title`)}</Typography>
                     </Box>
-                    <Typography variant="body2" color="text.secondary" mb={2}>
-                        Parametri personalizzati richiesti dal tuo sistema per il rilascio del token (es. scope)
-                    </Typography>
-
-
+                    <Typography variant="body2" color="text.secondary" mb={2}>{t(`${bp}.description`)}</Typography>
                     <Grid container spacing={2}>
                         {values.bodyParams.map((param, index) => (
                             <Grid item xs={12} key={index}>
                                 <Box display="flex" gap={2} alignItems="flex-start">
                                     <TextField
                                         size="small"
-                                        label="Nome"
+                                        label={t(`${bp}.name`)}
                                         name={`bodyParams[${index}].name`}
                                         value={param.name}
                                         onChange={handleChange}
@@ -152,7 +149,7 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                                     />
                                     <TextField
                                         size="small"
-                                        label="Valore"
+                                        label={t(`${bp}.value`)}
                                         name={`bodyParams[${index}].value`}
                                         value={param.value}
                                         onChange={handleChange}
@@ -162,11 +159,8 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                                         sx={{ flex: 2 }}
                                         inputProps={{ maxLength: 512 }}
                                     />
-                                    <IconButton
-                                        aria-label="Rimuovi parametro body"
-                                        onClick={() => removeBodyParam(index)}
-                                        sx={{ alignContent: 'center' }}
-                                    >
+                                    <IconButton aria-label={t(`${bp}.removeParam`)} onClick={() => removeBodyParam(index)}
+                                        sx={{ alignContent: 'center' }}>
                                         <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
                                     </IconButton>
                                 </Box>
@@ -174,14 +168,9 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                         ))}
                     </Grid>
                 </Box>
-
-                <Button
-                    startIcon={<AddIcon />}
-                    onClick={addBodyParam}
-                    size="small"
-                    sx={{ textTransform: 'none', padding: 0 }}
-                >
-                    Aggiungi parametro body
+                <Button startIcon={<AddIcon />} onClick={addBodyParam} size="small"
+                    sx={{ textTransform: 'none', padding: 0 }}>
+                    {t(`${bp}.addParam`)}
                 </Button>
             </Box>
 
@@ -189,22 +178,17 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
             <Box className="cardsForm" mb={3}>
                 <Box mb={2}>
                     <Box display="flex" alignItems="center" gap={1} mb={0.5}>
-                        <UrlIcon fontSize="small" style={{ color: "#BBC2D6" }} />
-                        <Typography variant="subtitle1" fontWeight={600}>
-                            Parametri aggiuntivi (URL)
-                        </Typography>
+                        <UrlIcon fontSize="small" style={{ color: '#BBC2D6' }} />
+                        <Typography variant="subtitle1" fontWeight={600}>{t(`${up}.title`)}</Typography>
                     </Box>
-                    <Typography variant="body2" color="text.secondary" mb={2}>
-                        Parametri extra da accodare all&apos;indirizzo web dell&apos;autenticazione (es. tenant_id).
-                    </Typography>
-
+                    <Typography variant="body2" color="text.secondary" mb={2}>{t(`${up}.description`)}</Typography>
                     <Grid container spacing={2}>
                         {values.urlParams.map((param, index) => (
                             <Grid item xs={12} key={index}>
                                 <Box display="flex" gap={2} alignItems="flex-start">
                                     <TextField
                                         size="small"
-                                        label="Nome"
+                                        label={t(`${up}.name`)}
                                         name={`urlParams[${index}].name`}
                                         value={param.name}
                                         onChange={handleChange}
@@ -215,7 +199,7 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                                     />
                                     <TextField
                                         size="small"
-                                        label="Valore"
+                                        label={t(`${up}.value`)}
                                         name={`urlParams[${index}].value`}
                                         value={param.value}
                                         onChange={handleChange}
@@ -224,11 +208,8 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                                         helperText={urlTouched[index]?.value && urlErrors[index]?.value}
                                         sx={{ flex: 2 }}
                                     />
-                                    <IconButton
-                                        onClick={() => removeUrlParam(index)}
-                                        aria-label="Rimuovi versione"
-                                        sx={{ alignContent: 'center' }}
-                                    >
+                                    <IconButton onClick={() => removeUrlParam(index)} aria-label={t(`${up}.removeParam`)}
+                                        sx={{ alignContent: 'center' }}>
                                         <img src="/icons/delete.svg" alt="" aria-hidden="true" style={{ width: 24, height: 24 }} />
                                     </IconButton>
                                 </Box>
@@ -236,16 +217,10 @@ export default function CredentialsForm({ formik }: Readonly<{ formik: FormikPro
                         ))}
                     </Grid>
                 </Box>
-                <Button
-                    startIcon={<AddIcon />}
-                    onClick={addUrlParam}
-                    size="small"
-                    sx={{ padding: 0 }}
-                >
-                    Aggiungi parametro URL
+                <Button startIcon={<AddIcon />} onClick={addUrlParam} size="small" sx={{ padding: 0 }}>
+                    {t(`${up}.addParam`)}
                 </Button>
             </Box>
-
         </Box>
     );
 }

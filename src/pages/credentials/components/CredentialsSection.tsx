@@ -4,6 +4,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import { ReadonlyField } from './ReadOnlyField';
 
 import { ButtonNaked } from "@pagopa/mui-italia";
+import { useTranslation } from 'react-i18next';
 
 interface CredentialsSectionProps {
     title: string;
@@ -14,27 +15,31 @@ interface CredentialsSectionProps {
     onModify?: () => void;
 }
 
-export const CredentialsSection = ({ title, clientId, clientSecret, grantType, showEditButton, onModify }: CredentialsSectionProps) => (
-    <Paper elevation={0} sx={{ borderRadius: 2, p: 3, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        {showEditButton ?
-            <Box
-                display="flex"
-                alignItems="center"
-                justifyContent={"space-between"}
-                gap={0.5}
-                sx={{ color: 'primary.main' }}
-            >
-                <Typography variant="h6">{title} </Typography>
-                <ButtonNaked onClick={onModify} color="primary" style={{ display: "flex", gap: 8 }}>
-                    <ModifyIcon fontSize="small" />
-                    <Typography variant="label">Modifica</Typography>
-                </ButtonNaked>
-            </Box>
-            :
-            <Typography variant="h6">{title}</Typography>
-        }
-        <ReadonlyField label="CLIENT ID" value={clientId} />
-        <ReadonlyField label="CLIENT SECRET" value={clientSecret} secret />
-        <ReadonlyField label="GRANT TYPE" value={grantType} />
-    </Paper>
-);
+export const CredentialsSection = ({ title, clientId, clientSecret, grantType, showEditButton, onModify }: CredentialsSectionProps) => {
+    const { t } = useTranslation();
+
+    return (
+        <Paper elevation={0} sx={{ borderRadius: 2, p: 3, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {showEditButton ?
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent={"space-between"}
+                    gap={0.5}
+                    sx={{ color: 'primary.main' }}
+                >
+                    <Typography variant="h6">{title} </Typography>
+                    <ButtonNaked onClick={onModify} color="primary" style={{ display: "flex", gap: 8 }}>
+                        <ModifyIcon fontSize="small" />
+                        <Typography variant="label">{t('commonLabel.modify')}</Typography>
+                    </ButtonNaked>
+                </Box>
+                :
+                <Typography variant="h6">{title}</Typography>
+            }
+            <ReadonlyField label="CLIENT ID" value={clientId} />
+            <ReadonlyField label="CLIENT SECRET" value={clientSecret} secret />
+            <ReadonlyField label="GRANT TYPE" value={grantType} />
+        </Paper>
+    );
+}

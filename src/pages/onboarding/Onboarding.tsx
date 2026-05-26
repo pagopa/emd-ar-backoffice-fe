@@ -18,18 +18,20 @@ import type { AuthenticationType, TppDTO } from '../../types/tpp';
 import { buildAgentLinks } from '../../utils/deepLink';
 import { credentialsSchema, endpointSchema } from '../../utils/validations';
 import { useApiErrorHandler } from '../../hook/useApiErrorHandler';
+import { useTranslation } from 'react-i18next';
 
 
 const Onboarding = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch();
     const handleApiError = useApiErrorHandler();
+    const { t } = useTranslation();
 
     const organization = useAppSelector((state) => state.organization.organization);
 
     type AllValues = Step1Values & Step2Values;
     const validationSchemas = [endpointSchema, credentialsSchema];
-    const STEPS = ['Endpoint e deep link', 'Credenziali'];
+    const STEPS = t('onboarding.page.steps', { returnObjects: true }) as string[];
 
     const initialValues: AllValues = {
         webhookUrl: '',
@@ -133,10 +135,10 @@ const Onboarding = () => {
             <Box width="100%" maxWidth={760}>
 
                 <Typography variant="h4" fontWeight={700} mb={1.5}>
-                    Configurazione del servizio
+                    {t('onboarding.page.title')}
                 </Typography>
                 <Typography variant="caption" color="error" display="block" mb={3}>
-                    * Campo obbligatorio
+                    {t('commonLabel.requiredField')}
                 </Typography>
 
                 {/* Stepper MUI standard */}
@@ -171,7 +173,6 @@ const Onboarding = () => {
                         <Typography variant="h6" fontWeight={700} mb={3}>
                             {STEPS[activeStep]}
                         </Typography>
-
                         {renderStep()}
                     </Paper>
 
@@ -185,7 +186,7 @@ const Onboarding = () => {
                                     sx={{ gap: '8px' }}
                                 >
                                     <Back style={{ width: 24, height: 24 }} />
-                                    Indietro
+                                    {t('commonLabel.back')}
                                 </Button>
                                 :
                                 <Box />
@@ -196,7 +197,7 @@ const Onboarding = () => {
                             disabled={formik.isSubmitting}
                             endIcon={formik.isSubmitting ? <CircularProgress size={16} color="inherit" /> : undefined}
                         >
-                            {isLastStep ? 'Completa configurazione' : 'Continua'}
+                            {isLastStep ? t('onboarding.page.complete') : t('onboarding.page.continue')}
                         </Button>
                     </Box>
                 </form>

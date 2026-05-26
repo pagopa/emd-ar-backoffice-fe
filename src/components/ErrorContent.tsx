@@ -1,11 +1,18 @@
 import { Box, Button, Link, Typography } from '@mui/material';
 import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
+import { CONFIG } from '../config';
+import AssistanceDialog from './AssistanceDialog';
+import { useState } from 'react';
 
 interface ErrorContentProps {
     arUrl?: string;
 }
 
 export default function ErrorContent({ arUrl }: ErrorContentProps = {}) {
+    const { t } = useTranslation();
+    const [assistanceOpen, setAssistanceOpen] = useState(false);
+
     return (
         <Box
             display="flex"
@@ -17,18 +24,36 @@ export default function ErrorContent({ arUrl }: ErrorContentProps = {}) {
             height="100%"
         >
             <ErrorOutlineIcon color="error" sx={{ fontSize: 48 }} />
-            <Typography variant="h6">Qualcosa è andato storto</Typography>
+            <Typography variant="h6">{t('error.title')}</Typography>
             <Typography variant="body2" color="text.secondary" textAlign="center">
-                Non è stato possibile caricare le informazioni. Riprova più tardi.
+                {t('error.description')}
             </Typography>
             <Button variant="outlined" onClick={() => window.location.reload()}>
-                Riprova
+                {t('commonLabel.retry')}
             </Button>
-            {arUrl && (
+            {arUrl && <>
                 <Link href={arUrl} underline="always" color="primary" variant="body2">
-                    Torna all&apos;Area Riservata
+                    {t('commonLabel.backToArea')}
                 </Link>
-            )}
+
+                {CONFIG.ASSISTANCE_EMAIL && (
+                    <Link
+                        component="button"
+                        underline="always"
+                        color="primary"
+                        variant="body2"
+                        onClick={() => setAssistanceOpen(true)}
+                    >
+                        {t('error.contactAssistance')}
+                    </Link>
+                )}
+            </>
+            }
+
+            <AssistanceDialog
+                open={assistanceOpen}
+                onClose={() => setAssistanceOpen(false)}
+            />
         </Box>
     );
 }

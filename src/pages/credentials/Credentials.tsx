@@ -1,4 +1,5 @@
 import { Box, Paper, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { getPagoPACredentials, getTppCredentials, getTppProfile } from '../../api/tpp';
@@ -25,7 +26,7 @@ const extractTppFields = (body: Record<string, string> = {}) => ({
 });
 
 const Credentials = () => {
-
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { data, loading, fetchError } = useSafeFetch(() =>
         Promise.all([getPagoPACredentials(), getTppCredentials(), getTppProfile()])
@@ -38,8 +39,8 @@ const Credentials = () => {
     if (fetchError) return <ErrorContent />;
 
     const onModify = () => {
-        void navigate(ROUTES.CREDENTIALS_MODIFY, { replace: true })
-    }
+        void navigate(ROUTES.CREDENTIALS_MODIFY, { replace: true });
+    };
 
     const [pagoPaCredentials, tppCredentials, tppInfo] = data ?? [undefined, undefined, null];
     const tppId = tppInfo?.tppId ?? '';
@@ -52,17 +53,16 @@ const Credentials = () => {
 
             {/* Header */}
             <Box display="flex" flexDirection="column" gap="16px">
-                <Typography variant="h4">Credenziali</Typography>
+                <Typography variant="h4">{t('credentials.title')}</Typography>
                 <Typography variant="subtitle2">
-                    Qui puoi visualizzare le chiavi di accesso per collegarti a PagoPA e
-                    gestire le credenziali necessarie per ricevere i messaggi di cortesia sui tuoi sistemi.
+                    {t('credentials.subtitle')}
                 </Typography>
             </Box>
 
             {/* Credentials PagoPA */}
             {pagoPaCredentials && (
                 <CredentialsSection
-                    title="Credenziali PagoPA"
+                    title={t('credentials.pagopa')}
                     clientId={pagoPaCredentials.clientId}
                     clientSecret={pagoPaCredentials.clientSecret}
                     grantType={pagoPaCredentials.grantType}
@@ -80,7 +80,7 @@ const Credentials = () => {
             {/* Credentials TPP */}
             {tppCredentials && (
                 <CredentialsSection
-                    title="Credenziali TPP"
+                    title={t('credentials.tpp')}
                     clientId={tppClientId}
                     clientSecret={tppClientSecret}
                     grantType={tppGrantType}
