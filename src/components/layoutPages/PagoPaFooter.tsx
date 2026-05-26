@@ -9,6 +9,7 @@ import {
     type Languages,
 } from '@pagopa/mui-italia';
 import { CONFIG } from '../../config';
+import { LANG_STORAGE_KEY } from '../../utils/constant';
 
 
 const languages = {
@@ -82,6 +83,7 @@ const Footer = () => {
 
     const handleLanguageChange = (newLang: LangCode) => {
         void i18n.changeLanguage(newLang);
+        localStorage.setItem(LANG_STORAGE_KEY, newLang);
     };
 
     return (

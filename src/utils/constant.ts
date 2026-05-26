@@ -3,3 +3,4 @@ export const URL_REGEX = /^https?:\/\/[^\s$.?#].[^\s]*$/;
 export const PARTITA_IVA_REGEX = /^[0-9]{11}$|^[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]$/i;
 export const NO_SPACES = /^\S+$/;
 export const ORGANIZATION_STORAGE_KEY = 'acs_organization';
+export const LANG_STORAGE_KEY = 'preferred_lang';

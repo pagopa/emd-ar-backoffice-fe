@@ -5,6 +5,7 @@ import selfcareEn from '@pagopa/selfcare-common-frontend/lib/locale/en';
 
 import customIt from './locales/it';
 import customEn from './locales/en';
+import { LANG_STORAGE_KEY } from './utils/constant';
 
 void i18n
     .use(initReactI18next)
@@ -13,7 +14,7 @@ void i18n
             it: { translation: { ...selfcareIt, ...customIt } }, 
             en: { translation: { ...selfcareEn, ...customEn } },
         },
-        lng: 'it',
+        lng: localStorage.getItem(LANG_STORAGE_KEY) ?? 'it',
         fallbackLng: 'it',
         interpolation: { escapeValue: false },
     });
