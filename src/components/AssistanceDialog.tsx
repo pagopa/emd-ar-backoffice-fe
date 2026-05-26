@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Box, Button, Dialog, DialogContent, DialogTitle, Divider, IconButton, Tooltip, Typography } from '@mui/material';
 import { ContentCopy as CopyIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,22 @@ interface AssistanceDialogProps {
 
 const AssistanceDialog = ({ open, onClose }: AssistanceDialogProps) => {
     const { t } = useTranslation();
+    const triggerRef = useRef<Element | null>(null);
+
+    useEffect(() => {
+        if (open) {
+            triggerRef.current = document.activeElement;
+        }
+    }, [open]);
+
+    const handleClose = () => {
+        onClose();
+    };
+
+    const restoreFocus = () => {
+        (triggerRef.current as HTMLElement)?.focus();
+        triggerRef.current = null;
+    };
 
     const email = CONFIG.ASSISTANCE_EMAIL ?? '';
     const subject = encodeURIComponent('Richiesta assistenza');
@@ -30,7 +47,13 @@ const AssistanceDialog = ({ open, onClose }: AssistanceDialogProps) => {
     ];
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            maxWidth="xs"
+            fullWidth
+            TransitionProps={{ onExited: restoreFocus }}
+        >
             <DialogTitle variant="body1" fontWeight={600}>
                 {t('header.assistancePopover.title')}
             </DialogTitle>
@@ -44,9 +67,10 @@ const AssistanceDialog = ({ open, onClose }: AssistanceDialogProps) => {
                             key={p.label}
                             variant="outlined"
                             size="small"
-                            onClick={() => {
+                            onClick={(e) => {
+                                (e.currentTarget as HTMLElement).blur();
                                 window.open(p.href, '_blank', 'noopener,noreferrer');
-                                onClose();
+                                handleClose();
                             }}
                             sx={{ justifyContent: 'flex-start' }}
                         >
@@ -67,9 +91,10 @@ const AssistanceDialog = ({ open, onClose }: AssistanceDialogProps) => {
                     <Tooltip title={t('header.assistancePopover.copy')} arrow>
                         <IconButton
                             size="small"
-                            onClick={() => {
+                            onClick={(e) => {
+                                (e.currentTarget as HTMLElement).blur();
                                 void navigator.clipboard.writeText(email);
-                                onClose();
+                                handleClose();
                             }}
                         >
                             <CopyIcon fontSize="small" />
