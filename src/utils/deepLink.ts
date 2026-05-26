@@ -15,13 +15,11 @@ const findDevice = (
 const isUniversalConfig = (agentLinks: Record<string, AgentLink>): boolean => {
     const android = findDevice(agentLinks, 'ANDROID')?.link;
     const ios = findDevice(agentLinks, 'IOS')?.link;
-    if (!android || !ios) return false;
-
-    const candidates = [android, ios];
     const web = findDevice(agentLinks, 'WEB')?.link;
-    if (web) candidates.push(web);
 
-    const serialized = candidates.map(d => JSON.stringify(d));
+    if (!android || !ios || !web) return false;
+
+    const serialized = [android, ios, web].map(d => JSON.stringify(d));
     return serialized.every(s => s === serialized[0]);
 };
 
