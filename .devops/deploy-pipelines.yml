@@ -58,10 +58,10 @@ stages:
                 echo "Checked out tag ${{ parameters.VERSION }}"
               displayName: 'Checkout tag ${{ parameters.VERSION }}'
 
-          - task: NodeTool@0
+          - task: UseNode@1
             displayName: 'Setup Node.js $(NODE_VERSION)'
             inputs:
-              versionSpec: '$(NODE_VERSION)'
+              version: '$(NODE_VERSION)'
 
           - bash: npm ci
             displayName: 'Install dependencies'
