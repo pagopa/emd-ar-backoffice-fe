@@ -23,10 +23,12 @@ const AssistanceDialog = ({ open, onClose }: AssistanceDialogProps) => {
         onClose();
     };
 
-    const restoreFocus = () => {
+    const handleProviderClick = () => {
         (triggerRef.current as HTMLElement)?.focus();
         triggerRef.current = null;
+        handleClose();
     };
+
 
     const email = CONFIG.ASSISTANCE_EMAIL ?? '';
     const subject = encodeURIComponent('Richiesta assistenza');
@@ -52,7 +54,6 @@ const AssistanceDialog = ({ open, onClose }: AssistanceDialogProps) => {
             onClose={handleClose}
             maxWidth="xs"
             fullWidth
-            TransitionProps={{ onExited: restoreFocus }}
         >
             <DialogTitle variant="body1" fontWeight={600}>
                 {t('header.assistancePopover.title')}
@@ -67,11 +68,11 @@ const AssistanceDialog = ({ open, onClose }: AssistanceDialogProps) => {
                             key={p.label}
                             variant="outlined"
                             size="small"
-                            onClick={(e) => {
-                                (e.currentTarget as HTMLElement).blur();
-                                window.open(p.href, '_blank', 'noopener,noreferrer');
-                                handleClose();
-                            }}
+                            component="a"
+                            href={p.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={handleProviderClick}
                             sx={{ justifyContent: 'flex-start' }}
                         >
                             {p.label}
@@ -91,10 +92,9 @@ const AssistanceDialog = ({ open, onClose }: AssistanceDialogProps) => {
                     <Tooltip title={t('header.assistancePopover.copy')} arrow>
                         <IconButton
                             size="small"
-                            onClick={(e) => {
-                                (e.currentTarget as HTMLElement).blur();
+                            onClick={() => {
                                 void navigator.clipboard.writeText(email);
-                                handleClose();
+                                handleProviderClick();
                             }}
                         >
                             <CopyIcon fontSize="small" />
