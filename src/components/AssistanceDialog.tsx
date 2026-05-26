@@ -39,10 +39,6 @@ const AssistanceDialog = ({ open, onClose }: AssistanceDialogProps) => {
             href: `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(email)}&subject=${subject}`,
         },
         {
-            label: 'Gmail',
-            href: `https://mail.google.com/mail/?view=cm&to=${email}&su=${subject}`,
-        },
-        {
             label: t('header.assistancePopover.externalApp'),
             href: `mailto:${email}?subject=${subject}`,
         },
