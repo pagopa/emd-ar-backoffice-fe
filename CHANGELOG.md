@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.7.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.6.0...v1.7.0) (2026-05-26)
+
+
+### Features
+
+* MMC-572 integration GET for data tpp on home page ([#39](https://github.com/pagopa/emd-ar-backoffice-fe/issues/39)) ([ee66049](https://github.com/pagopa/emd-ar-backoffice-fe/commit/ee66049b53d78783d1095b5695bfe10910ed9f20))
+* MMC-575 integration patch api for update tpp data of overview ([#41](https://github.com/pagopa/emd-ar-backoffice-fe/issues/41)) ([cb45781](https://github.com/pagopa/emd-ar-backoffice-fe/commit/cb457812c13d5b743f0d41d1c6cae4a748a85ff7))
+
+
+### Bug Fixes
+
+* force release ([718dca6](https://github.com/pagopa/emd-ar-backoffice-fe/commit/718dca6c3fca27807c1490d0c97167d21300f0cd))
+* MMC-677 add mapping on modify of label for not changing the tpp structure of deeplink on update ([#42](https://github.com/pagopa/emd-ar-backoffice-fe/issues/42)) ([7930ca3](https://github.com/pagopa/emd-ar-backoffice-fe/commit/7930ca3cfb533ee59e6f974f85ff126ef719b65e))
+* MMC-678 handling link on header and handling send assistance mail  ([#43](https://github.com/pagopa/emd-ar-backoffice-fe/issues/43)) ([b6f3f72](https://github.com/pagopa/emd-ar-backoffice-fe/commit/b6f3f72dc0b25188ab38a4aa1b06101987c845df))
+
 ## [1.6.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.5.0...v1.6.0) (2026-05-12)
 
 
