@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.1...v1.7.2) (2026-05-27)
+
+
+### Bug Fixes
+
+* MMC-692 Fix loading page onboarding ([#46](https://github.com/pagopa/emd-ar-backoffice-fe/issues/46)) ([4d2c0d9](https://github.com/pagopa/emd-ar-backoffice-fe/commit/4d2c0d9d516567ad565bce1102d4d9c3bf438b39))
+
 ## [1.7.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.0...v1.7.1) (2026-05-27)
 
 
