@@ -52,9 +52,11 @@ const Auth = () => {
                 try {
                     const tppResponse = await checkTppExists();
                     if (tppResponse === null) {
+                        localStorage.removeItem('tpp_registered');
                         dispatch(setTppRegistered(false));
                         void navigate(ROUTES.ONBOARDING, { replace: true });
                     } else {
+                        localStorage.setItem('tpp_registered', 'true');
                         dispatch(setTppRegistered(true));
                         void navigate(ROUTES.HOME, { replace: true });
                     }
