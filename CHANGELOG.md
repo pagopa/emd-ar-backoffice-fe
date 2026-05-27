@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.0...v1.7.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* MMC-692 fix toast error on first onboarding ([#45](https://github.com/pagopa/emd-ar-backoffice-fe/issues/45)) ([75e0734](https://github.com/pagopa/emd-ar-backoffice-fe/commit/75e0734f5963ead9340d6a6d901ebf570debb09e))
+* Upgrade version of release please action that have Node24 ([104833f](https://github.com/pagopa/emd-ar-backoffice-fe/commit/104833fc7457580a5e1d816b09c3ed5de30ad7e6))
+
 ## [1.7.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.6.0...v1.7.0) (2026-05-26)
 
 
