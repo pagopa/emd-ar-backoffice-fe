@@ -19,7 +19,7 @@ export const useInitSession = () => {
     useEffect(() => {
         localStorage.removeItem('acs_tpp_id');
 
-        if (pathname === ROUTES.AUTH) return;
+        if (pathname === ROUTES.AUTH || pathname === ROUTES.ONBOARDING) return;
 
         const organization = getOrganizationFromStorage();
         const user = storageUserOps.read();

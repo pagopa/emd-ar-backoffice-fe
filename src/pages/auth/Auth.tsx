@@ -89,7 +89,7 @@ const Auth = () => {
                         {t('commonLabel.backToArea')}
                     </Link>
                 </Typography>
-                {CONFIG.ASSISTANCE_EMAIL && (
+                {CONFIG.ASSISTANCE_EMAIL && urlToken && (
                     <Typography variant="body2" color="text.secondary" textAlign="center">
                         {t('error.persistsInfo')}{' '}
                         <Link

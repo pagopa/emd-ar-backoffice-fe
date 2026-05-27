@@ -7,6 +7,8 @@ import axios, { type AxiosError } from 'axios';
 import { setTppRegistered } from '../redux/slices/organizationSlice';
 import { applyMockScenario } from '../mocks/mockInterceptor';
 import { MOCK_TPP_CREDENTIALS, MOCK_PAGOPA_CREDENTIALS, MOCK_ENDPOINT_PAGE } from '../mocks/tpp';
+import ROUTES from '../routes';
+import i18n from '../i18n';
 
 const MOCK_RESPONSES: Record<string, unknown> = {
     'GET /v1/tpp/credentials': MOCK_TPP_CREDENTIALS,
@@ -87,9 +89,17 @@ export function handleInterceptedError(error: AxiosError, silent = false): void 
                 errorData?.code === 'NOT_FOUND' &&
                 errorData?.message?.toLowerCase().startsWith('tpp not found');
 
-            if (isTppNotFound) {
-                localStorage.removeItem('tpp_registered');
-                store.dispatch(setTppRegistered(false));
+            if (!isTppNotFound) break;
+            localStorage.removeItem('tpp_registered');
+            store.dispatch(setTppRegistered(false));
+
+            const { pathname } = window.location;
+            const isPublicFlow =
+                pathname === ROUTES.AUTH ||
+                pathname === ROUTES.ONBOARDING ||
+                silent;
+
+            if (!isPublicFlow) {
                 store.dispatch(appStateActions.addError({
                     id: 'TPP_NOT_FOUND',
                     error: error,
@@ -97,7 +107,7 @@ export function handleInterceptedError(error: AxiosError, silent = false): void 
                     blocking: false,
                     toNotify: true,
                     component: 'Toast',
-                    displayableDescription: "La TPP non è più disponibile. Ripetere la registrazione o contattare l'assistenza",
+                    displayableDescription: i18n.t('error.interceptor.tppNotFound'),
                 }));
             }
             break;
@@ -113,7 +123,7 @@ export function handleInterceptedError(error: AxiosError, silent = false): void 
                         blocking: false,
                         toNotify: true,
                         component: 'Toast',
-                        displayableDescription: 'Si è verificato un errore imprevisto. Riprova più tardi.',
+                        displayableDescription: i18n.t('error.interceptor.unexpected'),
                     }));
                 }
             }
