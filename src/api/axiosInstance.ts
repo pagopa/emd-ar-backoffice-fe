@@ -99,8 +99,7 @@ export function handleInterceptedError(error: AxiosError, silent = false): void 
             const { pathname } = window.location;
             const isPublicPath =
                 pathname === ROUTES.AUTH ||
-                pathname === ROUTES.ONBOARDING ||
-                silent;
+                pathname === ROUTES.ONBOARDING;
 
             if (wasRegistered && !isPublicPath) {
                 store.dispatch(appStateActions.addError({
