@@ -28,6 +28,17 @@ const it = {
         description: 'Non è stato possibile caricare le informazioni. Riprova più tardi.',
         persistsInfo: "Se il problema persiste,",
         contactAssistance: "Contatta l'assistenza",
+        interceptor: {
+            tppNotFound: "La TPP non è più disponibile. Ripetere la registrazione o contattare l'assistenza.",
+            unexpected: "Si è verificato un errore imprevisto. Riprova più tardi."
+        },
+        api: {
+            conflict: "Il TPP esiste già nel sistema.",
+            notFound: "Risorsa non trovata.",
+            unprocessable: "Dati non validi. Controlla i campi e riprova.",
+            badRequest: "Dati non validi. Controlla i campi e riprova.",
+            unexpected: "Si è verificato un errore imprevisto. Riprova più tardi."
+        }
     },
     header: {
         admin: 'Amministratore',

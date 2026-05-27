@@ -28,6 +28,17 @@ const en = {
         description: 'The information could not be loaded. Please try again later.',
         persistsInfo: 'If the problem persists,',
         contactAssistance: 'Contact support',
+        interceptor: {
+            tppNotFound: 'The TPP is no longer available. Please repeat the registration or contact support.',
+            unexpected: 'An unexpected error occurred. Please try again later.',
+        },
+        api: {
+            conflict: 'The TPP already exists in the system.',
+            notFound: 'Resource not found.',
+            unprocessable: 'Invalid data. Please check the fields and try again.',
+            badRequest: 'Invalid data. Please check the fields and try again.',
+            unexpected: 'An unexpected error occurred. Please try again later.',
+        },
     },
     header: {
         admin: 'Administrator',
