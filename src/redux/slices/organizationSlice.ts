@@ -22,6 +22,9 @@ const organizationSlice = createSlice({
         setOrganization(state, action: PayloadAction<StoredOrganization>) {
             state.organization = action.payload;
         },
+        preloadTppRegistered(state, action: PayloadAction<boolean>) {
+            state.tppRegistered = action.payload;
+        },
         setTppRegistered(state, action: PayloadAction<boolean>) {
             state.tppRegistered = action.payload;
             state.tppIdChecked = true;
@@ -40,7 +43,8 @@ const organizationSlice = createSlice({
 
 export const {
     setOrganization,
-    setTppRegistered, 
+    preloadTppRegistered,
+    setTppRegistered,
     setTppIdCheckFailed,
     clearOrganization,
 } = organizationSlice.actions;

@@ -90,16 +90,19 @@ export function handleInterceptedError(error: AxiosError, silent = false): void 
                 errorData?.message?.toLowerCase().startsWith('tpp not found');
 
             if (!isTppNotFound) break;
+
+            const wasRegistered = store.getState().organization.tppRegistered;
+
             localStorage.removeItem('tpp_registered');
             store.dispatch(setTppRegistered(false));
 
             const { pathname } = window.location;
-            const isPublicFlow =
+            const isPublicPath =
                 pathname === ROUTES.AUTH ||
                 pathname === ROUTES.ONBOARDING ||
                 silent;
 
-            if (!isPublicFlow) {
+            if (wasRegistered && !isPublicPath) {
                 store.dispatch(appStateActions.addError({
                     id: 'TPP_NOT_FOUND',
                     error: error,
