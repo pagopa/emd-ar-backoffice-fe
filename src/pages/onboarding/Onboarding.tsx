@@ -110,6 +110,7 @@ const Onboarding = () => {
 
 
         if (tppId) {
+            localStorage.setItem('tpp_registered', 'true');
             dispatch(setTppRegistered(true));
             void navigate(ROUTES.HOME);
         }

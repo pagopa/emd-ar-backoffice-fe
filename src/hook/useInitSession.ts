@@ -19,23 +19,22 @@ export const useInitSession = () => {
     useEffect(() => {
         localStorage.removeItem('acs_tpp_id');
 
-        if (pathname === ROUTES.AUTH || pathname === ROUTES.ONBOARDING) return;
+        if (pathname === ROUTES.AUTH) return;
 
         const organization = getOrganizationFromStorage();
         const user = storageUserOps.read();
+        const tppRegisteredFromStorage = localStorage.getItem('tpp_registered') === 'true';
+
 
         if (organization) dispatch(setOrganization(organization));
         if (user) dispatch(userActions.setLoggedUser(user));
+        if (tppRegisteredFromStorage) dispatch(setTppRegistered(true));
 
         checkTppExists()
             .then((response) => {
-                if (response === null) {
-                    localStorage.removeItem('tpp_registered');
-                    dispatch(setTppRegistered(false));
-                } else {
-                    localStorage.setItem('tpp_registered', 'true');
-                    dispatch(setTppRegistered(true));
-                }
+                dispatch(setTppRegistered(response !== null));
+                if (response === null) localStorage.removeItem('tpp_registered');
+                else localStorage.setItem('tpp_registered', 'true');
             })
             .catch(() => {
                 dispatch(setTppIdCheckFailed());
