@@ -89,6 +89,29 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
         void setTouched({ ...touched, deepLinkDevices: updatedDevices });
     };
 
+    const handleUniversaleFallBackBlur = () =>
+        void setTouched({
+            ...touched,
+            deepLinkUniversale: {
+                ...(touched.deepLinkUniversale as any),
+                fallBackLink: true,
+            },
+        });
+
+    const handleUniversaleVersionBlur = (i: number, field: 'versionKey' | 'link') => {
+        const currentVersionsTouched = (touched.deepLinkUniversale as any)?.versions ?? [];
+        const updatedVersions = [...currentVersionsTouched];
+        while (updatedVersions.length <= i) updatedVersions.push({});
+        updatedVersions[i] = { ...updatedVersions[i], [field]: true };
+        void setTouched({
+            ...touched,
+            deepLinkUniversale: {
+                ...(touched.deepLinkUniversale as any),
+                versions: updatedVersions,
+            },
+        });
+    };
+
     return (
         <Box>
             <Box className="cardsForm" mb={3}>
@@ -159,7 +182,9 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
                         errors={errors.deepLinkUniversale as any}
                         touched={touched.deepLinkUniversale as any}
                         onFallBackChange={(val) => void setFieldValue('deepLinkUniversale.fallBackLink', val)}
+                        onFallBackBlur={handleUniversaleFallBackBlur}
                         onVersionChange={handleUniversaleVersionChange}
+                        onVersionBlur={handleUniversaleVersionBlur}
                         onAddVersion={addUniversaleVersion}
                         onRemoveVersion={removeUniversaleVersion}
                     />

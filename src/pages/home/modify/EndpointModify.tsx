@@ -5,7 +5,6 @@ import { useFormik } from 'formik';
 import { getTppProfile, saveEndpointTpp } from '../../../api/tpp';
 import ROUTES from '../../../routes';
 import type { Step1Values } from '../../../types/stepsOnboarding';
-import { endpointSchema } from '../../../utils/validations';
 import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker';
 import EndpointForm from '../../../components/forms/EndpointForm';
 import { parseAgentLinks } from '../../../utils/deepLink';
@@ -16,9 +15,12 @@ import { buildPatchPayload } from '../../../utils/forms';
 import { useAppSelector } from '../../../redux/hook';
 import { selectSessionError } from '../../../redux/slices/sessionSlice';
 import ModifyPageLayout from '../../../components/ModifyPageLayout';
+import { useValidationSchemas } from '../../../hook/useValidationSchemas';
+import { useRevalidateOnLanguageChange } from '../../../hook/useRevalidateOnLanguageChange';
 
 
 const EndpointModify = () => {
+    const { getSchema } = useValidationSchemas();
 
     const initialValues: Step1Values = {
         webhookUrl: '',
@@ -34,7 +36,7 @@ const EndpointModify = () => {
 
     const formik = useFormik<Step1Values>({
         initialValues,
-        validationSchema: endpointSchema,
+        validationSchema: getSchema('endpointSchema'),
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: async (values, { setSubmitting }) => {
@@ -46,6 +48,7 @@ const EndpointModify = () => {
         },
     });
 
+    useRevalidateOnLanguageChange(formik);
 
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 

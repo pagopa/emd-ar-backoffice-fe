@@ -1,5 +1,6 @@
 import { URL_REGEX, NO_SPACES } from './constant';
 import * as Yup from 'yup';
+import type { TFunction } from 'i18next';
 
 /**
  * Yup test factory: finds the first duplicate value in the given `field` of an array
@@ -32,86 +33,91 @@ function makeUniqueFieldTest<T extends Record<string, unknown>>(
     };
 }
 
-// Reusable uniqueness tests for array fields
-const uniqueParamNames  = makeUniqueFieldTest<{ name?: string; value?: string }>('name', 'Chiave duplicata');
-const uniqueVersionKeys = makeUniqueFieldTest<{ versionKey?: string; link?: string }>('versionKey', 'Versione già inserita');
+export function buildValidationSchemas(t: TFunction) {
 
-// Parametri body/url
-const paramEntrySchema = Yup.object({
-    name: Yup.string()
-        .required('Campo obbligatorio')
-        .matches(NO_SPACES, 'Non sono ammessi spazi'),
-    value: Yup.string()
-        .required('Campo obbligatorio')
-        .matches(NO_SPACES, 'Non sono ammessi spazi'),
-});
+    const uniqueParamNames = makeUniqueFieldTest<{ name?: string; value?: string }>(
+        'name', t('validation.duplicateKey')
+    );
+    const uniqueVersionKeys = makeUniqueFieldTest<{ versionKey?: string; link?: string }>(
+        'versionKey', t('validation.duplicateVersion')
+    );
 
-const versionEntrySchema = Yup.object({
-    versionKey: Yup.string()
-        .required('Campo obbligatorio')
-        .matches(NO_SPACES, 'Non sono ammessi spazi'),
-    link: Yup.string()
-        .matches(URL_REGEX, 'URL non valido')
-        .required('Campo obbligatorio'),
-});
+    const paramEntrySchema = Yup.object({
+        name: Yup.string()
+            .required(t('validation.required'))
+            .matches(NO_SPACES, t('validation.noSpaces')),
+        value: Yup.string()
+            .required(t('validation.required'))
+            .matches(NO_SPACES, t('validation.noSpaces')),
+    });
 
-const versionsSchema = Yup.array()
-    .of(versionEntrySchema)
-    .test('unique-version-keys', 'Versione già inserita', uniqueVersionKeys);
+    const versionEntrySchema = Yup.object({
+        versionKey: Yup.string()
+            .required(t('validation.required'))
+            .matches(NO_SPACES, t('validation.noSpaces')),
+        link: Yup.string()
+            .matches(URL_REGEX, t('validation.invalidUrl'))
+            .required(t('validation.required')),
+    });
 
-// Credentials form validation
-export const credentialsSchema = Yup.object({
-    clientId: Yup.string()
-        .required('Campo obbligatorio')
-        .matches(NO_SPACES, 'Non sono ammessi spazi'),
-    clientSecret: Yup.string()
-        .required('Campo obbligatorio')
-        .matches(NO_SPACES, 'Non sono ammessi spazi'),
-    grantType: Yup.string().required('Campo obbligatorio'),
-    bodyParams: Yup.array()
-        .of(paramEntrySchema)
-        .test('unique-body-names', 'Chiave duplicata', uniqueParamNames),
-    urlParams: Yup.array()
-        .of(paramEntrySchema)
-        .test('unique-url-names', 'Chiave duplicata', uniqueParamNames),
-});
+    const versionsSchema = Yup.array()
+        .of(versionEntrySchema)
+        .test('unique-version-keys', t('validation.duplicateVersion'), uniqueVersionKeys);
 
-// Endpoint form validation
-export const endpointSchema = Yup.object({
-    webhookUrl: Yup.string().matches(URL_REGEX, 'Inserisci un URL valido').required('Campo obbligatorio'),
-    authUrl:    Yup.string().matches(URL_REGEX, 'Inserisci un URL valido').required('Campo obbligatorio'),
-    authType:   Yup.string().required(),
-    deepLinkType: Yup.string().required(),
-    deepLinkUniversale: Yup.object().when('deepLinkType', {
-        is: 'universale',
-        then: (schema) =>
-            schema.shape({
-                fallBackLink: Yup.string().matches(URL_REGEX, 'URL non valido').required('Campo obbligatorio'),
-                versions: versionsSchema,
-            }),
-    }),
-    deepLinkDevices: Yup.array().when('deepLinkType', {
-        is: 'specifico',
-        then: (schema) =>
-            schema.of(
-                Yup.object({
-                    so: Yup.string(),
-                    fallBackLink: Yup.string().when('so', {
-                        is: (so: string) => so !== 'WEB',
-                        then: (s) => s.matches(URL_REGEX, 'URL non valido').required('Campo obbligatorio'),
-                        otherwise: (s) =>
-                            s.matches(URL_REGEX, 'URL non valido').test(
-                                'web-fallback-if-versions',
-                                'Campo obbligatorio se aggiungi una versione',
-                                function (value) {
-                                    const versions = (this.parent as { versions: unknown[] }).versions;
-                                    if (versions?.length > 0 && !value) return false;
-                                    return true;
-                                }
-                            ),
-                    }),
+    const credentialsSchema = Yup.object({
+        clientId: Yup.string()
+            .required(t('validation.required'))
+            .matches(NO_SPACES, t('validation.noSpaces')),
+        clientSecret: Yup.string()
+            .required(t('validation.required'))
+            .matches(NO_SPACES, t('validation.noSpaces')),
+        grantType: Yup.string().required(t('validation.required')),
+        bodyParams: Yup.array()
+            .of(paramEntrySchema)
+            .test('unique-body-names', t('validation.duplicateKey'), uniqueParamNames),
+        urlParams: Yup.array()
+            .of(paramEntrySchema)
+            .test('unique-url-names', t('validation.duplicateKey'), uniqueParamNames),
+    });
+
+    const endpointSchema = Yup.object({
+        webhookUrl: Yup.string().matches(URL_REGEX, t('validation.invalidUrl')).required(t('validation.required')),
+        authUrl: Yup.string().matches(URL_REGEX, t('validation.invalidUrl')).required(t('validation.required')),
+        authType: Yup.string().required(),
+        deepLinkType: Yup.string().required(),
+        deepLinkUniversale: Yup.object().when('deepLinkType', {
+            is: 'universale',
+            then: (schema) =>
+                schema.shape({
+                    fallBackLink: Yup.string().matches(URL_REGEX, t('validation.invalidUrl')).required(t('validation.required')),
                     versions: versionsSchema,
-                })
-            ),
-    }),
-});
+                }),
+        }),
+        deepLinkDevices: Yup.array().when('deepLinkType', {
+            is: 'specifico',
+            then: (schema) =>
+                schema.of(
+                    Yup.object({
+                        so: Yup.string(),
+                        fallBackLink: Yup.string().when('so', {
+                            is: (so: string) => so !== 'WEB',
+                            then: (s) => s.matches(URL_REGEX, t('validation.invalidUrl')).required(t('validation.required')),
+                            otherwise: (s) =>
+                                s.matches(URL_REGEX, t('validation.invalidUrl')).test(
+                                    'web-fallback-if-versions',
+                                    t('validation.requiredIfVersion'),
+                                    function (value) {
+                                        const versions = (this.parent as { versions: unknown[] }).versions;
+                                        if (versions?.length > 0 && !value) return false;
+                                        return true;
+                                    }
+                                ),
+                        }),
+                        versions: versionsSchema,
+                    })
+                ),
+        }),
+    });
+
+    return { credentialsSchema, endpointSchema };
+}

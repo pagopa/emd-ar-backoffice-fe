@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { ArrowBack as Back } from '@mui/icons-material';
 import { Box, Button, CircularProgress, Paper, Step, StepLabel, Stepper, Typography } from '@mui/material';
@@ -16,9 +16,10 @@ import { ColoredConnector } from '../../theme/stepper';
 import type { Step1Values, Step2Values } from '../../types/stepsOnboarding';
 import type { AuthenticationType, TppDTO } from '../../types/tpp';
 import { buildAgentLinks } from '../../utils/deepLink';
-import { credentialsSchema, endpointSchema } from '../../utils/validations';
 import { useApiErrorHandler } from '../../hook/useApiErrorHandler';
+import { useValidationSchemas, type SchemaKey } from '../../hook/useValidationSchemas';
 import { useTranslation } from 'react-i18next';
+import { useRevalidateOnLanguageChange } from '../../hook/useRevalidateOnLanguageChange';
 
 
 const Onboarding = () => {
@@ -30,7 +31,9 @@ const Onboarding = () => {
     const organization = useAppSelector((state) => state.organization.organization);
 
     type AllValues = Step1Values & Step2Values;
-    const validationSchemas = [endpointSchema, credentialsSchema];
+
+    const { getDynamicSchema } = useValidationSchemas();
+
     const STEPS = t('onboarding.page.steps', { returnObjects: true }) as string[];
 
     const initialValues: AllValues = {
@@ -54,9 +57,18 @@ const Onboarding = () => {
     const [activeStep, setActiveStep] = useState(0);
     const isLastStep = activeStep === STEPS.length - 1;
 
+    const schemaKeyRef = useRef<SchemaKey>('endpointSchema');
+    schemaKeyRef.current = activeStep === 0 ? 'endpointSchema' : 'credentialsSchema';
+
+    const dynamicSchema = useMemo(
+        () => getDynamicSchema(schemaKeyRef),
+        [getDynamicSchema]
+    );
+
+
     const formik = useFormik<AllValues>({
         initialValues,
-        validationSchema: validationSchemas[activeStep],
+        validationSchema: dynamicSchema,
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: async (values, { setSubmitting }) => {
@@ -75,6 +87,7 @@ const Onboarding = () => {
         },
     });
 
+    useRevalidateOnLanguageChange(formik);
 
     const saveTPP = async (values: AllValues) => {
         const bodyExtra = Object.fromEntries(values.bodyParams.map(p => [p.name, p.value]));

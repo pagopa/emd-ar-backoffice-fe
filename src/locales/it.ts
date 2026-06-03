@@ -175,6 +175,14 @@ const it = {
     environmentBanner: {
         message: 'Dati per Ambiente di Collaudo',
     },
+    validation: {
+        required: 'Campo obbligatorio',
+        noSpaces: 'Non sono ammessi spazi',
+        invalidUrl: 'URL non valido',
+        duplicateKey: 'Chiave duplicata',
+        duplicateVersion: 'Versione già inserita',
+        requiredIfVersion: 'Campo obbligatorio se aggiungi una versione',
+    },
 };
 
 export default it;

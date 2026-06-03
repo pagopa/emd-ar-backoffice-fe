@@ -13,14 +13,18 @@ interface Props {
     errors: any;
     touched: any;
     onFallBackChange: (val: string) => void;
+    onFallBackBlur: () => void;
     onVersionChange: (index: number, field: keyof VersionEntry, val: string) => void;
+    onVersionBlur: (index: number, field: keyof VersionEntry) => void
     onAddVersion: () => void;
     onRemoveVersion: (index: number) => void;
 }
 
 export function DeepLinkUniversal({
     fallBackLink, versions, errors, touched,
-    onFallBackChange, onVersionChange, onAddVersion, onRemoveVersion,
+    onFallBackChange, onFallBackBlur,
+    onVersionChange, onVersionBlur,
+    onAddVersion, onRemoveVersion,
 }: Readonly<Props>) {
     const { t } = useTranslation();
     const dl = 'onboarding.step1.deepLink';
@@ -34,9 +38,11 @@ export function DeepLinkUniversal({
                 placeholder={t(`${dl}.urlRedirectPlaceholder`)}
                 value={fallBackLink}
                 onChange={(e) => onFallBackChange(e.target.value)}
+                onBlur={onFallBackBlur}
                 error={Boolean(touched?.fallBackLink && errors?.fallBackLink)}
-                helperText={touched?.fallBackLink && errors?.fallBackLink || ' '}
+                helperText={touched?.fallBackLink && errors?.fallBackLink}
                 inputProps={{ maxLength: 2048 }}
+                sx={{ mb: 2 }}
             />
 
             {versions.map((version, index) => (
@@ -57,6 +63,7 @@ export function DeepLinkUniversal({
                             label={t(`${dl}.urlRedirect`)}
                             value={version.link}
                             onChange={(e) => onVersionChange(index, 'link', e.target.value)}
+                            onBlur={() => onVersionBlur(index, 'link')}
                             error={Boolean(errors?.versions?.[index]?.link)}
                             helperText={errors?.versions?.[index]?.link || ' '}
                             inputProps={{ maxLength: 2048 }}
