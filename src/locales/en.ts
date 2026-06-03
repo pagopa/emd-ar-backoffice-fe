@@ -175,6 +175,14 @@ const en = {
     environmentBanner: {
         message: 'Data for Test Environment',
     },
+    validation: {
+        required: 'Required field',
+        noSpaces: 'Spaces are not allowed',
+        invalidUrl: 'Invalid URL',
+        duplicateKey: 'Duplicate key',
+        duplicateVersion: 'Version already added',
+        requiredIfVersion: 'Required if you add a version',
+    },
 };
 
 export default en;

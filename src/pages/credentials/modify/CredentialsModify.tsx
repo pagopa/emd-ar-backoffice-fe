@@ -6,7 +6,6 @@ import { getTppCredentials, saveCredentialsTpp } from '../../../api/tpp';
 import CredentialsForm from '../../../components/forms/CredentialsForm';
 import ROUTES from '../../../routes';
 import type { Step2Values } from '../../../types/stepsOnboarding';
-import { credentialsSchema } from '../../../utils/validations';
 import type { TokenSection } from '../../../types/tpp';
 import { paramsToRecord, recordToParams } from '../../../utils/params';
 import { useUnsavedChangesBlocker } from '../../../hook/useUnsavedChangesBlocker';
@@ -17,6 +16,8 @@ import { useSafeFetch } from '../../../hook/useSafeFetch';
 import { useAppSelector } from '../../../redux/hook';
 import { selectSessionError } from '../../../redux/slices/sessionSlice';
 import ModifyPageLayout from '../../../components/ModifyPageLayout';
+import { useValidationSchemas } from '../../../hook/useValidationSchemas';
+import { useRevalidateOnLanguageChange } from '../../../hook/useRevalidateOnLanguageChange';
 
 const buildTokenPayload = (values: Step2Values): TokenSection => ({
     contentType: 'application/x-www-form-urlencoded',
@@ -43,6 +44,7 @@ const parseTokenSection = (data: TokenSection): Step2Values => {
 
 const CredentialsModify = () => {
     const handleApiError = useApiErrorHandler();
+    const { getSchema } = useValidationSchemas();
 
     const initialValues: Step2Values = {
         clientId: '',
@@ -54,7 +56,7 @@ const CredentialsModify = () => {
 
     const formik = useFormik<Step2Values>({
         initialValues,
-        validationSchema: credentialsSchema,
+        validationSchema: getSchema('credentialsSchema'),
         validateOnChange: true,
         validateOnBlur: true,
         onSubmit: async (values, { setSubmitting }) => {
@@ -62,6 +64,8 @@ const CredentialsModify = () => {
             setSubmitting(false);
         },
     });
+
+    useRevalidateOnLanguageChange(formik);
 
     const { showDialog, handleConfirmExit, handleCancelExit } = useUnsavedChangesBlocker(formik.dirty);
 
