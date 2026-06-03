@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.2...v1.7.3) (2026-06-03)
+
+
+### Bug Fixes
+
+* MMC-698 update mui italia to 2.4.1 and axios to 1.16.0 ([#49](https://github.com/pagopa/emd-ar-backoffice-fe/issues/49)) ([9a91164](https://github.com/pagopa/emd-ar-backoffice-fe/commit/9a911648d042d1cb8a65ed4a765219cc6601baa2))
+
 ## [1.7.2](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.1...v1.7.2) (2026-05-27)
 
 
