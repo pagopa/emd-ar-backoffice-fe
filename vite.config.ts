@@ -24,4 +24,12 @@ export default defineConfig({
       '@emotion/styled',
     ],
   },
+  build: {
+  rollupOptions: {
+    onwarn(warning, warn) {
+        if (warning.code === 'INVALID_ANNOTATION') return;
+        warn(warning);
+      }
+    }
+  }
 });
