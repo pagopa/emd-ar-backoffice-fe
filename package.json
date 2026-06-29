@@ -20,7 +20,7 @@
     "@pagopa/mui-italia": "^2.5.0",
     "@pagopa/selfcare-common-frontend": "^1.37.0",
     "axios": "^1.18.1",
-    "eslint": "^8.57.1",
+    "eslint": "^10.6.0",
     "formik": "^2.4.9",
     "i18next": "^26.3.3",
     "react": "^18.0.0",
