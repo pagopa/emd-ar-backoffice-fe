@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { ArrowBack as Back } from '@mui/icons-material';
 import { Box, Button, CircularProgress, Paper, Step, StepLabel, Stepper, Typography } from '@mui/material';
@@ -17,7 +17,7 @@ import type { Step1Values, Step2Values } from '../../types/stepsOnboarding';
 import type { AuthenticationType, TppDTO } from '../../types/tpp';
 import { buildAgentLinks } from '../../utils/deepLink';
 import { useApiErrorHandler } from '../../hook/useApiErrorHandler';
-import { useValidationSchemas, type SchemaKey } from '../../hook/useValidationSchemas';
+import { useValidationSchemas } from '../../hook/useValidationSchemas';
 import { useTranslation } from 'react-i18next';
 import { useRevalidateOnLanguageChange } from '../../hook/useRevalidateOnLanguageChange';
 
@@ -32,7 +32,7 @@ const Onboarding = () => {
 
     type AllValues = Step1Values & Step2Values;
 
-    const { getDynamicSchema } = useValidationSchemas();
+    const { getSchema } = useValidationSchemas();
 
     const STEPS = t('onboarding.page.steps', { returnObjects: true }) as string[];
 
@@ -57,12 +57,11 @@ const Onboarding = () => {
     const [activeStep, setActiveStep] = useState(0);
     const isLastStep = activeStep === STEPS.length - 1;
 
-    const schemaKeyRef = useRef<SchemaKey>('endpointSchema');
-    schemaKeyRef.current = activeStep === 0 ? 'endpointSchema' : 'credentialsSchema';
+    const schemaKey = activeStep === 0 ? 'endpointSchema' : 'credentialsSchema';
 
     const dynamicSchema = useMemo(
-        () => getDynamicSchema(schemaKeyRef),
-        [getDynamicSchema]
+        () => getSchema(schemaKey),
+        [schemaKey, getSchema]
     );
 
 

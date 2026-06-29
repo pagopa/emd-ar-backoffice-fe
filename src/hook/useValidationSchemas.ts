@@ -24,14 +24,5 @@ export function useValidationSchemas() {
             }
         });
 
-    const getDynamicSchema = (keyRef: React.MutableRefObject<SchemaKey>): ObjectSchema<any> =>
-        new Proxy({} as ObjectSchema<any>, {
-            get(_target, prop) {
-                const current = schemasRef.current[keyRef.current];
-                const value = (current as any)[prop];
-                return typeof value === 'function' ? value.bind(current) : value;
-            }
-        });
-
-    return { getSchema, getDynamicSchema };
+    return { getSchema };
 }
