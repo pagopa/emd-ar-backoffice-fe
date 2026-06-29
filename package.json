@@ -51,5 +51,8 @@
   },
   "allowScripts": {
     "core-js@3.49.0": true
+  },
+  "overrides": {
+    "form-data": ">=4.0.6"
   }
 }
