@@ -136,10 +136,6 @@
     background-color: #fafafa;
 }
 
-.otnotice .otnotice-content .otnotice-sections {
-    overflow-wrap: break-word;
-    word-break: keep-all;
-}
 
 
 /* --- Layout responsive: sotto i 767px nascondiamo la sidebar
@@ -219,8 +215,7 @@
         min-width: 0;
         margin-left: 0 !important;
         margin-right: 0 !important;
-        overflow-wrap: break-word;
-        word-break: break-word;
+        overflow-wrap: anywhere;
     }
 
     .otnotice .otnotice-content .otnotice-section h2.otnotice-section-header {
