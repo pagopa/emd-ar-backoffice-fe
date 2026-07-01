@@ -28,4 +28,4 @@ jobs:
           args: >
             -Dsonar.organization=${{ vars.SONARCLOUD_ORG }}
             -Dsonar.projectKey=${{ vars.SONARCLOUD_PROJECT_KEY }}
-
+            -Dsonar.exclusions="src/locales/**/*.ts"
