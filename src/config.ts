@@ -11,9 +11,9 @@ export const CONFIG = {
     LINKS: {
         PAGOPA_COMPANY: 'https://www.pagopa.it',
         OPERATIVE_MANUAL_AR: 'https://docs.pagopa.it/area-riservata',
-        PERSONAL_DATA_PROTECTION: '#',
+        PERSONAL_DATA_PROTECTION: 'https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8',
         TERMS_AND_CONDITIONS: '#',
-        ACCESSIBILITY: '#',
+        ACCESSIBILITY: 'https://form.agid.gov.it/5N2TR557/selfcare/dichiarazione',
     },
 
     ONE_TRUST: {
