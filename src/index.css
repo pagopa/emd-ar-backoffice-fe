@@ -21,3 +21,212 @@
     border: 1px solid #E8EBF1;
     border-radius: 8px;
 }
+
+/* START: ONETRUST STYLES */
+.otnotice .otnotice-content select,
+.otnotice .ot-privacy-notice-language-dropdown-container {
+    display: none !important;
+}
+
+.otnotice .otnotice-content {
+    font-family: 'Titillium Web', sans-serif;
+    color: #17324d;
+    padding-top: 64px;
+}
+
+/* --- Menu desktop (sidebar) --- */
+.otnotice .otnotice-content .otnotice-menu {
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    max-height: none;
+    margin-left: 0;
+    padding-right: 0;
+}
+
+.otnotice .otnotice-content .otnotice-menu>.otnotice-menu-section {
+    margin: 0;
+    padding: 1rem;
+    width: 100%;
+}
+
+.otnotice .otnotice-content .otnotice-menu>.otnotice-menu-section:hover,
+.otnotice .otnotice-content .otnotice-menu-mobile .otnotice-menu-section-mobile:hover {
+    background-color: rgba(23, 50, 77, 0.08);
+}
+
+.otnotice .otnotice-content .otnotice-menu>.otnotice-menu-section a,
+.otnotice .otnotice-content .otnotice-menu-mobile .otnotice-menu-selected,
+.otnotice .otnotice-content .otnotice-menu-mobile .otnotice-menu-section-mobile a {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #17324d !important;
+}
+
+/* --- Menu mobile/tablet (accordion +/-) ---
+   Nascosto di default: diventa flex sotto i 767px, vedi media query in fondo */
+.otnotice .otnotice-content .otnotice-menu-mobile {
+    display: none;
+    background-color: transparent;
+    border: none;
+    box-shadow: rgb(0 43 85 / 10%) 0px 2px 4px -1px, rgb(0 43 85 / 5%) 0px 4px 5px;
+}
+
+.otnotice .otnotice-content .otnotice-menu-mobile .otnotice-menu-mobile-container {
+    background-color: transparent;
+}
+
+.otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-display__expand::after,
+.otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-display__collapse::after {
+    color: #17324d !important;
+}
+
+/* --- Titoli sezione --- */
+.otnotice .otnotice-content .otnotice-section:first-child h2 {
+    font-size: 2.375rem;
+    color: #17324d;
+    line-height: 3.25rem;
+}
+
+.otnotice .otnotice-content .otnotice-section:not(:first-child) h2 {
+    font-size: 1.75rem;
+    color: #17324d;
+    line-height: 2.25rem;
+}
+
+.otnotice .otnotice-content .otnotice-section h4.otnotice-sub-heading[data-pasted="true"] {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #17324d;
+    margin-bottom: 0.5rem;
+}
+
+#onetrust-banner-sdk:focus {
+    outline: none !important;
+    outline-offset: 0 !important;
+}
+
+/* --- Tabella cookie --- */
+.otnotice .otnotice-content table {
+    width: 100%;
+    color: #696969;
+    border-collapse: collapse;
+    margin: 16px 0;
+}
+
+.otnotice .otnotice-content table th {
+    background-color: #f5f5f5;
+    color: #17324d;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.otnotice .otnotice-content table td {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: top;
+}
+
+.otnotice .otnotice-content table tr:nth-child(even) td {
+    background-color: #fafafa;
+}
+
+.otnotice .otnotice-content .otnotice-sections {
+    overflow-wrap: break-word;
+    word-break: keep-all;
+}
+
+
+/* --- Layout responsive: sotto i 767px nascondiamo la sidebar
+       e mostriamo l'accordion mobile con +/- ---
+   Soglia e logica prese dal layout ufficiale OneTrust
+   (otnotice-layout-left-aligned-menu.css), che avevamo rimosso
+   insieme allo stile non voluto. Qui reintegriamo solo il
+   comportamento responsive del menu, non il resto dello stile. */
+@media only screen and (max-width: 767px) {
+    .otnotice .otnotice-content .otnotice-menu {
+        display: none !important;
+    }
+
+    .otnotice .otnotice-content .otnotice-menu-mobile {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .otnotice .otnotice-content .otnotice-menu-mobile .otnotice-menu-selected-container {
+        margin: 0 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: bold;
+    }
+
+    .otnotice .otnotice-content .otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-selected {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .otnotice .otnotice-content .otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-display {
+        pointer-events: none;
+        text-align: center;
+    }
+
+    .otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-display__expand::after {
+        content: "+";
+    }
+
+    .otnotice-menu-mobile .otnotice-menu-selected-container .otnotice-menu-display__collapse::after {
+        content: "-";
+    }
+
+    .otnotice .otnotice-content .otnotice-menu-mobile .otnotice-menu-mobile-container {
+        display: none;
+        list-style-type: none;
+        padding-left: 0;
+        padding-right: 0;
+        margin-top: 0;
+    }
+
+    .otnotice .otnotice-content .otnotice-menu-mobile .otnotice-menu-mobile-container a {
+        display: block;
+        padding: 0.5rem;
+        text-decoration: none;
+        text-align: center;
+        color: #17324d;
+    }
+
+    .otnotice-menu-display__expand::after,
+    .otnotice-menu-display__collapse::after {
+        pointer-events: all;
+        font-weight: bolder;
+        font-size: x-large;
+        margin-left: 1rem;
+        cursor: pointer;
+    }
+
+    .otnotice .otnotice-content .otnotice-sections {
+        flex: 1 1 auto;
+        min-width: 0;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .otnotice .otnotice-content .otnotice-section h2.otnotice-section-header {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+}
+
+/* END: ONETRUST STYLES */
