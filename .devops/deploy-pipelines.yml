@@ -25,7 +25,7 @@ parameters:
 # sempre tutte disponibili. La selezione avviene dentro gli stage con ${{ if }}.
 
 variables:
-  NODE_VERSION: '20.19.0'
+  NODE_VERSION: '22.23.1'
   vmImageNameDefault: 'ubuntu-latest'
   BLOB_CONTAINER_NAME: '$web'
 
