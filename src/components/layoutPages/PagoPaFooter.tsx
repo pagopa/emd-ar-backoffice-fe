@@ -10,6 +10,8 @@ import {
 } from '@pagopa/mui-italia';
 import { CONFIG } from '../../config';
 import { LANG_STORAGE_KEY } from '../../utils/constant';
+import ROUTES from '../../routes';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const languages = {
@@ -19,8 +21,17 @@ const languages = {
 
 const Footer = () => {
     const { t, i18n } = useTranslation();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const currentLang = i18n.language as LangCode;
+
+    const navigateToInternalRoute = (path: string) => () => {
+        if (location.pathname !== path) {
+            navigate(path);
+        }
+    };
+
 
     const legalInfo = (
         <Trans
@@ -57,9 +68,10 @@ const Footer = () => {
     const postLoginLinks: Array<FooterLinksType> = [
         {
             label: t('common.footer.postLoginLinks.privacyPolicy'),
-            href: CONFIG.LINKS.PRIVACY_POLICY,
+            href: ROUTES.PRIVACY,
             ariaLabel: t('common.footer.postLoginLinks.privacyPolicy'),
             linkType: 'internal',
+            onClick: navigateToInternalRoute(ROUTES.PRIVACY),
         },
         {
             label: t('common.footer.postLoginLinks.protectionofpersonaldata'),
