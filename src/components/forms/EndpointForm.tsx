@@ -179,8 +179,8 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
                     <DeepLinkUniversal
                         fallBackLink={values.deepLinkUniversale.fallBackLink}
                         versions={values.deepLinkUniversale.versions}
-                        errors={errors.deepLinkUniversale as any}
-                        touched={touched.deepLinkUniversale as any}
+                        errors={errors.deepLinkUniversale}
+                        touched={touched.deepLinkUniversale}
                         onFallBackChange={(val) => void setFieldValue('deepLinkUniversale.fallBackLink', val)}
                         onFallBackBlur={handleUniversaleFallBackBlur}
                         onVersionChange={handleUniversaleVersionChange}
@@ -194,7 +194,7 @@ export default function EndpointForm({ formik }: Readonly<{ formik: FormikProps<
                 {values.deepLinkType === 'specifico' && (
                     <DeepLinkPerDevice
                         devices={values.deepLinkDevices}
-                        errors={errors.deepLinkDevices as any}
+                        errors={errors.deepLinkDevices}
                         touched={(touched as any).deepLinkDevices}
                         onFallBackChange={handleDeviceFallBackChange}
                         onFallBackBlur={handleDeviceFallBackBlur}
