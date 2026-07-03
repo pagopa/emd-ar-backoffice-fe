@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.7.4](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.3...v1.7.4) (2026-07-02)
+
+
+### Bug Fixes
+
+* **deps:** bump the non-major-updates group across 1 directory with 13 updates ([#58](https://github.com/pagopa/emd-ar-backoffice-fe/issues/58)) ([b9093b6](https://github.com/pagopa/emd-ar-backoffice-fe/commit/b9093b648d275eb7914702e76800b237035eefbe))
+* **deps:** bump the non-major-updates group across 1 directory with 8 updates ([#63](https://github.com/pagopa/emd-ar-backoffice-fe/issues/63)) ([bf2fae3](https://github.com/pagopa/emd-ar-backoffice-fe/commit/bf2fae3784a5d90eca7138187375fe775814bec9))
+* MMC-770 update major dependency  ([#60](https://github.com/pagopa/emd-ar-backoffice-fe/issues/60)) ([8045244](https://github.com/pagopa/emd-ar-backoffice-fe/commit/8045244b77b31a021ef2478f6627adc77056f7f7))
+* MMC-780 add links for footer and header of the pages ([#62](https://github.com/pagopa/emd-ar-backoffice-fe/issues/62)) ([9aa9e5f](https://github.com/pagopa/emd-ar-backoffice-fe/commit/9aa9e5fecd9ac61435130a6c09f450a57de2560b))
+
 ## [1.7.3](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.2...v1.7.3) (2026-06-03)
 
 
