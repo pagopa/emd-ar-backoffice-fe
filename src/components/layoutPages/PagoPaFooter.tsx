@@ -11,7 +11,6 @@ import {
 import { CONFIG } from '../../config';
 import { LANG_STORAGE_KEY } from '../../utils/constant';
 import ROUTES from '../../routes';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const languages = {
@@ -21,16 +20,7 @@ const languages = {
 
 const Footer = () => {
     const { t, i18n } = useTranslation();
-    const navigate = useNavigate();
-    const location = useLocation();
-
     const currentLang = i18n.language as LangCode;
-
-    const navigateToInternalRoute = (path: string) => () => {
-        if (location.pathname !== path) {
-            navigate(path);
-        }
-    };
 
 
     const legalInfo = (
@@ -64,32 +54,40 @@ const Footer = () => {
         },
     };
 
+    const openInNewTab = (href: string) => () => {
+        window.open(href, '_blank', 'noopener,noreferrer');
+    };
+
+    const toAbsolute = (path: string) => `${window.location.origin}${path}`;
 
     const postLoginLinks: Array<FooterLinksType> = [
         {
             label: t('common.footer.postLoginLinks.privacyPolicy'),
-            href: ROUTES.PRIVACY,
+            href: toAbsolute(ROUTES.PRIVACY),
             ariaLabel: t('common.footer.postLoginLinks.privacyPolicy'),
-            linkType: 'internal',
-            onClick: navigateToInternalRoute(ROUTES.PRIVACY),
+            linkType: 'external',
+            onClick: openInNewTab(toAbsolute(ROUTES.PRIVACY)),
         },
         {
             label: t('common.footer.postLoginLinks.protectionofpersonaldata'),
             href: CONFIG.LINKS.PERSONAL_DATA_PROTECTION,
             ariaLabel: t('common.footer.postLoginLinks.protectionofpersonaldata'),
-            linkType: 'internal',
+            linkType: 'external',
+            onClick: openInNewTab(CONFIG.LINKS.PERSONAL_DATA_PROTECTION),
         },
         {
             label: t('common.footer.postLoginLinks.termsandconditions'),
-            href: CONFIG.LINKS.TERMS_AND_CONDITIONS,
+            href: toAbsolute(ROUTES.TERMS_AND_CONDITIONS),
             ariaLabel: t('common.footer.postLoginLinks.termsandconditions'),
-            linkType: 'internal',
+            linkType: 'external',
+            onClick: openInNewTab(toAbsolute(ROUTES.TERMS_AND_CONDITIONS)),
         },
         {
             label: t('common.footer.postLoginLinks.accessibility'),
             href: CONFIG.LINKS.ACCESSIBILITY,
             ariaLabel: t('common.footer.postLoginLinks.accessibility'),
-            linkType: 'internal',
+            linkType: 'external',
+            onClick: openInNewTab(CONFIG.LINKS.ACCESSIBILITY),
         },
     ];
 

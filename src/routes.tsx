@@ -7,7 +7,8 @@ const ROUTES = {
     CREDENTIALS: '/credentials',
     CREDENTIALS_MODIFY: '/credentials/modify',
     ENDPOINT_MODIFY: `/endpoint/modify`,
-    PRIVACY: `/privacy`,
+    PRIVACY: `/privacy`, 
+    TERMS_AND_CONDITIONS: `/terms-and-conditions`,
 };
 
 export default ROUTES;
@@ -20,3 +21,4 @@ export const Credentials        = lazy(() => import('./pages/credentials/Credent
 export const CredentialsModify  = lazy(() => import('./pages/credentials/modify/CredentialsModify'));
 export const EndpointModify     = lazy(() => import('./pages/home/modify/EndpointModify'));
 export const PrivacyPage        = lazy(() => import('./pages/PrivacyPage'));
+export const TermsAndConditionsPage        = lazy(() => import('./pages/TermsAndConditionsPage'));

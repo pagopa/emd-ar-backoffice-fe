@@ -1,4 +1,4 @@
-import { CONFIG } from '../config';
+import { CONFIG } from "../config";
 
 const NOTICE_SCRIPT_ID = 'otprivacy-notice-script';
 const NOTICE_LOADER_SRC = 'https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/otnotice-1.0.min.js';
@@ -12,18 +12,25 @@ const STYLE_URLS = {
     layout: 'https://privacyportalde-cdn.onetrust.com/privacy-notice-scripts/css/v2/otnotice-layout-left-aligned-menu.css',
 } as const;
 
-function ensureOneTrustStylesLoaded(): void {
-    (Object.keys(STYLE_URLS) as Array<keyof typeof STYLE_URLS>).forEach((key) => {
-        if (document.getElementById(STYLE_IDS[key])) return;
+function ensureOneTrustStylesLoaded(): Promise<void> {
+    const loads = (Object.keys(STYLE_URLS) as Array<keyof typeof STYLE_URLS>).map((key) => {
+        return new Promise<void>((resolve) => {
+            if (document.getElementById(STYLE_IDS[key])) return resolve();
 
-        const link = document.createElement('link');
-        link.id = STYLE_IDS[key];
-        link.rel = 'stylesheet';
-        link.href = STYLE_URLS[key];
-        document.head.appendChild(link);
+            const link = document.createElement('link');
+            link.id = STYLE_IDS[key];
+            link.rel = 'stylesheet';
+            link.href = STYLE_URLS[key];
+            link.onload = () => resolve();
+            link.onerror = () => {
+                console.error(`[OneTrust] Failed to load stylesheet: ${STYLE_URLS[key]}`);
+                resolve(); // non blocchiamo la catena, ma logghiamo
+            };
+            document.head.appendChild(link);
+        });
     });
+    return Promise.all(loads).then(() => undefined);
 }
-
 let scriptLoadingPromise: Promise<void> | null = null;
 
 // Loads the OneTrust notice script once and caches the promise,
@@ -64,8 +71,8 @@ function buildNoticeJsonUrl(noticeId: string): string {
 }
 
 // Waits for an element matching selector to appear in the DOM.
-// Because OneTrust injects the notice markup asynchronously
-// after LoadNotices, so we can't query it right away.
+// OneTrust injects the notice markup asynchronously after LoadNotices,
+// so we can't query it right away.
 function waitForElement(selector: string, root: ParentNode = document, timeoutMs = 5000): Promise<Element> {
     return new Promise((resolve, reject) => {
         const existing = root.querySelector(selector);
@@ -95,8 +102,16 @@ function waitForElement(selector: string, root: ParentNode = document, timeoutMs
     });
 }
 
-export function loadOrReloadNotice(noticeId: string, language: string): void {
-    document.documentElement.lang = language;
+export interface LoadNoticeOptions {
+    noticeId: string;
+    language?: string;
+    allowUserOverride?: boolean;
+}
+
+export function loadOrReloadNotice({ noticeId, language, allowUserOverride = true }: LoadNoticeOptions): void {
+    if (language) {
+        document.documentElement.lang = language;
+    }
 
     ensureOneTrustScriptLoaded()
         .catch((error: unknown) => {
@@ -105,10 +120,17 @@ export function loadOrReloadNotice(noticeId: string, language: string): void {
         })
         .then(() => globalThis.OneTrust!.NoticeApi.Initialized)
         .then(() => {
-            globalThis.OneTrust?.NoticeApi.LoadNotices([buildNoticeJsonUrl(noticeId)], true, language);
-            ensureOneTrustStylesLoaded();
+            const noticeUrl = buildNoticeJsonUrl(noticeId);
+            const stylesPromise = ensureOneTrustStylesLoaded();
 
-            return waitForElement(`#otnotice-${noticeId} .otnotice-content`);
+            if (language) {
+                globalThis.OneTrust?.NoticeApi.LoadNotices([noticeUrl], allowUserOverride, language);
+            } else {
+                globalThis.OneTrust?.NoticeApi.LoadNotices([noticeUrl]);
+            }
+
+
+            return Promise.all([stylesPromise, waitForElement(`#otnotice-${noticeId} .otnotice-content`)]);
         })
         .catch((error: unknown) => {
             console.error(`[OneTrust] Failed to render notice "${noticeId}"`, error);

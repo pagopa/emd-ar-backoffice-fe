@@ -7,7 +7,7 @@ import './index.css';
 import SessionErrorHandler from './components/SessionErrorHandler';
 import withAuth from './decorator/withAuth';
 import { useAppSelector } from './redux/hook';
-import ROUTES, { Auth, Credentials, CredentialsModify, EndpointModify, Home, Onboarding, PrivacyPage } from './routes';
+import ROUTES, { Auth, Credentials, CredentialsModify, EndpointModify, Home, Onboarding, PrivacyPage, TermsAndConditionsPage } from './routes';
 
 import { ErrorBoundary } from '@pagopa/selfcare-common-frontend/lib';
 import UserNotifyHandle from '@pagopa/selfcare-common-frontend/lib/components/UserNotifyHandle';
@@ -103,7 +103,12 @@ export const router = createBrowserRouter([
                         element: <LayoutWithoutSidebar />,
                         children: [
                             { path: ROUTES.ONBOARDING, element: <ProtectedOnboarding /> },
+                        ],
+                    },
+                    {
+                        children: [
                             { path: ROUTES.PRIVACY, element: <PrivacyPage /> },
+                            { path: ROUTES.TERMS_AND_CONDITIONS, element: <TermsAndConditionsPage /> },
                         ],
                     },
                     {

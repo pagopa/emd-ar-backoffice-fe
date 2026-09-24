@@ -12,7 +12,6 @@ export const CONFIG = {
         PAGOPA_COMPANY: 'https://www.pagopa.it',
         OPERATIVE_MANUAL_AR: 'https://docs.pagopa.it/area-riservata',
         PERSONAL_DATA_PROTECTION: 'https://privacyportal-de.onetrust.com/webform/77f17844-04c3-4969-a11d-462ee77acbe1/9ab6533d-be4a-482e-929a-0d8d2ab29df8',
-        TERMS_AND_CONDITIONS: '#',
         ACCESSIBILITY: 'https://form.agid.gov.it/5N2TR557/selfcare/dichiarazione',
     },
 
@@ -20,5 +19,6 @@ export const CONFIG = {
         SETTINGS_TOKEN:'eyJjYWxsYmFja1VybCI6Imh0dHBzOi8vcHJpdmFjeXBvcnRhbC1kZS5vbmV0cnVzdC5jb20vcmVxdWVzdC92MS9wcml2YWN5Tm90aWNlcy9zdGF0cy92aWV3cyIsImNvbnRlbnRBcGlVcmwiOiJodHRwczovL3ByaXZhY3lwb3J0YWwtZGUub25ldHJ1c3QuY29tL3JlcXVlc3QvdjEvZW50ZXJwcmlzZXBvbGljeS9kaWdpdGFscG9saWN5L2NvbnRlbnQiLCJtZXRhZGF0YUFwaVVybCI6Imh0dHBzOi8vcHJpdmFjeXBvcnRhbC1kZS5vbmV0cnVzdC5jb20vcmVxdWVzdC92MS9lbnRlcnByaXNlcG9saWN5L2RpZ2l0YWxwb2xpY3kvbWV0YS1kYXRhIn0=' , // NOSONAR
         STORAGE_CONTAINER_ID: '77f17844-04c3-4969-a11d-462ee77acbe1',
         PRIVACY_NOTICE_ID: 'cbad5418-9923-4402-b2da-b8be62965da2',
+        TERMS_AND_CONDITIONS_NOTICE_ID: '1a725d5c-4345-412c-9629-f76a0a4215f6',
     },
 };
