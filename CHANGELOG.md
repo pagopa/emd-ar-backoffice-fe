@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.4...v1.8.0) (2026-09-24)
+
+
+### Features
+
+* MMC-802 Add OneTrust handling and page of TermsAndConditions ([#70](https://github.com/pagopa/emd-ar-backoffice-fe/issues/70)) ([1d7292a](https://github.com/pagopa/emd-ar-backoffice-fe/commit/1d7292af8073a3463fe286fb2aa1ab1dbffed251))
+
 ## [1.7.4](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.3...v1.7.4) (2026-07-02)
 
 
