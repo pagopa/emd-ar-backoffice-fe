@@ -81,9 +81,10 @@ const Footer = () => {
         },
         {
             label: t('common.footer.postLoginLinks.termsandconditions'),
-            href: CONFIG.LINKS.TERMS_AND_CONDITIONS,
+            href: ROUTES.TERMS_AND_CONDITIONS,
             ariaLabel: t('common.footer.postLoginLinks.termsandconditions'),
             linkType: 'internal',
+            onClick: navigateToInternalRoute(ROUTES.TERMS_AND_CONDITIONS),
         },
         {
             label: t('common.footer.postLoginLinks.accessibility'),

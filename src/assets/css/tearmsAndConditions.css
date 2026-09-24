@@ -1,0 +1,28 @@
+.otnotice .otnotice-content,
+.otnotice .otnotice-content * {
+    font-family: 'Titillium Web', sans-serif !important;
+    background-color: transparent !important;
+    white-space: normal !important;
+}
+
+.otnotice .otnotice-content li[style*="lower-roman" i] {
+    list-style-type: disc !important;
+}
+
+.otnotice .otnotice-content ol:has(> li[style*="lower-roman" i]) {
+    padding-top: 6px;
+}
+
+.otnotice .otnotice-content li[style*="lower-alpha" i],
+.otnotice .otnotice-content li[style*="lower-alpha" i] * {
+    text-decoration: none !important;
+    line-height: 1.5 !important;
+    margin-top: 1rem !important;
+    font-size: 16px;
+}
+
+
+.otnotice .otnotice-content ol:has(> li[style*="lower-alpha" i]) {
+    padding-inline-start: 15px !important;
+    font-size: 16px;
+}
