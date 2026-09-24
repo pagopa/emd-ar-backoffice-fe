@@ -8,7 +8,7 @@ const ROUTES = {
     CREDENTIALS_MODIFY: '/credentials/modify',
     ENDPOINT_MODIFY: `/endpoint/modify`,
     PRIVACY: `/privacy`, 
-    TERMS_AND_CONDITIONS: `/termini-e-condizioni`,
+    TERMS_AND_CONDITIONS: `/terms-and-conditions`,
 };
 
 export default ROUTES;

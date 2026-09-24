@@ -103,6 +103,10 @@ export const router = createBrowserRouter([
                         element: <LayoutWithoutSidebar />,
                         children: [
                             { path: ROUTES.ONBOARDING, element: <ProtectedOnboarding /> },
+                        ],
+                    },
+                    {
+                        children: [
                             { path: ROUTES.PRIVACY, element: <PrivacyPage /> },
                             { path: ROUTES.TERMS_AND_CONDITIONS, element: <TermsAndConditionsPage /> },
                         ],
