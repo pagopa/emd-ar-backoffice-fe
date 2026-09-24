@@ -20,6 +20,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install deps
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+        
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e #v8.2.0
         env:
@@ -28,4 +34,6 @@ jobs:
           args: >
             -Dsonar.organization=${{ vars.SONARCLOUD_ORG }}
             -Dsonar.projectKey=${{ vars.SONARCLOUD_PROJECT_KEY }}
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
             -Dsonar.exclusions="src/locales/**/*.ts"
+            -Dsonar.coverage.exclusions="src/pages/**,src/components/**,src/hook/**,src/decorator/**,src/redux/**,src/api/**,src/App.tsx,src/i18n.ts,src/appInsights.ts,src/utils/**,src/theme/**,src/mocks/**,src/types/**,src/setupTests.ts,src/main.tsx,src/routes.tsx"
