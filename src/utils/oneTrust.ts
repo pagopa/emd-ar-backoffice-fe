@@ -24,7 +24,7 @@ function ensureOneTrustStylesLoaded(): Promise<void> {
             link.onload = () => resolve();
             link.onerror = () => {
                 console.error(`[OneTrust] Failed to load stylesheet: ${STYLE_URLS[key]}`);
-                resolve(); // non blocchiamo la catena, ma logghiamo
+                resolve(); // don't block the chain, but log it
             };
             document.head.appendChild(link);
         });
@@ -102,6 +102,57 @@ function waitForElement(selector: string, root: ParentNode = document, timeoutMs
     });
 }
 
+// Extracts a trailing "http://"/"https://" from a node's text content
+function extractTrailingProtocol(node: ChildNode): string | null {
+    if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.ELEMENT_NODE) {
+        const text = node.textContent ?? '';
+        const match = new RegExp(/(https?:\/\/)$/).exec(text);
+        if (!match) return null;
+        node.textContent = text.slice(0, -match[1].length);
+        return match[1];
+    }
+    return null;
+}
+
+// Prepends the prefix inside the anchor, reusing the styling of the existing link,
+// so the prefix ends up underlined/colored like the rest of the link.
+function prependTextPreservingStyle(anchor: HTMLAnchorElement, text: string): void {
+    const styledChild = anchor.querySelector('span');
+    if (styledChild) {
+        const prefixSpan = styledChild.cloneNode(false) as HTMLElement;
+        prefixSpan.textContent = text;
+        anchor.insertBefore(prefixSpan, anchor.firstChild);
+    } else {
+        anchor.insertBefore(document.createTextNode(text), anchor.firstChild);
+    }
+}
+
+// Fixes the links published in the OneTrust notice
+function fixNoticeLinks(container: Element): void {
+    container.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((anchor) => {
+        const prevSibling = anchor.previousSibling;
+        if (prevSibling) {
+            const protocol = extractTrailingProtocol(prevSibling);
+            if (protocol) {
+                prependTextPreservingStyle(anchor, protocol);
+            }
+        }
+
+        try {
+            const url = new URL(anchor.href);
+            if (url.hostname === 'www.selfcare.pagopa.it') {
+                url.hostname = 'selfcare.pagopa.it';
+            }
+            if (url.hostname === 'selfcare.pagopa.it' && url.protocol === 'http:') {
+                url.protocol = 'https:';
+            }
+            anchor.href = url.toString();
+        } catch {
+            // href is not a valid absolute URL, ignore
+        }
+    });
+}
+
 export interface LoadNoticeOptions {
     noticeId: string;
     language?: string;
@@ -131,6 +182,9 @@ export function loadOrReloadNotice({ noticeId, language, allowUserOverride = tru
 
 
             return Promise.all([stylesPromise, waitForElement(`#otnotice-${noticeId} .otnotice-content`)]);
+        })
+        .then(([, contentEl]) => {
+            fixNoticeLinks(contentEl);
         })
         .catch((error: unknown) => {
             console.error(`[OneTrust] Failed to render notice "${noticeId}"`, error);
