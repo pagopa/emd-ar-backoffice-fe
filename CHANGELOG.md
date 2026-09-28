@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.8.0...v1.8.1) (2026-09-28)
+
+
+### Bug Fixes
+
+* MMC-802 Route of T&C and hyperlink to selfcare ([#72](https://github.com/pagopa/emd-ar-backoffice-fe/issues/72)) ([cde67cc](https://github.com/pagopa/emd-ar-backoffice-fe/commit/cde67cc410768936e9a3688623367785ed4f4afe))
+
 ## [1.8.0](https://github.com/pagopa/emd-ar-backoffice-fe/compare/v1.7.4...v1.8.0) (2026-09-24)
 
 
